@@ -4,7 +4,7 @@
 
 # Variables
 
-
+# Functions
 def greet_user():    # Greet user
     print("Welcome to my Sudoku solving application")
 
