@@ -3,7 +3,7 @@
 # Script to solve simple Sudoku puzzle
 
 # Constants
-PART_SIDE = 3  # start with 3 by 3 grid (4 by 4 also possible in the future)
+PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 FULL_SIDE = PART_SIDE ** 2
 
 # Variables
