@@ -2,11 +2,16 @@
 
 # Script to solve simple Sudoku puzzle
 
+# Constants
+PART_SIDE = 3  # start with 3 by 3 grid (4 by 4 also possible in the future)
+FULL_SIDE = PART_SIDE ** 2
+
 # Variables
 
 # Functions
 def greet_user():    # Greet user
     print("Welcome to my Sudoku solving application")
+    print("for {} by {} puzzle".format(FULL_SIDE, FULL_SIDE))
 
 def get_initial_puzzle(): # return data file as list
                           # cannot have blank in list so use "0" for blanks
