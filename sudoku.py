@@ -35,11 +35,6 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
             print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
         print() # line break at end of line
 
-def create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP):  # "---------------" format
-    for j in range(FULL_SIDE * 2 + 1):
-        print(ROW_SEP, end="") 
-    print()   # Need new line at end of string of symbols
-
 def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
     for j in range(FULL_SIDE):
         print("+", ROW_SEP, sep="", end="") 
