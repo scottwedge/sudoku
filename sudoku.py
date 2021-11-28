@@ -7,6 +7,7 @@ PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
+SPACE = " "     # have space on either side of value
 
 # Variables
 
@@ -37,7 +38,7 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
 
 def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
     for j in range(FULL_SIDE):
-        print("+", ROW_SEP, sep="", end="") 
+        print("+", ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
 
 def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
@@ -46,7 +47,7 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
 #        create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP)
         create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)
         for column in range(FULL_SIDE):
-            print(COL_SEP, puzzle[row * FULL_SIDE + column], sep="", end="")
+            print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
 
 # Main code
