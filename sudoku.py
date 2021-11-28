@@ -36,7 +36,7 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
         print() # line break at end of line
 
 def create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP):
-    for j in range(FULL_SIDE * 2 - 1):
+    for j in range(FULL_SIDE * 2 + 1):
         print(ROW_SEP, end="") 
     print()   # Need new line at end of string of symbols
 
@@ -45,8 +45,8 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
     for row in range(FULL_SIDE):
         create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP)
         for column in range(FULL_SIDE):
-            print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
-        print() # line break at end of line
+            print(COL_SEP, puzzle[row * FULL_SIDE + column], sep="", end="")
+        print(COL_SEP) # Add final column separator and default line break at end of line
 
 # Main code
 greet_user() 
