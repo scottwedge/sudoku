@@ -57,13 +57,19 @@ def all_values(FULL_SIDE):
     return values
 
 def setup_possibles_list(puzzle, values):
+    values = all_values(FULL_SIDE)
     possibles_list = []   # initialize empty list
+
     for j in range(len(puzzle)):
+#DEBUG        print("Index j is: {}".format(j))
         if puzzle[j] == 0:
-            possibles_list[j] = values          # all values possible for blank field
+#DEBUG            print("puzzle[{}] is 0.".format(j))
+            possibles_list.append(values)          # all values possible for blank field
         else:
-            possibles_list[j] = puzzle[j]       # value is already known so use it
-    return(possibles_list)
+#DEBUG            print("puzzle[{}] is not 0 it is {}.".format(j, puzzle[j]))
+            possibles_list.append(puzzle[j])       # value is already known so use it
+    return possibles_list
+
 
 # Main code
 greet_user() 
@@ -77,29 +83,18 @@ show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
 
 show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
 
-print()
-print("All possible values for a spot are: {}".format(all_values(FULL_SIDE)))
+#DEBUG print()
+#DEBUG print("All possible values for a spot are: {}".format(all_values(FULL_SIDE)))
 
 print()
 print("Start solving puzzle now.")
 
-loop = 1
+loop = 0
+print()
 print ("Loop count= {}".format(loop))
 
 values = all_values(FULL_SIDE)
 
-possibles_list = []   # initialize empty list
-
-print("Length of puzzle is {}.".format(len(puzzle)))     #DEBUG
-
-for j in range(len(puzzle)):
-    print("Index j is: {}".format(j))
-    if puzzle[j] == 0:
-        print("puzzle[{}] is 0.".format(j))
-        possibles_list.append(values)          # all values possible for blank field
-    else:
-        print("puzzle[{}] is not 0 it is {}.".format(j, puzzle[j]))
-        possibles_list.append(puzzle[j])       # value is already known so use it
+possibles_list = setup_possibles_list(puzzle, values)
 print(possibles_list)
 
-# Main code
