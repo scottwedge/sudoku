@@ -26,7 +26,15 @@ def get_initial_puzzle(): # return data file as list
                       0,6,0,9,0,8,0,3,4]
     return initial_puzzle
 
+def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to be displayed to user
+    print()  # blank line
+    for row in range(FULL_SIDE):
+        for column in range(FULL_SIDE):
+            print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
+        print() # line break at end of line
+
 # Main code
 greet_user() 
 puzzle = get_initial_puzzle()
 print(puzzle)
+show_grid(puzzle, FULL_SIDE)
