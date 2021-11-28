@@ -5,6 +5,8 @@
 # Constants
 PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 FULL_SIDE = PART_SIDE ** 2
+ROW_SEP = "-"   # separator symbol between rows in grid
+COL_SEP = "|"   # separator symbol between columns in grid
 
 # Variables
 
@@ -33,6 +35,19 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
             print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
         print() # line break at end of line
 
+def create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP):
+    for j in range(FULL_SIDE * 2 - 1):
+        print(ROW_SEP, end="") 
+    print()   # Need new line at end of string of symbols
+
+def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
+    print()  # blank line
+    for row in range(FULL_SIDE):
+        create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP)
+        for column in range(FULL_SIDE):
+            print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
+        print() # line break at end of line
+
 # Main code
 greet_user() 
 puzzle = get_initial_puzzle()
@@ -41,3 +56,5 @@ print()
 print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
 
 show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
+
+show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
