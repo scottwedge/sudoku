@@ -36,5 +36,8 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
 # Main code
 greet_user() 
 puzzle = get_initial_puzzle()
-print(puzzle)
-show_grid(puzzle, FULL_SIDE)
+
+print()
+print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
+
+show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
