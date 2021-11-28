@@ -50,8 +50,15 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
             print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
 
+def all_values(FULL_SIDE):
+    values = []
+    for j in range(1, FULL_SIDE + 1):
+        values.append(j)
+    return values
+
 # Main code
 greet_user() 
+
 puzzle = get_initial_puzzle()
 
 print()
@@ -60,3 +67,6 @@ print("These are the initial puzzle values:", puzzle)  # Show initial puzzle dat
 show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
 
 show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
+
+print()
+print("All possible values for a spot are: {}".format(all_values(FULL_SIDE)))
