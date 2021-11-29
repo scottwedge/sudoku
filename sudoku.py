@@ -146,4 +146,4 @@ for j in range(9):
                 print("  Not single value {} so skip".format(possibles_list[k]))
                     
 print(possibles_list)
-print("Length of list is {}".format(len(possibles_list)))
+show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
