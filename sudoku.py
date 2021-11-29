@@ -53,7 +53,7 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
 def all_values(FULL_SIDE):
     values = []
     for j in range(1, FULL_SIDE + 1):
-        values.append(j)
+        values.append([j])    # Add value as single list so can easily check if [k] in [j]
     return values
 
 def setup_possibles_list(puzzle, values):
@@ -101,15 +101,14 @@ print(possibles_list)
 # Remove known single values from same column, same row and same mini-grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
-#DEBUG for j in range(len(possibles_list)):
-for j in range(9):
+for j in range(len(possibles_list)):
 
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
 # Use 'break' and 'continue' inside the loop
 
     col = j % FULL_SIDE  # determine which column spot is in
-    print("Spot is column {}.".format(col))
+    print("Spot {} is column {}.".format(j, col))
 
 # If value of spot is known then quit loop and move to next spot
 #    print("..............DEBUG............")
@@ -134,10 +133,10 @@ for j in range(9):
             
             if len(possibles_list[k]) == 1:
                 print("  Single value {}".format(possibles_list[k], end=""))  #DEBUG
-                if possibles_list[k] in possibles_list[j]:
-                    print("In possibles so remove {}".format(possibles_list[k]))
+                if possibles_list[k] in possibles_list[j]:    #Must convert to integer else not "in" list
+                    print("{} in {} so remove it".format(possibles_list[k], possibles_list[j], end =""))
                     possibles_list[j].remove(possibles_list[k])  # remove value from list
-                    print("...Removed {} from {}.".format(possibles_list[k], possibles_list[j]))  #DEBUG
+                    print(" leaves {}".format(possibles_list[j]))
                     continue
                 else:
                     print("Not in {} so do nothing".format(possibles_list[j]))
@@ -146,3 +145,4 @@ for j in range(9):
                 print("  Not single value {} so skip".format(possibles_list[k]))
                     
 print(possibles_list)
+print("Length of list is {}".format(len(possibles_list)))
