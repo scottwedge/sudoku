@@ -101,7 +101,8 @@ print(possibles_list)
 # Remove known single values from same column, same row and same mini-grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
-for j in range(len(possibles_list)):
+#DEBUG for j in range(len(possibles_list)):
+for j in range(9):
 
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
