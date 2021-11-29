@@ -101,7 +101,8 @@ print(possibles_list)
 # Remove known single values from same column, same row and same mini-grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
-for j in range(len(possibles_list)):
+#DEBUG for j in range(len(possibles_list)):
+for j in range(9):
 
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
@@ -116,22 +117,32 @@ for j in range(len(possibles_list)):
     if len(possibles_list[j]) == 1:
         continue
 
-# Find all other spots in that column with only a single value 
+# Find all other spots in that column (col) with only a single value 
 # and remove from current spot if it is in list of possible values
     else:
         for k in range(len(puzzle)):
+            print()  # Complete all previous partially printed lines
+            print("{}.....".format(k), end="")   #DEBUG # Put all comments for each entry on same line
             if j % FULL_SIDE != k % FULL_SIDE:
-                print("Continue to next spot since this is wrong column")
+                print("wrong column {}".format(k % FULL_SIDE), end="")
                 continue    # skip this value since in different column
-            else:   # continue comparison since same column
-                print("Matching column")
-                if j == k:
-                    print("Continue since cannot match to self")
-                    continue    # skip since cannot compare self to self 
+            # continue comparison since same column
+            print("Matching column", end="")    #DEBUG
+            if j == k:
+                print("Skip since cannot match to self")
+                continue    # skip since cannot compare self to self 
+            
+            if len(possibles_list[k]) == 1:
+                print("  Single value {}".format(possibles_list[k], end=""))  #DEBUG
+                if possibles_list[k] in possibles_list[j]:
+                    print("In possibles so remove {}".format(possibles_list[k]))
+                    possibles_list[j].remove(possibles_list[k])  # remove value from list
+                    print("...Removed {} from {}.".format(possibles_list[k], possibles_list[j]))  #DEBUG
+                    continue
                 else:
-                    if len(possibles_list[k]) == 1:
-                        if possibles_list[k] in possibles_list[j]:
-                            possibles_list[j].remove(possibles_list[k])  # remove value from list
-                            print("...Removed value {} from index = {}.".format(possibles_list[k], j))  #DEBUG
+                    print("Not in {} so do nothing".format(possibles_list[j]))
+                    continue
+            else:
+                print("  Not single value {} so skip".format(possibles_list[k]))
                     
 print(possibles_list)
