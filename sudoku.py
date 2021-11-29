@@ -109,7 +109,7 @@ for j in range(9):
 # Use 'break' and 'continue' inside the loop
 
     col = j % FULL_SIDE  # determine which column spot is in
-    print("Spot {} is column {}.".format(j, col))
+#DEBUG    print("Spot {} is column {}.".format(j, col))
 
 # If value of spot is known then quit loop and move to next spot
 #    print("..............DEBUG............")
@@ -121,21 +121,21 @@ for j in range(9):
 # and remove from current spot if it is in list of possible values
     else:
         for k in range(len(puzzle)):
-            print()  # Complete all previous partially printed lines
-            print("{}.....".format(k), end="")   #DEBUG # Put all comments for each entry on same line
+#DEBUG            print()  # Complete all previous partially printed lines
+#DEBUG            print("{}.....".format(k), end="")   #DEBUG # Put all comments for each entry on same line
             if j % FULL_SIDE != k % FULL_SIDE:
-                print("wrong column {}".format(k % FULL_SIDE), end="")
+#DEBUG                print("wrong column {}".format(k % FULL_SIDE), end="")
                 continue    # skip this value since in different column
             # continue comparison since same column
             print("Matching column", end="")    #DEBUG
             if j == k:
-                print("Skip since cannot match to self")
+                print("  Skip since cannot match to self")
                 continue    # skip since cannot compare self to self 
             
             if len(possibles_list[k]) == 1:
                 print("  Single value {}".format(possibles_list[k], end=""))  #DEBUG
                 if possibles_list[k] in possibles_list[j]:    #Must convert to integer else not "in" list
-                    print("{} in {} so remove it".format(possibles_list[k], possibles_list[j], end =""))
+                    print("{} in {} so remove it".format(possibles_list[k], possibles_list[j]), end ="")
                     possibles_list[j].remove(possibles_list[k])  # remove value from list
                     print(" leaves {}".format(possibles_list[j]))
                     continue
