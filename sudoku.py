@@ -57,14 +57,14 @@ def all_values(FULL_SIDE):
     return values
 
 def setup_possibles_list(puzzle, values):
-    values = all_values(FULL_SIDE)
+#    values = all_values(FULL_SIDE)
     possibles_list = []   # initialize empty list
 
     for j in range(len(puzzle)):
 #DEBUG        print("Index j is: {}".format(j))
         if puzzle[j] == 0:
 #DEBUG            print("puzzle[{}] is 0.".format(j))
-            possibles_list.append(values)          # all values possible for blank field
+            possibles_list.append(all_values(FULL_SIDE))          # all values possible for blank field
         else:
 #DEBUG            print("puzzle[{}] is not 0 it is {}.".format(j, puzzle[j]))
             possibles_list.append([puzzle[j]])       # value is already known so use it as a list of one value
@@ -101,8 +101,7 @@ possibles_list = setup_possibles_list(puzzle, values)
 # Remove known single values from same column, same row and same mini-grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
-#DEBUG for j in range(len(possibles_list)):
-for j in range(3,6):
+for j in range(len(possibles_list)):
 
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
