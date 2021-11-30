@@ -54,6 +54,5 @@ show_grid(grid, FULL_SIDE)
 
 show_grid_with_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP)
 
-
 for j in range(len(grid)):
     pass
