@@ -102,7 +102,7 @@ possibles_list = setup_possibles_list(puzzle, values)
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
 for j in range(len(possibles_list)):
-
+#DEBUG    print(".....................START COLUMN SOLVING.............................")
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
 # Use 'break' and 'continue' inside the loop
@@ -144,5 +144,26 @@ for j in range(len(possibles_list)):
             else:
                 print("  Not single value {} so skip".format(possibles_list[k]))
                     
+
+# Find all single value spots in each row and remove them from other possible spots in same row
+# Determine row number using integer division (//)
+#DEBUG        print(".....................START ROW SOLVING.............................")
+        for k in range(len(puzzle)):
+            if j // FULL_SIDE != k // FULL_SIDE:
+#DEBUG                print("Wrong row {} does not match row {} ... ".format(j//FULL_SIDE, k//FULL_SIDE), end = "")
+                continue   # return to top of inner ('k') loop
+            print("Row {} matches row {}".format(j//FULL_SIDE, k//FULL_SIDE))    #DEBUG
+            if j == k:
+                print("  Skip since cannot match to self")
+                continue    # skip since cannot compare self to self 
+            if len(possibles_list[k]) == 1:    # single value in spot
+                print("Single value {} in spot {} ....".format(possibles_list[k], k), end = "") 
+                if possibles_list[k] in possibles_list[j]:
+                    print(" {} is in {} ".format(possibles_list[k], possibles_list[j]), end="")
+                    possibles_list[j].remove(possibles_list[k])
+                    print(" leaves {}".format(possibles_list[j]))
+
+
+
 print(possibles_list)
 show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
