@@ -26,7 +26,7 @@ def show_grid(grid, FULL_SIDE):    # display list values in grid format without 
     print()  # blank line
     for row in range(FULL_SIDE):
         for column in range(FULL_SIDE):
-            print("{} ".format(grid[row * FULL_SIDE + column]),  sep="", end="")
+            print("{:2d}".format(grid[row * FULL_SIDE + column]),  sep="", end="")
         print() # line break at end of line
 
 def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # display with both horizontal and vertical lines "+-+-+-...-+" format
@@ -34,12 +34,12 @@ def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP,
         print("+", ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
 
-def show_grid_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
+def show_grid_with_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
     for row in range(FULL_SIDE):
         create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)
         for column in range(FULL_SIDE):
-            print(COL_SEP, SPACE, grid[row * FULL_SIDE + column], SPACE,  sep="", end="")
+            print("{} {:2d} ".format(COL_SEP, grid[row * FULL_SIDE + column]),  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
 
 
@@ -51,7 +51,7 @@ grid = create_grid(FULL_SIDE)
 show_grid(grid, FULL_SIDE)    
 
 
-show_grid_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP)
+show_grid_with_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP)
 
 print()
 print("Start solving puzzle now.")
@@ -61,4 +61,4 @@ for j in range(len(grid)):
     pass
 
 print(grid)
-show_grid_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+show_grid_with_lines(grid, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
