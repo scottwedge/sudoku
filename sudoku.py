@@ -52,8 +52,8 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
 
 def all_values(FULL_SIDE):
     values = []
-    for j in range(1, FULL_SIDE + 1):
-        values.append([j])    # Add value as single list so can easily check if [k] in [j]
+    for count in range(1, FULL_SIDE + 1):
+        values.append([count])    # Add value as single list so can easily check if [k] in [j]
     return values
 
 def setup_possibles_list(puzzle, values):
@@ -96,13 +96,13 @@ print ("Loop count= {}".format(loop))
 values = all_values(FULL_SIDE)
 
 possibles_list = setup_possibles_list(puzzle, values)
-print(possibles_list)
+#DEBUG  print(possibles_list)
 
 # Remove known single values from same column, same row and same mini-grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
 #DEBUG for j in range(len(possibles_list)):
-for j in range(9):
+for j in range(3,6):
 
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
@@ -127,7 +127,7 @@ for j in range(9):
 #DEBUG                print("wrong column {}".format(k % FULL_SIDE), end="")
                 continue    # skip this value since in different column
             # continue comparison since same column
-            print("Matching column", end="")    #DEBUG
+            print("Matching spot {} wth spot {}".format(j,k), end="")    #DEBUG
             if j == k:
                 print("  Skip since cannot match to self")
                 continue    # skip since cannot compare self to self 
