@@ -44,7 +44,6 @@ def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP,
 def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
     for row in range(FULL_SIDE):
-#        create_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP)
         create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)
         for column in range(FULL_SIDE):
             print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
@@ -57,16 +56,12 @@ def all_values(FULL_SIDE):
     return values
 
 def setup_possibles_list(puzzle, values):
-#    values = all_values(FULL_SIDE)
     possibles_list = []   # initialize empty list
 
     for j in range(len(puzzle)):
-#DEBUG        print("Index j is: {}".format(j))
         if puzzle[j] == 0:
-#DEBUG            print("puzzle[{}] is 0.".format(j))
             possibles_list.append(all_values(FULL_SIDE))          # all values possible for blank field
         else:
-#DEBUG            print("puzzle[{}] is not 0 it is {}.".format(j, puzzle[j]))
             possibles_list.append([puzzle[j]])       # value is already known so use it as a list of one value
     return possibles_list
 
@@ -120,10 +115,7 @@ for j in range(len(possibles_list)):
 # and remove from current spot if it is in list of possible values
     else:
         for k in range(len(puzzle)):
-#DEBUG            print()  # Complete all previous partially printed lines
-#DEBUG            print("{}.....".format(k), end="")   #DEBUG # Put all comments for each entry on same line
             if j % FULL_SIDE != k % FULL_SIDE:
-#DEBUG                print("wrong column {}".format(k % FULL_SIDE), end="")
                 continue    # skip this value since in different column
             # continue comparison since same column
             print("Matching spot {} wth spot {}".format(j,k), end="")    #DEBUG
@@ -147,10 +139,8 @@ for j in range(len(possibles_list)):
 
 # Find all single value spots in each row and remove them from other possible spots in same row
 # Determine row number using integer division (//)
-#DEBUG        print(".....................START ROW SOLVING.............................")
         for k in range(len(puzzle)):
             if j // FULL_SIDE != k // FULL_SIDE:
-#DEBUG                print("Wrong row {} does not match row {} ... ".format(j//FULL_SIDE, k//FULL_SIDE), end = "")
                 continue   # return to top of inner ('k') loop
             print("Row {} matches row {}".format(j//FULL_SIDE, k//FULL_SIDE))    #DEBUG
             if j == k:
@@ -163,7 +153,13 @@ for j in range(len(possibles_list)):
                     possibles_list[j].remove(possibles_list[k])
                     print(" leaves {}".format(possibles_list[j]))
 
-
+# Now check each inner grid for single values and remove them from the other possible spots
+        for k in range(len(puzzle)):
+        # first verify located in matching inner grid using modulo and integer division with PART_SIDE (3 or 4) value
+        # then verify that this is not the exact same spot as the outer loop
+        # then verify that spot only has a single value
+        # then if single value inside outer list, remove it
+            pass
 
 print(possibles_list)
 show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
