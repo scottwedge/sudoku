@@ -65,9 +65,26 @@ def setup_possibles_list(puzzle, values):
             possibles_list.append([puzzle[j]])       # value is already known so use it as a list of one value
     return possibles_list
 
+def create_list_of_internal_grids(PART_SIDE):  # Create list of internal grid lists for any N x N grid
+    list_of_internal_grids = []
+    for s in range(PART_SIDE): # Move down vertically between top left spot in column of left-most internal grids
+                               # So in a 9x9 grid (spots 0-80) move between spots 0, 27 and 54
+        for n in range(PART_SIDE):   # move to next grid to the right 
+            internal_grid = []    # Initialize new list
+            for v in range(PART_SIDE):  # Move vertically within internal grid 
+                for h in range(PART_SIDE): # Move horizontally within internal grid
+                    spot = v * PART_SIDE ** 2 + h
+                    spot = spot + n * PART_SIDE
+                    spot = spot + s * PART_SIDE ** 3
+                    internal_grid.append(spot)
+            list_of_internal_grids.append(internal_grid)        
+    return list_of_internal_grids
 
 # Main code
 greet_user() 
+        
+# Create list of sets of inner grids based on PART_SIDE
+list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
 
 puzzle = get_initial_puzzle()
 
@@ -93,7 +110,7 @@ values = all_values(FULL_SIDE)
 possibles_list = setup_possibles_list(puzzle, values)
 #DEBUG  print(possibles_list)
 
-# Remove known single values from same column, same row and same mini-grid 
+# Remove known single values from same column, same row and same internal grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
 for j in range(len(possibles_list)):
@@ -154,12 +171,17 @@ for j in range(len(possibles_list)):
                     print(" leaves {}".format(possibles_list[j]))
 
 # Now check each inner grid for single values and remove them from the other possible spots
+
+
         for k in range(len(puzzle)):
-        # first verify located in matching inner grid using modulo and integer division with PART_SIDE (3 or 4) value
+        # first verify located in matching inner grid 
+        # No easy way to use modulo and integer division with PART_SIDE (3 or 4) value so 
+        # just create sets based on the size of the internal-grid
         # then verify that this is not the exact same spot as the outer loop
         # then verify that spot only has a single value
         # then if single value inside outer list, remove it
-            pass
+            for list in list_of_internal_grids:
+                pass
 
-print(possibles_list)
-show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+#DEBUG  print(possibles_list)
+#DEBUG  show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
