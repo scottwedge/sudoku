@@ -174,14 +174,21 @@ for j in range(len(possibles_list)):
 
 
         for k in range(len(puzzle)):
-        # first verify located in matching inner grid 
-        # No easy way to use modulo and integer division with PART_SIDE (3 or 4) value so 
-        # just create sets based on the size of the internal-grid
+        # first verify that both spots are located in the same inner grid 
         # then verify that this is not the exact same spot as the outer loop
         # then verify that spot only has a single value
         # then if single value inside outer list, remove it
             for list in list_of_internal_grids:
-                pass
+                if j in list and k in list:
+                    print("Both {} and {} in same internal grid {}".format(j, k, list))  #DEBUG
+                    if j == k:
+                        continue  # Cannot delete self from self
+                    if len(possibles_list[k]) == 1:
+                        if possibles_list[k] in possibles_list[j]:
+                            print("Remove {} from {}".format(possibles_list[k], possibles_list[j]), end = "")
+                            possibles_list[j].remove(possibles_list[k])
+                            print(" leaves {}".format(possibles_list[j]))
+                        
 
-#DEBUG  print(possibles_list)
-#DEBUG  show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+print(possibles_list)
+show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
