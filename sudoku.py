@@ -8,7 +8,7 @@ FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
 SPACE = " "     # have space on either side of value to make reading grid easier
-MAX_LOOP = 10   # Maximum number of loop before program ends
+MAX_LOOP = 5   # Maximum number of loop before program ends
 
 # Variables
 
@@ -101,7 +101,7 @@ print("Start solving puzzle now.")
 
 loop = 1
 
-while loop < MAX_LOOP:
+while loop <= MAX_LOOP:
     print()
     print ("Loop count= {}".format(loop))
     
