@@ -95,9 +95,6 @@ show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
 
 show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
 
-#DEBUG print()
-#DEBUG print("All possible values for a spot are: {}".format(all_values(FULL_SIDE)))
-
 print()
 print("Start solving puzzle now.")
 
@@ -108,23 +105,18 @@ print ("Loop count= {}".format(loop))
 values = all_values(FULL_SIDE)
 
 possibles_list = setup_possibles_list(puzzle, values)
-#DEBUG  print(possibles_list)
 
 # Remove known single values from same column, same row and same internal grid 
 # Remove known values in column
 # Start from top left spot and work to bottom right spot in puzzle
 for j in range(len(possibles_list)):
-#DEBUG    print(".....................START COLUMN SOLVING.............................")
 # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
 # spot is in and check all other spots in that column for known single values
 # Use 'break' and 'continue' inside the loop
 
     col = j % FULL_SIDE  # determine which column spot is in
-#DEBUG    print("Spot {} is column {}.".format(j, col))
 
 # If value of spot is known then quit loop and move to next spot
-#    print("..............DEBUG............")
-#    print("Spot can be {}".format(possibles_list[j]))    #DEBUG
     if len(possibles_list[j]) == 1:
         continue
 
