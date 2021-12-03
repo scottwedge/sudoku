@@ -81,12 +81,68 @@ def create_list_of_internal_grids(PART_SIDE):  # Create list of internal grid li
             list_of_internal_grids.append(internal_grid)        
     return list_of_internal_grids
 
+def resolve_column(possibles_list, j, FULL_SIDE):
+    col = j % FULL_SIDE  # determine which column spot is in
+    
+    # Find all other spots in that column (col) with only a single value 
+    # and remove from current spot if it is in list of possible values
+    for k in range(len(possibles_list)):
+        if j % FULL_SIDE != k % FULL_SIDE:
+            continue    # skip this value since in different column
+        # continue comparison since same column
+        if j == k:
+            continue    # skip since cannot compare self to self 
+                
+        if len(possibles_list[k]) == 1:
+            if possibles_list[k] in possibles_list[j]:    #Must convert to integer else not "in" list
+                print("Single {} in same column {} so remove it".format(possibles_list[k], possibles_list[j]), end ="")
+                possibles_list[j].remove(possibles_list[k])  # remove value from list
+                print(" leaves {}".format(possibles_list[j]))
+                continue
+    return possibles_list
+    
+def resolve_row(possibles_list, j, FULL_SIDE):
+    # Find all single value spots in each row and remove them from other possible spots in same row
+    # Determine row number using integer division (//)
+    for k in range(len(possibles_list)):
+        if j // FULL_SIDE != k // FULL_SIDE:
+            continue   # return to top of inner ('k') loop
+#DEBUG        print("Row {} matches row {}".format(j//FULL_SIDE, k//FULL_SIDE))    #DEBUG
+        if j == k:
+#DEBUG            print("  Skip since cannot match to self")
+            continue    # skip since cannot compare self to self 
+        if len(possibles_list[k]) == 1:    # single value in spot
+#DEBUG            print("Single value {} in spot {} ....".format(possibles_list[k], k), end = "") 
+            if possibles_list[k] in possibles_list[j]:
+                print("Single {} is in same row as {} ".format(possibles_list[k], possibles_list[j]), end="")
+                possibles_list[j].remove(possibles_list[k])
+                print(" leaves {}".format(possibles_list[j]))
+    return possibles_list
+    
+def resolve_inner_grid(possibles_list, j, PART_SIDE):
+    # Create list of sets of inner grids based on PART_SIDE
+    list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
+
+    for k in range(len(possibles_list)):
+    # first verify that both spots are located in the same inner grid 
+    # then verify that this is not the exact same spot as the outer loop
+    # then verify that spot only has a single value
+    # then if single value inside outer list, remove it
+        for list in list_of_internal_grids:
+            if j in list and k in list:
+#DEBUG                print("Both {} and {} in same internal grid {}".format(j, k, list))  #DEBUG
+                if j == k:
+                    continue  # Cannot delete self from self
+                if len(possibles_list[k]) == 1:
+                    if possibles_list[k] in possibles_list[j]:
+                        print("Remove {} from {} in internal grid".format(possibles_list[k], possibles_list[j]), end = "")
+                        possibles_list[j].remove(possibles_list[k])
+                        print(" leaves {}".format(possibles_list[j]))
+    return possibles_list
+
 # Main code
 greet_user() 
         
-# Create list of sets of inner grids based on PART_SIDE
-list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
-
 puzzle = get_initial_puzzle()
 
 print()
@@ -109,82 +165,24 @@ while loop <= MAX_LOOP:
     
     possibles_list = setup_possibles_list(puzzle, values)
     
-    # Remove known single values from same column, same row and same internal grid 
-    # Remove known values in column
+    # Remove conflicting known single values from same column, same row and same internal grid 
     # Start from top left spot and work to bottom right spot in puzzle
     for j in range(len(possibles_list)):
-    # Use modulo operator (%) to determine which column (0 through FULL_SIDE-1)
-    # spot is in and check all other spots in that column for known single values
-    # Use 'break' and 'continue' inside the loop
-    
-        col = j % FULL_SIDE  # determine which column spot is in
-    
-    # If value of spot is known then quit loop and move to next spot
+
+    # If value of spot is known single value then quit loop and move to next spot
         if len(possibles_list[j]) == 1:
             continue
     
-    # Find all other spots in that column (col) with only a single value 
-    # and remove from current spot if it is in list of possible values
-        else:
-            for k in range(len(puzzle)):
-                if j % FULL_SIDE != k % FULL_SIDE:
-                    continue    # skip this value since in different column
-                # continue comparison since same column
-#DEBUG                print("Matching spot {} wth spot {}".format(j,k), end="")    #DEBUG
-                if j == k:
-#DEBUG                    print("  Skip since cannot match to self")
-                    continue    # skip since cannot compare self to self 
-                
-                if len(possibles_list[k]) == 1:
-#DEBUG                    print("  Single value {}".format(possibles_list[k], end=""))  #DEBUG
-                    if possibles_list[k] in possibles_list[j]:    #Must convert to integer else not "in" list
-                        print("Single {} in same column {} so remove it".format(possibles_list[k], possibles_list[j]), end ="")
-                        possibles_list[j].remove(possibles_list[k])  # remove value from list
-                        print(" leaves {}".format(possibles_list[j]))
-                        continue
-                    else:
-#DEBUG                        print("Not in {} so do nothing".format(possibles_list[j]))
-                        continue
-#DEBUG                else:
-#DEBUG                    print("  Not single value {} so skip".format(possibles_list[k]))
-                        
+        # Check all other spots in that column and remove conflicts
+        possibles_list = resolve_column(possibles_list, j, FULL_SIDE)
     
-    # Find all single value spots in each row and remove them from other possible spots in same row
-    # Determine row number using integer division (//)
-            for k in range(len(puzzle)):
-                if j // FULL_SIDE != k // FULL_SIDE:
-                    continue   # return to top of inner ('k') loop
-#DEBUG                print("Row {} matches row {}".format(j//FULL_SIDE, k//FULL_SIDE))    #DEBUG
-                if j == k:
-#DEBUG                    print("  Skip since cannot match to self")
-                    continue    # skip since cannot compare self to self 
-                if len(possibles_list[k]) == 1:    # single value in spot
-#DEBUG                    print("Single value {} in spot {} ....".format(possibles_list[k], k), end = "") 
-                    if possibles_list[k] in possibles_list[j]:
-                        print("Single {} is in same row as {} ".format(possibles_list[k], possibles_list[j]), end="")
-                        possibles_list[j].remove(possibles_list[k])
-                        print(" leaves {}".format(possibles_list[j]))
+        # Find all single value spots in each row and remove conflicts 
+        possibles_list = resolve_row(possibles_list, j, FULL_SIDE)
+   
+        # Now check each inner grid for single value conflicts 
+        possibles_list = resolve_inner_grid(possibles_list, j, PART_SIDE)
     
-    # Now check each inner grid for single values and remove them from the other possible spots
-    
-    
-            for k in range(len(puzzle)):
-            # first verify that both spots are located in the same inner grid 
-            # then verify that this is not the exact same spot as the outer loop
-            # then verify that spot only has a single value
-            # then if single value inside outer list, remove it
-                for list in list_of_internal_grids:
-                    if j in list and k in list:
-#DEBUG                        print("Both {} and {} in same internal grid {}".format(j, k, list))  #DEBUG
-                        if j == k:
-                            continue  # Cannot delete self from self
-                        if len(possibles_list[k]) == 1:
-                            if possibles_list[k] in possibles_list[j]:
-                                print("Remove {} from {} in internal grid".format(possibles_list[k], possibles_list[j]), end = "")
-                                possibles_list[j].remove(possibles_list[k])
-                                print(" leaves {}".format(possibles_list[j]))
-
-    loop = loop + 1  #Increment counter in while loop                            
+    loop = loop + 1  #Increment iteration loop counter                            
 
 print(possibles_list)
 show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
