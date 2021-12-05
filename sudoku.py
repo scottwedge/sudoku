@@ -49,6 +49,7 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
         for column in range(FULL_SIDE):
             print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
+    create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # Create bottom separator line
 
 def all_values(FULL_SIDE):
     values = []
