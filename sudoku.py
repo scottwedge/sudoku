@@ -17,6 +17,7 @@ def greet_user():    # Greet user
     print("Welcome to my Sudoku solving application")
     print("for {} by {} puzzle".format(FULL_SIDE, FULL_SIDE))
 
+
 def get_initial_puzzle(): # return data file as list
                           # cannot have blank in list so use "0" for blanks
     initial_puzzle = [7,4,5,0,9,0,0,0,0,\
@@ -30,6 +31,7 @@ def get_initial_puzzle(): # return data file as list
                       0,6,0,9,0,8,0,3,4]
     return initial_puzzle
 
+
 def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to be displayed to user
     print()  # blank line
     for row in range(FULL_SIDE):
@@ -37,10 +39,18 @@ def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to b
             print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
         print() # line break at end of line
 
+
 def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
     for j in range(FULL_SIDE):
         print("+", ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
+
+
+def create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
+    for j in range(FULL_SIDE):
+        print("+", ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
+    print("+")   # Need new line at end of string of symbols
+
 
 def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
@@ -51,11 +61,23 @@ def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator cha
         print(COL_SEP) # Add final column separator and default line break at end of line
     create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # Create bottom separator line
 
+
+def show_extended_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
+    print()  # blank line
+    for row in range(FULL_SIDE):
+        create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # "+---+---...+" format
+        for column in range(FULL_SIDE):
+            print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
+        print(COL_SEP) # Add final column separator and default line break at end of line
+    create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # final line
+
+
 def all_values(FULL_SIDE):
     values = []
     for count in range(1, FULL_SIDE + 1):
         values.append([count])    # Add value as single list so can easily check if [k] in [j]
     return values
+
 
 def setup_possibles_list(puzzle, values):
     possibles_list = []   # initialize empty list
@@ -66,6 +88,7 @@ def setup_possibles_list(puzzle, values):
         else:
             possibles_list.append([puzzle[j]])       # value is already known so use it as a list of one value
     return possibles_list
+
 
 def create_list_of_internal_grids(PART_SIDE):  # Create list of internal grid lists for any N x N grid
     list_of_internal_grids = []
@@ -90,6 +113,7 @@ def convert_list(list_of_list):    # Convert list of single list to list of sing
                 list_of_list = item   # replace list of list with single list
     return list_of_list
 
+
 def resolve_column(possibles_list, j, FULL_SIDE):
     col = j % FULL_SIDE  # determine which column spot is in
     
@@ -106,6 +130,7 @@ def resolve_column(possibles_list, j, FULL_SIDE):
             possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
     
+
 def resolve_row(possibles_list, j, FULL_SIDE):
     # Delete value from all spots in row except self
     # Find all non-single value spots in each row and remove them from other possible spots in same row
@@ -122,6 +147,7 @@ def resolve_row(possibles_list, j, FULL_SIDE):
             possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
     
+
 def resolve_inner_grid(possibles_list, j, PART_SIDE):
     # Delete value from all spots in own inner grid except self
     # Create list of sets of inner grids based on PART_SIDE
@@ -141,6 +167,7 @@ def resolve_inner_grid(possibles_list, j, PART_SIDE):
                     possibles_list[k].remove(possibles_list[j])
                     possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
+
 
 def all_grids_resolved(possibles_list):
     resolved = True
@@ -204,5 +231,5 @@ else:
 
 print()
 print(possibles_list)
-show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
 
