@@ -102,6 +102,7 @@ def resolve_column(possibles_list, j, FULL_SIDE):
             continue    # skip since cannot compare self to self 
         if possibles_list[j] in possibles_list[k]:
             possibles_list[k].remove(possibles_list[j])
+            possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
     
 def resolve_row(possibles_list, j, FULL_SIDE):
@@ -117,6 +118,7 @@ def resolve_row(possibles_list, j, FULL_SIDE):
             continue    # skip since cannot compare self to self 
         if possibles_list[j] in possibles_list[k]:
             possibles_list[k].remove(possibles_list[j])
+            possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
     
 def resolve_inner_grid(possibles_list, j, PART_SIDE):
@@ -136,6 +138,7 @@ def resolve_inner_grid(possibles_list, j, PART_SIDE):
                     continue  # Cannot delete self from self
                 if possibles_list[j] in possibles_list[k]:
                     possibles_list[k].remove(possibles_list[j])
+                    possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
 
 # Main code
