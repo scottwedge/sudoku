@@ -82,12 +82,12 @@ def create_list_of_internal_grids(PART_SIDE):  # Create list of internal grid li
     return list_of_internal_grids
 
 
-def convert_list(possibles_list[k]):    # Convert list of single list to list of single integer
-    if len(possibles_list[k]) == 1:     # for example "[[1]]" becomes "[1]"
-        for item in possibles_list[k]:
+def convert_list(list_of_list):    # Convert list of single list to list of single integer
+    if len(list_of_list) == 1:     # for example "[[1]]" becomes "[1]"
+        for item in list_of_list:
             if isinstance(item, list):
-                possibles_list[k] = item
-    return possibles_list
+                list_of_list = item   # replace list of list with single list
+    return list_of_list
 
 def resolve_column(possibles_list, j, FULL_SIDE):
     col = j % FULL_SIDE  # determine which column spot is in
@@ -188,4 +188,3 @@ while loop <= MAX_LOOP:
 print(possibles_list)
 show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
-return possibles_list
