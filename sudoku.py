@@ -8,7 +8,7 @@ FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
 SPACE = " "     # have space on either side of value to make reading grid easier
-MAX_LOOP = 5   # Maximum number of loop before program ends
+MAX_LOOP = 100  # Maximum number of loop before program ends
 
 # Variables
 
@@ -142,6 +142,14 @@ def resolve_inner_grid(possibles_list, j, PART_SIDE):
                     possibles_list[k] = convert_list(possibles_list[k])    # Convert list of single list to list of single integer
     return possibles_list
 
+def all_grids_resolved(possibles_list):
+    resolved = True
+    for j in range(len(possibles_list)):
+        if len(possibles_list[j]) > 1:
+            resolved = False
+            break
+    return resolved
+
 # Main code
 greet_user() 
         
@@ -158,19 +166,20 @@ show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
 print()
 print("Start solving puzzle now.")
 
-loop = 1
+loop = 0
+done = False
 
 possibles_list = setup_possibles_list(puzzle, values)
 outer_list = possibles_list.copy()
 
-while loop <= MAX_LOOP:
+while not done:
     print()
     print ("Loop count= {}".format(loop))
     
     # Remove conflicting known single values from same column, same row and same internal grid of inner loop
     # Start from top left spot and work to bottom right spot in puzzle
     for j in range(len(outer_list)):
-        print("J=", j)   #DEBUG
+#DEBUG        print("J=", j)   #DEBUG
     # If value of spot is known single value then remove it from matching column, row and inner grid
         if len(outer_list[j]) != 1:
             continue      # skip spot since contains more than one possible value
@@ -189,6 +198,11 @@ while loop <= MAX_LOOP:
     loop = loop + 1  #Increment iteration loop counter                            
     show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
+    done = all_grids_resolved(possibles_list)
+else:
+    print("Loop done after {} loops.".format(loop))
+
+print()
 print(possibles_list)
 show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
