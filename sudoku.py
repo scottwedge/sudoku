@@ -177,6 +177,14 @@ def all_grids_resolved(possibles_list):
             break
     return resolved
 
+
+def count_total_possible_values(possibles_list):   # Count all the known and unknown values in the puzzle
+    count = 0
+    for j in range(len(possibles_list)):
+        count = count + len(possibles_list[j])
+    return count
+
+
 # Main code
 greet_user() 
         
@@ -203,6 +211,10 @@ while not done:
     print()
     print ("Loop count= {}".format(loop))
     
+    count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
+    print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
+
+
     # Remove conflicting known single values from same column, same row and same internal grid of inner loop
     # Start from top left spot and work to bottom right spot in puzzle
     for j in range(len(outer_list)):
@@ -235,3 +247,5 @@ print()
 print("***************** Final puzzle result is: ********************")
 show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
 
+count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
+print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
