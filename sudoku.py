@@ -230,6 +230,8 @@ else:
     print("Loop done after {} loops.".format(loop))
 
 print()
-print(possibles_list)
+print()
+#DEBUG  print(possibles_list)
+print("***************** Final puzzle result is: ********************")
 show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
 
