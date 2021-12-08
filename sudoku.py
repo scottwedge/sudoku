@@ -185,7 +185,7 @@ def count_total_possible_values(possibles_list):   # Count all the known and unk
     return count
 
 
-def init_column_width(possibles_list, number_of_columns):   # Init all values to one
+def init_column_width(possibles_list, number_of_columns):   # Initialize all dictionary values to one
     column_max = {}   # Initialize empty dictionary
     for j in range(number_of_columns):
         column_max[j] = 1
@@ -201,20 +201,23 @@ def column_width(possibles_list): # Determine largest possible list in each colu
             column_max[column] = len(possibles_list[j])  # Increase width of column 
     return column_max
 
-def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+-+-+-...-+" format
+def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
     for j in range(FULL_SIDE):
-        print("+", ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
-    print("+")   # Need new line at end of string of symbols
+        print("+", sep="", end="")  # Print first character in line
+        for k in range(FULL_SIDE): # For each column
+            for c in range(column_max[k]):
+                print("{}".format(ROW_SEP * 5), sep="", end="") 
+        print("+")   # Complete end of line with intersecting symbol
 
 
 def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max):    # Adjust column spacing based on max column width
     print()  # blank line
     for row in range(FULL_SIDE):
-        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP)  # "+---+---...+" format
+        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
         for column in range(FULL_SIDE):
             print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
-    create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # final line
+        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
 
 
 # Main code
