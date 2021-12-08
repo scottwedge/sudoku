@@ -203,11 +203,11 @@ def column_width(possibles_list): # Determine largest possible list in each colu
 
 def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
     for j in range(FULL_SIDE):
+#DEBUG        print("+", sep="", end="")  # Print first character in line
         print("+", sep="", end="")  # Print first character in line
-        for k in range(FULL_SIDE): # For each column
-            for c in range(column_max[k]):
-                print("{}".format(ROW_SEP * 5), sep="", end="") 
-        print("+")   # Complete end of line with intersecting symbol
+        for c in range(column_max[j]):
+            print("{}".format(ROW_SEP * 5), sep="", end="") 
+    print("+")   # Complete end of line with intersecting symbol
 
 
 def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max):    # Adjust column spacing based on max column width
@@ -215,9 +215,9 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
     for row in range(FULL_SIDE):
         create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
         for column in range(FULL_SIDE):
-            print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
+            print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
-        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+#        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
 
 
 # Main code
@@ -272,7 +272,11 @@ while not done:
         outer_list = possibles_list.copy()    # update outer list for next while loop iteration
     
     loop = loop + 1  #Increment iteration loop counter                            
-    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+#DEBUG    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+
+    column_max = column_width(possibles_list)    #DEBUG
+#DEBUG    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
+    show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     done = all_grids_resolved(possibles_list)
 else:
