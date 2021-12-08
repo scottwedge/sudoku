@@ -185,6 +185,23 @@ def count_total_possible_values(possibles_list):   # Count all the known and unk
     return count
 
 
+def init_column_maxs(possibles_list, number_of_columns)   # Init all values to one
+    column_max = {}   # Initialize empty dictionary
+    for j in range(len(number_of_columns):
+        column_max[j] = 1
+    return column_max
+
+
+def grid_width(possibles_list): # Determine largest possible list in each column so can print column that width
+    number_of_columns = (len(possibles_list) + 1) ** 0.5  # Number of columns is square root of number of spots
+    column_max = init_column_maxs(possibles_list, number_of_columns)   # Init all values to one
+    for j in range(len(possibles_list)):  # Iterate through entire list    
+        column = j % number_of_columns
+        if len(possibles_list(j)) > column_max[column]:
+            column_max[column] = len(possibles_list(j))  # Increase width of column 
+    return column_max
+
+
 # Main code
 greet_user() 
         
