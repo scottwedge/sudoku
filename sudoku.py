@@ -214,10 +214,12 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
     print()  # blank line
     for row in range(FULL_SIDE):
         create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+        width = 5
         for column in range(FULL_SIDE):
-            print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
-        print(COL_SEP) # Add final column separator and default line break at end of line
-#        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+  #DEBUG          print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
+            print("{}{}{}{}".format(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE),  sep="", end="")
+        print("{}".format(COL_SEP))    # End of line
+    #        print("{}".format(column, end=""))
 
 
 # Main code
@@ -272,10 +274,10 @@ while not done:
         outer_list = possibles_list.copy()    # update outer list for next while loop iteration
     
     loop = loop + 1  #Increment iteration loop counter                            
-#DEBUG    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
     column_max = column_width(possibles_list)    #DEBUG
-#DEBUG    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
+    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
     show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     done = all_grids_resolved(possibles_list)
