@@ -222,12 +222,13 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
 
         for column in range(FULL_SIDE):
             # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
-            if column_max[column] == 1: width = 5
-            if column_max[column] == 2: width = 12
-            if column_max[column] > 2: width = 12 + (column_max[column] - 2) * 5
+            if column_max[column] == 1: width = 3
+            if column_max[column] == 2: width = 10
+            if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
   #DEBUG          print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
             print("{}{}{:{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
+    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
     #        print("{}".format(column, end=""))
 
 
@@ -283,7 +284,7 @@ while not done:
         outer_list = possibles_list.copy()    # update outer list for next while loop iteration
     
     loop = loop + 1  #Increment iteration loop counter                            
-    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
+#DEBUG    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
     column_max = column_width(possibles_list)    #DEBUG
     create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
@@ -297,7 +298,7 @@ print()
 print()
 #DEBUG  print(possibles_list)
 print("***************** Final puzzle result is: ********************")
-show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
+#DEBUG  show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
 
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
