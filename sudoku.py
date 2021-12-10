@@ -205,8 +205,9 @@ def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_ma
     for j in range(FULL_SIDE):
 #DEBUG        print("+", sep="", end="")  # Print first character in line
         print("+", sep="", end="")  # Print first character in line
-        for c in range(column_max[j]):
-            print("{}".format(ROW_SEP * 5), sep="", end="") 
+        for c in range(column_max[j] - 1):
+            print("{}".format(ROW_SEP * 7), sep="", end="")    # extra column width of 7 for additional elements
+        print("{}".format(ROW_SEP * 5), sep="", end="")   # column width of 5 for single element
     print("+")   # Complete end of line with intersecting symbol
 
 
