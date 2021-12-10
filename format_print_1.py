@@ -15,3 +15,4 @@ print("{}".format(a))
 print("{:20}".format(str(b)))  # works if convert list to string before print
 
 print("{:20}".format(b))
+
