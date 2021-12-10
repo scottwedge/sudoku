@@ -219,10 +219,14 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
     print()  # blank line
     for row in range(FULL_SIDE):
         create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
-        width = 5
+
         for column in range(FULL_SIDE):
+            # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
+            if column_max[column] == 1: width = 5
+            if column_max[column] == 2: width = 12
+            if column_max[column] > 2: width = 12 + (column_max[column] - 2) * 5
   #DEBUG          print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
-            print("{}{}{}{}".format(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE),  sep="", end="")
+            print("{}{}{:{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
     #        print("{}".format(column, end=""))
 
