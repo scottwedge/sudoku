@@ -226,7 +226,7 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
             if column_max[column] == 2: width = 10
             if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
   #DEBUG          print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
-            print("{}{}{:{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
+            print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
     create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
     #        print("{}".format(column, end=""))
