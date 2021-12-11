@@ -32,6 +32,29 @@ def get_initial_puzzle(): # return data file as list
     return initial_puzzle
 
 
+def get_medium_puzzle(): # return data file as list
+                          # cannot have blank in list so use "0" for blanks
+    medium_puzzle = [8,0,0,7,0,6,0,0,0,\
+                     0,0,6,0,0,0,0,5,0,\
+                     0,9,2,4,0,0,0,7,6,\
+                     9,0,7,6,2,1,5,0,3,\
+                     0,2,0,0,0,0,0,1,0,\
+                     5,0,1,9,4,7,6,0,8,\
+                     2,5,0,0,0,4,1,8,0,\
+                     0,6,0,0,0,0,2,0,0,\
+                     0,0,0,2,0,5,0,0,4]
+    return medium_puzzle
+
+
+def select_puzzle():
+    num = int(input("Which puzzle do you want to solve: 1 or 2?")) # Convert returned string to integer
+    if num == 1: 
+        puzzle = get_initial_puzzle()
+    if num == 2: 
+        puzzle = get_medium_puzzle()
+    return puzzle
+
+
 def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to be displayed to user
     print()  # blank line
     for row in range(FULL_SIDE):
@@ -235,7 +258,8 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
 # Main code
 greet_user() 
         
-puzzle = get_initial_puzzle()
+puzzle = select_puzzle()   # Choose between the two puzzles
+
 values = all_values(FULL_SIDE)
 
 print()
