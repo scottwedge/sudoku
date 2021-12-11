@@ -287,7 +287,8 @@ while not done:
 #DEBUG    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
     column_max = column_width(possibles_list)    #DEBUG
-    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
+
+#DEBUG    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
     show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     done = all_grids_resolved(possibles_list)
