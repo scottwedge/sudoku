@@ -255,7 +255,25 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
     #        print("{}".format(column, end=""))
 
 
+def list_count(possibles_list):
+    current_count = 0
+    for j in possibles_list:
+        current_count = current_count + len(j)
+    return current_count
+
+
+def no_progress(last_count):
+    no_prog = False
+    if last_count == list_count(possibles_list):
+        no_prog = True
+    return no_prog
+
+
 # Main code
+
+# Initialize variables
+last_count = 1000000
+
 greet_user() 
         
 puzzle = select_puzzle()   # Choose between the two puzzles
@@ -315,7 +333,10 @@ while not done:
 #DEBUG    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
     show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
-    done = all_grids_resolved(possibles_list) or loop >= MAX_LOOP
+    current_count = list_count(possibles_list)
+
+    done = all_grids_resolved(possibles_list) or loop >= MAX_LOOP or no_progress(last_count)
+    last_count = current_count
 else:
     print("Loop done after {} loops.".format(loop))
 
