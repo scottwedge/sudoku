@@ -262,11 +262,20 @@ def list_count(possibles_list):
     return current_count
 
 
-def no_progress(last_count):
-    no_prog = False
+# Determine if game over or continues 
+def are_we_done(possibles_list, loop, last_count):
+    done = False
+    reason = "Continue"
     if last_count == list_count(possibles_list):
-        no_prog = True
-    return no_prog
+        done = True
+        reason = "No progress after {} loops".format(loop)
+    if loop > MAX_LOOP:
+        done = True
+        reason = "Looped maximum of {} times".format(MAX_LOOP)
+    if all_grids_resolved(possibles_list):
+        done = True
+        reason = "All {} grids resolved".format(len(possibles_list))
+    return (done, reason)
 
 
 # Main code
@@ -335,10 +344,12 @@ while not done:
 
     current_count = list_count(possibles_list)
 
-    done = all_grids_resolved(possibles_list) or loop >= MAX_LOOP or no_progress(last_count)
+    (done, reason) = are_we_done(possibles_list, loop, last_count)
+
+#all_grids_resolved(possibles_list) or loop >= MAX_LOOP or no_progress(last_count)
     last_count = current_count
 else:
-    print("Loop done after {} loops.".format(loop))
+    print("Game over because {}.".format(reason))
 
 print()
 print()
