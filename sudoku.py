@@ -278,6 +278,13 @@ def are_we_done(possibles_list, loop, last_count):
     return (done, reason)
 
 
+# If there are two pairs in a column, row or minigrid. 
+# One can remove those two numbers from all other spots in that column, row or minigrid.
+def remove_pairs(possibles_list):  
+    for j in range(len(possibles_list)):
+        if len(possibles_list[j]) == 2:
+            print("Grid {} has two values of {}.".format(j, possibles_list[j])) 
+
 # Main code
 
 # Initialize variables
@@ -350,6 +357,7 @@ while not done:
     last_count = current_count
 else:
     print("Game over because {}.".format(reason))
+    remove_pairs(possibles_list)  
 
 print()
 print()
