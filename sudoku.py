@@ -281,9 +281,21 @@ def are_we_done(possibles_list, loop, last_count):
 # If there are two pairs in a column, row or minigrid. 
 # One can remove those two numbers from all other spots in that column, row or minigrid.
 def remove_pairs(possibles_list):  
+    side = int(len(possibles_list) ** 0.5)   # calculate length of row or column
     for j in range(len(possibles_list)):
         if len(possibles_list[j]) == 2:
             print("Grid {} has two values of {}.".format(j, possibles_list[j])) 
+            # Match rows
+            for k in range(len(possibles_list)):
+                if j // side == k // side:  # In same row
+                    if j != k:  # Cannot compare self to self
+                        if possibles_list[j] == possibles_list[k]:  # If contents match
+                            print("Spots {} and {} both have value of {}.".format(j, k, possibles_list[j]))
+                            pass    # Then delete these two values from all other spots in row
+                       
+                    
+            # Match column
+            # Match minigrid
 
 # Main code
 
