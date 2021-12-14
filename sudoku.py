@@ -280,7 +280,7 @@ def are_we_done(possibles_list, loop, last_count):
 
 def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values from all other spots in row
 # Delete both values from all the other spots in the row except the two matching spots
-    remove = False # Track whether any values are removed  (default = False = nothing removed)
+    progress = False # Track whether any values are removed  (default = False = nothing removed)
     side = int(len(possibles_list) ** 0.5)  # calculate length of row or column
     correct_row = a // side    # Determine which row to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
@@ -291,19 +291,19 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
         if j == b:
             continue    # skip since cannot delete from self
         if possibles_list[a][0] in possibles_list[j]:
-            remove = True
+            progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][0], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][0])  # Remove first value 
         if possibles_list[a][1] in possibles_list[j]:
-            remove = True
+            progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
-    return remove
+    return progress
 
 
 def delete_pair_from_column(possibles_list, a, b):   # Then delete these two values from all other spots in column
 # Delete both values from all the other spots in the column except the two matching spots
-    remove = False # Track whether any values are removed  (default = False = nothing removed)
+    progress = False # Track whether any values are removed  (default = False = nothing removed)
     side = int(len(possibles_list) ** 0.5)  # calculate length of row or column
     correct_column = a % side    # Determine which column to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
@@ -314,14 +314,14 @@ def delete_pair_from_column(possibles_list, a, b):   # Then delete these two val
         if j == b:
             continue    # skip since cannot delete from self
         if possibles_list[a][0] in possibles_list[j]:
-            remove = True
+            progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][0], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][0])  # Remove first value 
         if possibles_list[a][1] in possibles_list[j]:
-            remove = True
+            progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
-    return remove
+    return progress
 
 
 def find_pairs(possibles_list):  
@@ -338,7 +338,7 @@ def find_pairs(possibles_list):
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  possibles_list[j]))
-                            delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
+                            row_progress = delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
             # Match column
             for k in range(len(possibles_list)):
                 column = j % side
@@ -346,8 +346,10 @@ def find_pairs(possibles_list):
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
-                            delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
+                            column_progress = delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
             # Match minigrid
+    return (row_progress or column_progress)  # True if have deleted any values in rows or columns or minigrid, so restart solving 
+
 
 # Main code
 
@@ -414,6 +416,11 @@ while not done:
     show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     current_count = list_count(possibles_list)
+    
+    progress = find_pairs(possibles_list)  
+    if progress:  # reset loop and count values so looping continues
+        loop = 0
+        last_count = 100000
 
     (done, reason) = are_we_done(possibles_list, loop, last_count)
 
@@ -421,7 +428,7 @@ while not done:
     last_count = current_count
 else:
     print("Game over because {}.".format(reason))
-    find_pairs(possibles_list)  
+    progress = find_pairs(possibles_list)  
 
 print()
 print()
