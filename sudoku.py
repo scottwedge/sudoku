@@ -298,7 +298,6 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
             remove = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][1])  # Remove first value 
-        
     return remove
 
 
