@@ -297,9 +297,31 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
         if possibles_list[a][1] in possibles_list[j]:
             remove = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
-            possibles_list[j].remove(possibles_list[a][1])  # Remove first value 
+            possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
     return remove
 
+
+def delete_pair_from_column(possibles_list, a, b):   # Then delete these two values from all other spots in column
+# Delete both values from all the other spots in the column except the two matching spots
+    remove = False # Track whether any values are removed  (default = False = nothing removed)
+    side = int(len(possibles_list) ** 0.5)  # calculate length of row or column
+    correct_column = a % side    # Determine which column to delete values from
+    for j in range(len(possibles_list)):   # Iterate through all spots
+        if j % side != correct_column:
+            continue   # Wrong column so skip
+        if j == a:
+            continue    # skip since cannot delete from self
+        if j == b:
+            continue    # skip since cannot delete from self
+        if possibles_list[a][0] in possibles_list[j]:
+            remove = True
+            print("Removing {} from {} in spot {}.".format(possibles_list[a][0], possibles_list[j], j))   #DEBUG
+            possibles_list[j].remove(possibles_list[a][0])  # Remove first value 
+        if possibles_list[a][1] in possibles_list[j]:
+            remove = True
+            print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
+            possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
+    return remove
 
 
 def find_pairs(possibles_list):  
@@ -317,9 +339,14 @@ def find_pairs(possibles_list):
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  possibles_list[j]))
                             delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
-                       
-                    
             # Match column
+            for k in range(len(possibles_list)):
+                column = j % side
+                if j % side == k % side:  # In same column
+                    if j != k:  # Cannot compare self to self
+                        if possibles_list[j] == possibles_list[k]:  # If contents match
+                            print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
+                            delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
             # Match minigrid
 
 # Main code
