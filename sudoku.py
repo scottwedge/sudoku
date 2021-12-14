@@ -294,10 +294,12 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
             progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][0], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][0])  # Remove first value 
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
         if possibles_list[a][1] in possibles_list[j]:
             progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
     return progress
 
 
@@ -317,10 +319,12 @@ def delete_pair_from_column(possibles_list, a, b):   # Then delete these two val
             progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][0], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][0])  # Remove first value 
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
         if possibles_list[a][1] in possibles_list[j]:
             progress = True
             print("Removing {} from {} in spot {}.".format(possibles_list[a][1], possibles_list[j], j))   #DEBUG
             possibles_list[j].remove(possibles_list[a][1])  # Remove second value 
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
     return progress
 
 
@@ -328,6 +332,8 @@ def find_pairs(possibles_list):
 # If there are two pairs in a column, row or minigrid. 
 # One can remove those two numbers from all other spots in that column, row or minigrid.
     side = int(len(possibles_list) ** 0.5)   # calculate length of row or column
+    row_progress = False
+    column_progress = False
     for j in range(len(possibles_list)):
         if len(possibles_list[j]) == 2:
             print("Grid {} has two values of {}.".format(j, possibles_list[j])) 
@@ -338,7 +344,7 @@ def find_pairs(possibles_list):
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  possibles_list[j]))
-                            row_progress = delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
+                            row_progress = row_progress or delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
             # Match column
             for k in range(len(possibles_list)):
                 column = j % side
@@ -346,7 +352,7 @@ def find_pairs(possibles_list):
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
-                            column_progress = delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
+                            column_progress = column_progress or delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
             # Match minigrid
     return (row_progress or column_progress)  # True if have deleted any values in rows or columns or minigrid, so restart solving 
 
@@ -434,7 +440,8 @@ print()
 print()
 #DEBUG  print(possibles_list)
 print("***************** Final puzzle result is: ********************")
-#DEBUG  show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
+#show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
+show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
