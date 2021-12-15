@@ -45,13 +45,27 @@ def get_medium_puzzle(): # return data file as list
                      0,0,0,2,0,5,0,0,4]
     return medium_puzzle
 
+def get_hard_puzzle(): # return data file as list
+                          # cannot have blank in list so use "0" for blanks
+    hard_puzzle = [0,0,0,0,0,0,0,1,7,\
+                   0,0,7,0,6,2,0,0,5,\
+                   4,0,0,0,1,0,0,0,0,\
+                   0,7,0,0,0,3,0,0,8,\
+                   0,0,3,5,0,4,1,0,0,\
+                   8,0,0,1,0,0,0,6,0,\
+                   0,0,0,0,4,0,0,0,9,\
+                   1,0,0,7,9,0,2,0,0,\
+                   3,4,0,0,0,0,0,0,0]
+    return hard_puzzle
 
 def select_puzzle():
-    num = int(input("Which puzzle do you want to solve: 1 or 2?")) # Convert returned string to integer
+    num = int(input("Which puzzle do you want to solve: 1 or 2 or 3?")) # Convert returned string to integer
     if num == 1: 
         puzzle = get_initial_puzzle()
     if num == 2: 
         puzzle = get_medium_puzzle()
+    if num == 3: 
+        puzzle = get_hard_puzzle()
     return puzzle
 
 
