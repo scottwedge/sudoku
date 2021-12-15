@@ -45,6 +45,7 @@ def get_medium_puzzle(): # return data file as list
                      0,0,0,2,0,5,0,0,4]
     return medium_puzzle
 
+
 def get_hard_puzzle(): # return data file as list
                           # cannot have blank in list so use "0" for blanks
     hard_puzzle = [0,0,0,0,0,0,0,1,7,\
@@ -58,14 +59,31 @@ def get_hard_puzzle(): # return data file as list
                    3,4,0,0,0,0,0,0,0]
     return hard_puzzle
 
+
+def get_hardest_puzzle(): # return data file as list
+                          # cannot have blank in list so use "0" for blanks
+    hardest_puzzle = [0,0,0,2,0,1,5,0,3,\
+                   2,0,0,0,0,6,0,7,0,\
+                   0,0,9,0,0,0,0,0,0,\
+                   9,0,0,0,8,0,7,0,2,\
+                   0,1,0,0,0,0,0,3,0,\
+                   8,0,6,0,1,0,0,0,9,\
+                   0,0,0,0,0,0,9,0,0,\
+                   0,9,0,8,0,0,0,0,6,\
+                   3,0,8,7,0,2,0,0,0]
+    return hardest_puzzle
+
+
 def select_puzzle():
-    num = int(input("Which puzzle do you want to solve: 1 or 2 or 3?")) # Convert returned string to integer
+    num = int(input("Which puzzle do you want to solve: 1 or 2 or 3 or 4?")) # Convert returned string to integer
     if num == 1: 
         puzzle = get_initial_puzzle()
     if num == 2: 
         puzzle = get_medium_puzzle()
     if num == 3: 
         puzzle = get_hard_puzzle()
+    if num == 4: 
+        puzzle = get_hardest_puzzle()
     return puzzle
 
 
@@ -341,6 +359,22 @@ def delete_pair_from_column(possibles_list, a, b):   # Then delete these two val
             possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
     return progress
 
+def delete_pair_from_minigrid(possibles_list, a, b, list):
+    # Delete value from all spots in own inner grid except self
+    progress = False
+    for j in list: # Cycle through all spots in minigrid
+        if j == a or j == b:
+            continue # Skip since cannot delete self
+        if possibles_list[a][0] in possibles_list[j]:
+            progress = True
+            possibles_list[j].remove(possibles_list[a][0])
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
+        if possibles_list[a][1] in possibles_list[j]:
+            progress = True
+            possibles_list[j].remove(possibles_list[a][1])
+            possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
+    return progress
+
 
 def find_pairs(possibles_list):  
 # If there are two pairs in a column, row or minigrid. 
@@ -348,6 +382,7 @@ def find_pairs(possibles_list):
     side = int(len(possibles_list) ** 0.5)   # calculate length of row or column
     row_progress = False
     column_progress = False
+    minigrid_progress = False
     for j in range(len(possibles_list)):
         if len(possibles_list[j]) == 2:
             print("Grid {} has two values of {}.".format(j, possibles_list[j])) 
@@ -368,7 +403,17 @@ def find_pairs(possibles_list):
                             print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
                             column_progress = column_progress or delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
             # Match minigrid
-    return (row_progress or column_progress)  # True if have deleted any values in rows or columns or minigrid, so restart solving 
+            list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
+            for list in list_of_internal_grids:
+                for k in range(len(possibles_list)):
+                    if j in list and k in list:
+                        if j != k:
+                            if possibles_list[j] == possibles_list[k]: # If contents match
+                                print("Spots {} and {} in same minigrid both have value of {}.".format(j, k, possibles_list[j]))
+                                minigrid_progress = minigrid_progress or delete_pair_from_minigrid(possibles_list, j, k, list) # Delete these two values from all other spots in minigrid
+
+
+    return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
 
 # Main code
