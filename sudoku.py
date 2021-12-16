@@ -421,7 +421,7 @@ def count_pairs(list):  # Find unique pairs in puzzle
     dict_of_pairs = {}   # Use dictionary to track and count unique pairs in puzzle
     for j in range(len(list)):
         if len(list[j]) == 2:    # Only count pairs
-            if str(list[j]) in dict_of_pairs:
+            if str(list[j]) in dict_of_pairs:   # Must convert dictionary index from list to string (list not allowed as index)
                 dict_of_pairs[str(list[j])] = dict_of_pairs[str(list[j])] + 1  # Increment count
             else:
                 dict_of_pairs[str(list[j])] = 1  # Initialize count
