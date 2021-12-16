@@ -415,6 +415,10 @@ def find_pairs(possibles_list):
 
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
+def try_guessing(possibles_list):
+    # Find two spots with two different possible values and cycle through all possible four configurations until one works
+    guess_list = possibles_list.copy()
+
 
 # Main code
 
@@ -492,7 +496,7 @@ while not done:
 #all_grids_resolved(possibles_list) or loop >= MAX_LOOP or no_progress(last_count)
     last_count = current_count
 else:
-    print("Game over because {}.".format(reason))
+    print("Game over because {} so try guessing.".format(reason))
     progress = find_pairs(possibles_list)  
 
 print()
