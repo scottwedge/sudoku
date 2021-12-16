@@ -9,6 +9,7 @@ ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
 SPACE = " "     # have space on either side of value to make reading grid easier
 MAX_LOOP = 100  # Maximum number of loop before program ends
+HUGE_VALUE = 100000   # Initial count for number of values still possible
 
 # Variables
 
@@ -256,6 +257,7 @@ def column_width(possibles_list): # Determine largest possible list in each colu
             column_max[column] = len(possibles_list[j])  # Increase width of column 
     return column_max
 
+
 def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
     for j in range(FULL_SIDE):
 #DEBUG        print("+", sep="", end="")  # Print first character in line
@@ -359,6 +361,7 @@ def delete_pair_from_column(possibles_list, a, b):   # Then delete these two val
             possibles_list[j] = convert_list(possibles_list[j])    # Convert list of single list to list of single integer
     return progress
 
+
 def delete_pair_from_minigrid(possibles_list, a, b, list):
     # Delete value from all spots in own inner grid except self
     progress = False
@@ -411,9 +414,8 @@ def find_pairs(possibles_list):
                             if possibles_list[j] == possibles_list[k]: # If contents match
                                 print("Spots {} and {} in same minigrid both have value of {}.".format(j, k, possibles_list[j]))
                                 minigrid_progress = minigrid_progress or delete_pair_from_minigrid(possibles_list, j, k, list) # Delete these two values from all other spots in minigrid
-
-
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
+
 
 def try_guessing(possibles_list):
     # Find two spots with two different possible values and cycle through all possible four configurations until one works
@@ -423,7 +425,7 @@ def try_guessing(possibles_list):
 # Main code
 
 # Initialize variables
-last_count = 1000000
+last_count = HUGE_VALUE
 
 greet_user() 
         
