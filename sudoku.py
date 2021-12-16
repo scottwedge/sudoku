@@ -417,6 +417,18 @@ def find_pairs(possibles_list):
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
 
+def count_pairs(list):  # Find unique pairs in puzzle
+    dict_of_pairs = {}   # Use dictionary to track and count unique pairs in puzzle
+    for j in range(len(list)):
+        if len(list[j]) == 2:    # Only count pairs
+            if str(list[j]) in dict_of_pairs:
+                dict_of_pairs[str(list[j])] = dict_of_pairs[str(list[j])] + 1  # Increment count
+            else:
+                dict_of_pairs[str(list[j])] = 1  # Initialize count
+    print(dict_of_pairs)   #DEBUG
+    return dict_of_pairs
+
+
 def try_guessing(possibles_list):
     # Find two spots with two different possible values and cycle through all possible four configurations until one works
     guess_list = possibles_list.copy()
@@ -510,3 +522,5 @@ show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_m
 
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
+
+dict_of_pairs = count_pairs(possibles_list)  # Find unique pairs in puzzle
