@@ -417,6 +417,11 @@ def find_pairs(possibles_list):
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
 
+def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
+    reply = input("How continue now: 1. Quit or 2. Brute force or 3. Try guessing pairs")
+    reply = int(reply)   # Convert string to integer
+    return reply
+
 def count_pairs(list):  # Find unique pairs in puzzle
     dict_of_pairs = {}   # Use dictionary to track and count unique pairs in puzzle
     dict_of_pair_locations = {}   # Dictionary to track pair locations as list
@@ -433,9 +438,10 @@ def count_pairs(list):  # Find unique pairs in puzzle
     return (dict_of_pairs, dict_of_pair_locations)
 
 
-def try_guessing(possibles_list):
+def try_guess_list(possibles_list):
     # Find two spots with two different possible values and cycle through all possible four configurations until one works
     guess_list = possibles_list.copy()
+    return guess_list
 
 
 # Main code
@@ -527,4 +533,11 @@ show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_m
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
 
-(dict_of_pairs, dict_of_pair_locations) = count_pairs(possibles_list)  # Find unique pairs in puzzle
+reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
+
+if reply == 2 or reply == 3:
+    while True:
+        guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
+        (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
+else:
+    pass # 3 == Quit
