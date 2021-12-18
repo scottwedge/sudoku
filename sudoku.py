@@ -447,7 +447,7 @@ def try_guess_list(possibles_list):
 def get_stalled_spots_list(list):   # Determine which spots are still unknown after resolving stalls
     unknown_list = []   
     for j in range(len(list)):
-        if list[j] > 1:  # Spot is not yet resolved
+        if len(list[j]) > 1:  # Spot is not yet resolved
             unknown_list.append({j : list[j]})   # Add this to list
     return unknown_list
         
@@ -455,12 +455,20 @@ def get_stalled_spots_list(list):   # Determine which spots are still unknown af
 def get_known_spots_list(list):   # Determine which spots are known after resolving stalls
     known_list = []   # Initialize lists
     for j in range(len(list)):
-        if list[j] == 1:  # Store known single values in another list
+        if len(list[j]) == 1:  # Store known single values in another list
             known_list.append({j : list[j]})    # Add entry to list
     return known_list
         
 
+def get_number_possible_solutions(list):
+    num = 1
+    for j in list:
+        num = num * len(list[j])
+    return num
+
+
 def bruteforce(list):   # Try all possible combinations and see which works
+    pass
 
 # Main code
 
@@ -557,9 +565,13 @@ if reply == 1:  # Quit game
     pass
 
 if reply == 2: # Brute force solution
-   stalled_spots_list =  get_stalled_spots_list(possibles_list):   # Create list of spots that are still unknown
+   stalled_spots_list =  get_stalled_spots_list(possibles_list)   # Create list of spots that are still unknown
+   known_spots_list = get_known_spots_list(possibles_list)  # List of known spots
+   number_solutions = get_number_possible_solutions(stalled_spots_list)
+   print("Number of possible brute force solutions is: {}".format(num))
 
 if reply == 3:
     while True:
         guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
         (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
+
