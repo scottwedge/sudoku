@@ -418,7 +418,7 @@ def find_pairs(possibles_list):
 
 
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
-    reply = input("How continue now: 1. Quit or 2. Brute force or 3. Try guessing pairs")
+    reply = input("How continue now: 1. Quit or 2. Brute force or 3. Try guessing pairs:  ")
     reply = int(reply)   # Convert string to integer
     return reply
 
@@ -445,25 +445,26 @@ def try_guess_list(possibles_list):
 
 
 def get_stalled_spots_list(list):   # Determine which spots are still unknown after resolving stalls
-    unknown_list = []   
+    unknown_spots = dict()   # Initialize dictionary
     for j in range(len(list)):
         if len(list[j]) > 1:  # Spot is not yet resolved
-            unknown_list.append({j : list[j]})   # Add this to list
-    return unknown_list
+            unknown_spots[j] = list[j]   # Add this to dictionary
+    return unknown_spots
         
 
 def get_known_spots_list(list):   # Determine which spots are known after resolving stalls
-    known_list = []   # Initialize lists
+    known_spots = dict()   # Initialize dictionary
     for j in range(len(list)):
         if len(list[j]) == 1:  # Store known single values in another list
-            known_list.append({j : list[j]})    # Add entry to list
-    return known_list
+            known_spots[j] = list[j]   
+    return known_spots
         
 
-def get_number_possible_solutions(list):
+def get_number_possible_solutions(unknowns_dict):
     num = 1
-    for j in list:
-        num = num * len(list[j])
+    for j in unknowns_dict.values():
+        num = num * len(j)
+#DEBUG        print(num)
     return num
 
 
@@ -565,10 +566,10 @@ if reply == 1:  # Quit game
     pass
 
 if reply == 2: # Brute force solution
-   stalled_spots_list =  get_stalled_spots_list(possibles_list)   # Create list of spots that are still unknown
-   known_spots_list = get_known_spots_list(possibles_list)  # List of known spots
-   number_solutions = get_number_possible_solutions(stalled_spots_list)
-   print("Number of possible brute force solutions is: {}".format(num))
+   unknown_spots =  get_stalled_spots_list(possibles_list)   # Create list of spots that are still unknown
+   known_spots = get_known_spots_list(possibles_list)  # List of known spots
+   number_solutions = get_number_possible_solutions(unknown_spots)
+   print("Number of possible brute force solutions is: {}".format(number_solutions))
 
 if reply == 3:
     while True:
