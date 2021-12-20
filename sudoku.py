@@ -468,7 +468,12 @@ def get_number_possible_solutions(unknowns_dict):
     return num
 
 
-def bruteforce(list):   # Try all possible combinations and see which works
+def bruteforce(possibles_list):   # Try all possible combinations and see which works
+    unknown_spots =  get_stalled_spots_list(possibles_list)   # Create list of spots that are still unknown
+    num_unknown_spots = len(unknown_spots)
+    known_spots = get_known_spots_list(possibles_list)  # List of known spots
+    number_solutions = get_number_possible_solutions(unknown_spots)
+    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
     pass
 
 # Main code
@@ -566,11 +571,7 @@ if reply == 1:  # Quit game
     pass
 
 if reply == 2: # Brute force solution
-   unknown_spots =  get_stalled_spots_list(possibles_list)   # Create list of spots that are still unknown
-   num_unknown_spots = len(unknown_spots)
-   known_spots = get_known_spots_list(possibles_list)  # List of known spots
-   number_solutions = get_number_possible_solutions(unknown_spots)
-   print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+    bruteforce(possibles_list)
 
 if reply == 3:
     while True:
