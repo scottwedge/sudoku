@@ -449,7 +449,7 @@ def get_stalled_spots_list(list):   # Determine which spots are still unknown af
     for j in range(len(list)):
         if len(list[j]) > 1:  # Spot is not yet resolved
             unknown_spots[j] = list[j]   # Add this to dictionary
-            print("Unknown Spot {} is {}.".format(unknown_spots[j], list[j]))   #DEBUG
+            print("Unknown Spot {} is {}.".format(j, list[j]))   #DEBUG
     return unknown_spots
         
 
@@ -487,20 +487,22 @@ def test_all_internal_grids():
 
 def bruteforce(list):   # Try all possible combinations and see which works
     unknown_spots =  get_stalled_spots_list(list)   # Create list of spots that are still unknown
-    num_unknown_spots = len(unknown_spots)
-    print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))    #DEBUG
+    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+    print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))   
     known_spots = get_known_spots_list(list)  # List of known spots
     number_solutions = get_number_possible_solutions(unknown_spots)
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-    for j in range(num_unknown_spots):
-        print("Length of unknown_spots[{}] is {}".format(j, len(unknown_spots[j])))   #DEBUG
-        for k in range(len(unknown_spots[j])):
-            trial_solution = create_trial_grid()
-            test_all_rows()
-            test_all_columns()
-            test_all_internal_grids()
-    pass
+#DEBUG    for j in range(num_unknown_spots):
+#    print(j, len(unknown_spots[j]))   #DEBUG
+#        print("Range of length of unknown_spots[j] is {}".format(len(unknow_spots[j])))  #DEBUG
+#    for k in range(len(unknown_spots[j])):
+
+# Build first possible grid solutions
+    trial_solution = create_trial_grid()
+    test_all_rows()
+    test_all_columns()
+    test_all_internal_grids()
 
 # Main code
 
