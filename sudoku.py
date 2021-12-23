@@ -470,6 +470,8 @@ def get_number_possible_solutions(unknowns_dict):
 
 
 def create_trial_grid(list, unknown_spots, known_spots, unknown_spot_external_index, unknown_spot_internal_index):
+    trial_solution = list.copy()    # start by copying the current list, 
+                                    # then cycle through and overwrite the spots with multiple values
     return trial_solution 
 
 
@@ -499,7 +501,9 @@ def bruteforce(list):   # Try all possible combinations and see which works
 #    for k in range(len(unknown_spots[j])):
 
 # Build first possible grid solutions
-    trial_solution = create_trial_grid()
+    j = 0   # for trial, take first position
+    k = 0   # for trial, take first position
+    trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j, k)
     test_all_rows()
     test_all_columns()
     test_all_internal_grids()
