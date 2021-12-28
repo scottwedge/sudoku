@@ -248,8 +248,13 @@ def init_column_width(possibles_list, number_of_columns):   # Initialize all dic
     return column_max
 
 
+def size_of_puzzle_side(list):
+    num = int((len(list) + 1) ** 0.5)  # Integer number of columns or rows is square root of number of spots
+    return num
+
+
 def column_width(possibles_list): # Determine largest possible list in each column so can print column that width
-    number_of_columns = int((len(possibles_list) + 1) ** 0.5)  # Integer number of columns is square root of number of spots
+    number_of_columns = size_of_puzzle_side(possibles_list)  # Integer number of columns is square root of number of spots
     column_max = init_column_width(possibles_list, number_of_columns)   # Init all values to one
     for j in range(len(possibles_list)):  # Iterate through entire list    
         column = j % number_of_columns
