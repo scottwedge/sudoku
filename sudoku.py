@@ -320,7 +320,7 @@ def are_we_done(possibles_list, loop, last_count):
 def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values from all other spots in row
 # Delete both values from all the other spots in the row except the two matching spots
     progress = False # Track whether any values are removed  (default = False = nothing removed)
-    side = int(len(possibles_list) ** 0.5)  # calculate length of row or column
+    side = size_of_puzzle_side(possibles_list)  # calculate length of row or column
     correct_row = a // side    # Determine which row to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
         if j // side != correct_row:
@@ -345,7 +345,7 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
 def delete_pair_from_column(possibles_list, a, b):   # Then delete these two values from all other spots in column
 # Delete both values from all the other spots in the column except the two matching spots
     progress = False # Track whether any values are removed  (default = False = nothing removed)
-    side = int(len(possibles_list) ** 0.5)  # calculate length of row or column
+    side = size_of_puzzle_side(possibles_list)   # calculate length of row or column
     correct_column = a % side    # Determine which column to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
         if j % side != correct_column:
@@ -387,7 +387,7 @@ def delete_pair_from_minigrid(possibles_list, a, b, list):
 def find_pairs(possibles_list):  
 # If there are two pairs in a column, row or minigrid. 
 # One can remove those two numbers from all other spots in that column, row or minigrid.
-    side = int(len(possibles_list) ** 0.5)   # calculate length of row or column
+    side = size_of_puzzle_side(possibles_list)   # calculate length of row or column
     row_progress = False
     column_progress = False
     minigrid_progress = False
