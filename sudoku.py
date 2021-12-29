@@ -121,19 +121,20 @@ def show_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters bet
     create_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # Create bottom separator line
 
 
-def show_extended_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
+def show_extended_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
-    for row in range(FULL_SIDE):
-        create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # "+---+---...+" format
-        for column in range(FULL_SIDE):
-            print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
+    side = size_of_puzzle_side(puzzle)
+    for row in range(side):
+        create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # "+---+---...+" format
+        for column in range(side):
+            print(COL_SEP, SPACE, puzzle[row * side + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
-    create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # final line
+    create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # final line
 
 
-def all_values(FULL_SIDE):
+def all_values(side):
     values = []
-    for count in range(1, FULL_SIDE + 1):
+    for count in range(1, side + 1):
         values.append([count])    # Add value as single list so can easily check if [k] in [j]
     return values
 
