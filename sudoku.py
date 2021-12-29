@@ -88,34 +88,37 @@ def select_puzzle():
     return puzzle
 
 
-def show_grid(puzzle, FULL_SIDE):    # format known puzzle values into grid to be displayed to user
+def show_grid(puzzle):    # format known puzzle values into grid to be displayed to user
     print()  # blank line
-    for row in range(FULL_SIDE):
-        for column in range(FULL_SIDE):
-            print(puzzle[row * FULL_SIDE + column], " ",  sep="", end="")
+    side = size_of_puzzle_side(puzzle)
+    for row in range(side):
+        for column in range(side):
+            print(puzzle[row * side + column], " ",  sep="", end="")
         print() # line break at end of line
 
 
-def create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
-    for j in range(FULL_SIDE):
+def create_row_separating_line_with_intersecting_plus_symbol(side , ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
+    side = size_of_puzzle_side(puzzle)
+    for j in range(side):
         print("+", ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
 
 
-def create_extended_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
-    for j in range(FULL_SIDE):
+def create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
+    for j in range(side):
         print("+", ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
 
 
-def show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
+def show_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
-    for row in range(FULL_SIDE):
-        create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)
-        for column in range(FULL_SIDE):
-            print(COL_SEP, SPACE, puzzle[row * FULL_SIDE + column], SPACE,  sep="", end="")
+    side = size_of_puzzle_side(puzzle)
+    for row in range(side):
+        create_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)
+        for column in range(side):
+            print(COL_SEP, SPACE, puzzle[row * side + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
-    create_row_separating_line_with_intersecting_plus_symbol(FULL_SIDE, ROW_SEP, COL_SEP)  # Create bottom separator line
+    create_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # Create bottom separator line
 
 
 def show_extended_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
@@ -521,15 +524,16 @@ last_count = HUGE_VALUE
 greet_user() 
         
 puzzle = select_puzzle()   # Choose between the two puzzles
+side = size_of_puzzle_side(puzzle)
 
 values = all_values(FULL_SIDE)
 
 print()
 print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
 
-show_grid(puzzle, FULL_SIDE) # Show puzzle values in more readable grid format
+show_grid(puzzle) # Show puzzle values in more readable grid format
 
-show_grid_lines(puzzle, FULL_SIDE, ROW_SEP, COL_SEP)
+show_grid_lines(puzzle, ROW_SEP, COL_SEP)
 
 print()
 print("Start solving puzzle now.")
