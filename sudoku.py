@@ -432,6 +432,8 @@ def how_to_continue_when_stalled():  # Prompt user if and how to continue when s
         if reply == "1" or reply == "2" or reply == "3":
             reply = int(reply)   # Convert string to integer
             break # exit loop otherwise prompt again
+        else:
+            print("Try again.")   # prompt for another input
     return reply
 
 def count_pairs(list):  # Find unique pairs in puzzle
