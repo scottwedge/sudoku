@@ -427,8 +427,11 @@ def find_pairs(possibles_list):
 
 
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
-    reply = input("How continue now: 1. Quit or 2. Brute force or 3. Try guessing pairs:  ")
-    reply = int(reply)   # Convert string to integer
+    while True:
+        reply = input("How continue now: 1. Quit or 2. Brute force or 3. Try guessing pairs:  ")
+        if reply == "1" or reply == "2" or reply == "3":
+            reply = int(reply)   # Convert string to integer
+            break # exit loop otherwise prompt again
     return reply
 
 def count_pairs(list):  # Find unique pairs in puzzle
