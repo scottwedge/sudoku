@@ -489,7 +489,17 @@ def create_trial_grid(list, unknown_spots, known_spots, unknown_spot_external_in
     return trial_solution 
 
 
-def test_all_rows():
+def init_row_count(puzzle): # Initialize all row counts to zero
+    num = size_of_puzzle_side(puzzle)
+    count = dict()
+    for j in num:
+        count[j] = 0  # set value to zero
+    return count
+
+
+def test_all_rows(puzzle):   # check that all rows do not have any duplicate values
+    num = size_of_puzzle_side(puzzle)
+    for row in num:  # check every row
     pass
 
 
