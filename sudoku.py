@@ -635,16 +635,22 @@ show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_m
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
 
-reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
+if count > len(possibles_list):  # Decide how to proceed if there are still unresolved grids
+    print()
+    print("There are still unresolved grids.")
 
-if reply == 1:  # Quit game
-    pass
+    reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
 
-if reply == 2: # Brute force solution
-    bruteforce(possibles_list)
+    if reply == 1:  # Quit game
+        pass
 
-if reply == 3:
-    while True:
-        guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
-        (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
+    if reply == 2: # Brute force solution
+        bruteforce(possibles_list)
 
+    if reply == 3:
+        while True:
+            guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
+            (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
+    
+else:
+    print("All grids resolved.")
