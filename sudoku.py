@@ -498,12 +498,12 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     num = size_of_puzzle(puzzle)
     count = dict()
     for j in range(num):
-        count[j] = 0  # set value to zero
+        count[j] = 0  # set all grid spot counts to zero
 #    print(count)    #DEBUG
     return count
 
 
-def test_row(puzzle, row):   # test that row does not have any duplicate values
+def count_rows(puzzle, row):   # count how many of each value are in each row
     num = size_of_puzzle_side(puzzle)
     count = init_trial_count(puzzle)
     for spot in range(num):  # Check every spot in row
@@ -511,18 +511,19 @@ def test_row(puzzle, row):   # test that row does not have any duplicate values
         count[spot + row * side] = count[spot + row * side] + 1  # Increment count
 
 
-def test_all_rows(puzzle):   # check all rows
-    num = size_of_puzzle_side(puzzle)
-    for row in range(num):  # check every row
-        test_row(puzzle, row)
+# This function should no longer be needed
+# def test_all_rows(puzzle):   # check all rows
+#     num = size_of_puzzle_side(puzzle)
+#     for row in range(num):  # check every row
+#         test_row(puzzle, row)
         
 
 
-def test_all_columns(puzzle):
+def count_columns(puzzle):  # Count how many of each value are in each column
     pass
 
 
-def test_all_internal_grids(puzzle):
+def count_internal_grids(puzzle):  # Count how many of each value are in each internal grid
     pass
 
 
@@ -543,9 +544,9 @@ def bruteforce(list):   # Try all possible combinations and see which works
     j = 0   # for trial, take first position
     k = 0   # for trial, take first position
     trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j, k)
-    test_all_rows(trial_solution)
-    test_all_columns(trial_solution)
-    test_all_internal_grids(trial_solution)
+    count_rows(trial_solution)
+    count_columns(trial_solution)
+    count_internal_grids(trial_solution)
 
 # Main code
 
