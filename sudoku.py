@@ -499,7 +499,7 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     count = dict()
     for j in range(num):
         count[j] = 0  # set value to zero
-    print(count)    #DEBUG
+#    print(count)    #DEBUG
     return count
 
 
@@ -507,6 +507,7 @@ def test_row(puzzle, row):   # test that row does not have any duplicate values
     num = size_of_puzzle_side(puzzle)
     count = init_trial_count(puzzle)
     for spot in range(num):  # Check every spot in row
+                             # increment count for 1's in first spot, 2's in second spot ... to N's in last spot of row
         count[spot + row * side] = count[spot + row * side] + 1  # Increment count
 
 
