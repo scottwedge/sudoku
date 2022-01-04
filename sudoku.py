@@ -503,12 +503,13 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     return count
 
 
-def count_rows(puzzle, row):   # count how many of each value are in each row
+def count_rows(puzzle):   # count how many of each value are in each row
     num = size_of_puzzle_side(puzzle)
     count = init_trial_count(puzzle)
     for spot in range(num):  # Check every spot in row
                              # increment count for 1's in first spot, 2's in second spot ... to N's in last spot of row
-        count[spot + row * side] = count[spot + row * side] + 1  # Increment count
+#        count[spot + row * side] = count[spot + row * side] + 1  # Increment count
+         pass     # Temporary work around
 
 
 # This function should no longer be needed
@@ -527,6 +528,16 @@ def count_internal_grids(puzzle):  # Count how many of each value are in each in
     pass
 
 
+def test_trial_solution(puzzle):  # Build first possible grid solutions
+    result = True
+    while result:
+        result = result and count_rows(puzzle)   # If any tests fail then result will be False
+        result = result and count_columns(puzzle)
+        result = result and count_internal_grids(puzzle)
+    return result
+
+
+
 def bruteforce(list):   # Try all possible combinations and see which works
     unknown_spots =  get_stalled_spots_list(list)   # Create list of spots that are still unknown
     num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
@@ -535,18 +546,13 @@ def bruteforce(list):   # Try all possible combinations and see which works
     number_solutions = get_number_possible_solutions(unknown_spots)
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-#DEBUG    for j in range(num_unknown_spots):
-#    print(j, len(unknown_spots[j]))   #DEBUG
-#        print("Range of length of unknown_spots[j] is {}".format(len(unknow_spots[j])))  #DEBUG
-#    for k in range(len(unknown_spots[j])):
+    for j in range(num_unknown_spots):  # Cycle through all possible values until one works
+        trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j, k)
+        result = test_trial_solution(trial_solution)
+        if result == True:
+            break   # This is a successful solution 
+    return trial_solution
 
-# Build first possible grid solutions
-    j = 0   # for trial, take first position
-    k = 0   # for trial, take first position
-    trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j, k)
-    count_rows(trial_solution)
-    count_columns(trial_solution)
-    count_internal_grids(trial_solution)
 
 # Main code
 
