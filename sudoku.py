@@ -483,15 +483,34 @@ def get_number_possible_solutions(unknowns_dict):
     return num
 
 
-def create_trial_grid(list, unknown_spots, known_spots, unknown_spot_external_index, unknown_spot_internal_index):
-    trial_solution = list.copy()    # start by copying the current list, 
-                                    # then cycle through and overwrite the spots with multiple values
-    return trial_solution 
-
-
 def size_of_puzzle(puzzle):
     num = len(puzzle)
     return num
+
+
+def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
+    print(unknown_spots)   #DEBUG
+    list_of_keys = list(unknown_spots.keys())    # convert dictionary keys to list
+    list_of_keys.sort()    # Sort list into ascending order since dictionary is unordered
+    list_of_keys.reverse()   # Sort list of keys into descending order
+    for j in list_of_keys:
+        print("{}  key value is {} and values are {}.".format(j, unknown_spots.keys[j], unknown_spots[j]))
+        grid_spot_index = iteration % len(unknown_spots[j])   # Calculate index into list of possible values
+        puzzle[j] = unknown_spots[j][grid_spot_index]    # Set possible value
+        iteration = iteration // len(unknown_spots[j])
+    return puzzle
+
+
+def create_trial_grid(list, unknown_spots, known_spots, index):
+    trial_solution = list.copy()    # start by copying the current list, 
+                                    # then cycle through and overwrite the spots with multiple values
+                                    # Using 'modulo' and 'remainder' of index value to determine which
+                                    # of multiple values to set in each spot of grid
+    for j in range(index):   # Cycle through all possible combinations 
+        trial_solution = select_set_of_unknown_values(trial_solution, unknown_spots, known_spots, j)
+    return trial_solution 
+
+
 
 
 def init_trial_count(puzzle): # Initialize all row, column and internal grid counts to zero
@@ -537,7 +556,6 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
     return result
 
 
-
 def bruteforce(list):   # Try all possible combinations and see which works
     unknown_spots =  get_stalled_spots_list(list)   # Create list of spots that are still unknown
     num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
@@ -546,8 +564,8 @@ def bruteforce(list):   # Try all possible combinations and see which works
     number_solutions = get_number_possible_solutions(unknown_spots)
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-    for j in range(num_unknown_spots):  # Cycle through all possible values until one works
-        trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j, k)
+    for j in range(num_unknown_spots):  # Cycle through all possible values in grids until one works
+        trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j)
         result = test_trial_solution(trial_solution)
         if result == True:
             break   # This is a successful solution 
