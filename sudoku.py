@@ -489,6 +489,7 @@ def size_of_puzzle(puzzle):
 
 
 def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
+    print(puzzle)   #DEBUG
     print(unknown_spots)   #DEBUG
     list_of_keys = list(unknown_spots.keys())    # convert dictionary keys to list
     print(list_of_keys)   #DEBUG
@@ -497,9 +498,10 @@ def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
     print(list_of_keys)   #DEBUG
     for j in range(len(list_of_keys)):
         print("{}  key value is {} and values are {}.".format(j, list_of_keys[j], unknown_spots[list_of_keys[j]]))
-        grid_spot_index = iteration % len(unknown_spots[j])   # Calculate index into list of possible values
-        puzzle[j] = unknown_spots[j][grid_spot_index]    # Set possible value
-        iteration = iteration // len(unknown_spots[j])
+        grid_spot_index = iteration % len(unknown_spots[list_of_keys[j]])   # Calculate index into list of possible values
+        print("Replace possibles list of {} with value of {}.".format(puzzle[list_of_keys[j]], unknown_spots[list_of_keys[j]][grid_spot_index]))
+        puzzle[list_of_keys[j]] = unknown_spots[list_of_keys[j]][grid_spot_index]    # Replace list of trial values with trial value
+        iteration = iteration // len(unknown_spots[list_of_keys[j]])
     return puzzle
 
 
