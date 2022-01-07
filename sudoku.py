@@ -234,7 +234,7 @@ def all_grids_resolved(possibles_list):
     for j in range(len(possibles_list)):
         if len(possibles_list[j]) > 1:
             resolved = False
-            break
+            break    # Exit loop at first failure
     return resolved
 
 
@@ -533,6 +533,7 @@ def quick_check(puzzle): # Ensure count of each number is correct (not too high 
         if puzzle.count([j]) != num:
             print("Count of {} is {}.".format(j, puzzle.count([j])))
             result = False
+            break
     return result
 
 def count_rows(puzzle):   # count how many of each value are in each row
