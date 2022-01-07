@@ -526,6 +526,15 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     return count
 
 
+def quick_check(puzzle): # Ensure count of each number is correct (not too high or too low)
+    result = True
+    num = size_of_puzzle_side(puzzle)    # Get length of side or column
+    for j in range(1, num + 1):  # For every possible value
+        if puzzle.count([j]) != num:
+            print("Count of {} is {}.".format(j, puzzle.count([j])))
+            result = False
+    return result
+
 def count_rows(puzzle):   # count how many of each value are in each row
     num = size_of_puzzle_side(puzzle)
     count = init_trial_count(puzzle)
@@ -533,14 +542,6 @@ def count_rows(puzzle):   # count how many of each value are in each row
                              # increment count for 1's in first spot, 2's in second spot ... to N's in last spot of row
 #        count[spot + row * side] = count[spot + row * side] + 1  # Increment count
          pass     # Temporary work around
-
-
-# This function should no longer be needed
-# def test_all_rows(puzzle):   # check all rows
-#     num = size_of_puzzle_side(puzzle)
-#     for row in range(num):  # check every row
-#         test_row(puzzle, row)
-        
 
 
 def count_columns(puzzle):  # Count how many of each value are in each column
@@ -553,8 +554,9 @@ def count_internal_grids(puzzle):  # Count how many of each value are in each in
 
 def test_trial_solution(puzzle):  # Build first possible grid solutions
     result = True
-    while result:
-        result = result and count_rows(puzzle)   # If any tests fail then result will be False
+    while result:      # If any tests fail then result will be False
+        result = result and quick_check(puzzle)
+        result = result and count_rows(puzzle)   
         result = result and count_columns(puzzle)
         result = result and count_internal_grids(puzzle)
     return result
