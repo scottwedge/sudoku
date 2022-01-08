@@ -560,6 +560,7 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
         result = result and count_rows(puzzle)   
         result = result and count_columns(puzzle)
         result = result and count_internal_grids(puzzle)
+    print("Result is {}".format(result))
     return result
 
 
@@ -571,11 +572,14 @@ def bruteforce(list):   # Try all possible combinations and see which works
     number_solutions = get_number_possible_solutions(unknown_spots)
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-    for j in range(num_unknown_spots):  # Cycle through all possible values in grids until one works
+    for j in range(number_solutions):  # Cycle through all possible values in grids until one works
         trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j)
         result = test_trial_solution(trial_solution)
         if result == True:
+            print(trial_solution)     #DEBUG
             break   # This is a successful solution 
+        else:
+            print("Iteration {} did not work.".format(j))
     return trial_solution
 
 
