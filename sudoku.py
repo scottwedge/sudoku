@@ -489,17 +489,17 @@ def size_of_puzzle(puzzle):
 
 
 def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
-    print(puzzle)   #DEBUG
-    print(unknown_spots)   #DEBUG
+#    print(puzzle)   #DEBUG
+#    print(unknown_spots)   #DEBUG
     list_of_keys = list(unknown_spots.keys())    # convert dictionary keys to list
-    print(list_of_keys)   #DEBUG
+#    print(list_of_keys)   #DEBUG
     list_of_keys.sort()    # Sort list into ascending order since dictionary is unordered
     list_of_keys.reverse()   # Sort list of keys into descending order
-    print(list_of_keys)   #DEBUG
+#    print(list_of_keys)   #DEBUG
     for j in range(len(list_of_keys)):
-        print("{}  key value is {} and values are {}.".format(j, list_of_keys[j], unknown_spots[list_of_keys[j]]))
+#        print("{}  key value is {} and values are {}.".format(j, list_of_keys[j], unknown_spots[list_of_keys[j]]))
         grid_spot_index = iteration % len(unknown_spots[list_of_keys[j]])   # Calculate index into list of possible values
-        print("Replace possibles list of {} with value of {}.".format(unknown_spots[list_of_keys[j]], unknown_spots[list_of_keys[j]][grid_spot_index]))
+#        print("Replace possibles list of {} with value of {}.".format(unknown_spots[list_of_keys[j]], unknown_spots[list_of_keys[j]][grid_spot_index]))
         puzzle[list_of_keys[j]] = unknown_spots[list_of_keys[j]][grid_spot_index]    # Replace list of possible values with single trial value
         iteration = iteration // len(unknown_spots[list_of_keys[j]])
     return puzzle
