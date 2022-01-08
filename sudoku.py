@@ -564,7 +564,7 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
 
 
 def bruteforce(list):   # Try all possible combinations and see which works
-    unknown_spots =  get_stalled_spots_list(list)   # Create list of spots that are still unknown
+    unknown_spots =  get_stalled_spots_list(list)   # Create list of grid spots that are still unknown
     num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
     print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))   
     known_spots = get_known_spots_list(list)  # List of known spots
@@ -679,7 +679,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         pass
 
     if reply == 2: # Brute force solution
-        bruteforce(possibles_list)
+        successful_solution = bruteforce(possibles_list)
 
     if reply == 3:
         while True:
