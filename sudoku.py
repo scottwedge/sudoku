@@ -2,6 +2,11 @@
 
 # Script to solve simple Sudoku puzzle
 
+
+# Imports
+import time    # in case want to time how long brute force solution takes
+
+
 # Constants
 PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 FULL_SIDE = PART_SIDE ** 2
