@@ -563,7 +563,7 @@ def count_columns(puzzle):  # Count how many of each value are in each column
     test_column = []
     for c in num:
         for j in num: 
-            test_column.append(puzzle[c + (j * num)]  # Build list of column values to test
+            test_column.append(puzzle[c + (j * num)])  # Build list of column values to test
         for k in num:
             if test_column.count(k) != 1:  # Ensure exactly one of each value in column
                 result = False
@@ -715,13 +715,18 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         successful_solution = bruteforce(possibles_list, 0)
 
     if reply == 3: # Brute force solution starting from entered value (allows continuation)
-        num = get_starting_value()
-        successful_solution = bruteforce(possibles_list, num)
+        begin_num  = get_starting_value()
+        successful_solution = bruteforce(possibles_list, begin_num)
 
     if reply == 4:
         while True:
             guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
             (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
     
+    if reply == 5:   # Time trial
+        start_num = 0
+        ending_num = 1000
+        start_time = get_time()
+        end_time = get_time()
 else:
     print("All grids resolved.")
