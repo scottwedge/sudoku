@@ -542,12 +542,17 @@ def quick_check(puzzle): # Ensure count of each number is correct (not too high 
     return result
 
 def count_rows(puzzle):   # count how many of each value are in each row
+    # Use list built-in 'count' method to ensure exactly one of each value in every row
     num = size_of_puzzle_side(puzzle)
-    count = init_trial_count(puzzle)
-    for spot in range(num):  # Check every spot in row
-                             # increment count for 1's in first spot, 2's in second spot ... to N's in last spot of row
-#        count[spot + row * side] = count[spot + row * side] + 1  # Increment count
-         pass     # Temporary work around
+    result = True
+    test_row = []
+    for j in num:
+        test_row = puzzle[j * num:(j + 1) * num]  # quickly create using slices
+        for k in num: 
+            if test_row.count(k) != 1:  # Ensure exactly one of each value in row
+                result = False
+                break
+    return result
 
 
 def count_columns(puzzle):  # Count how many of each value are in each column
@@ -565,7 +570,7 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
         result = result and count_rows(puzzle)   
         result = result and count_columns(puzzle)
         result = result and count_internal_grids(puzzle)
-    print("Result is {}".format(result))
+#    print("Result is {}".format(result))     #DEBUG
     return result
 
 def get_starting_value():
