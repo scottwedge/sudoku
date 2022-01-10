@@ -556,6 +556,20 @@ def count_rows(puzzle):   # count how many of each value are in each row
 
 
 def count_columns(puzzle):  # Count how many of each value are in each column
+    # Use list built-in 'append' method to create list and 
+    # 'count' method to ensure exactly one of each value in every column
+    num = size_of_puzzle_side(puzzle)
+    result = True
+    test_column = []
+    for c in num:
+        for j in num: 
+            test_column.append(puzzle[c + (j * num)]  # Build list of column values to test
+        for k in num:
+            if test_column.count(k) != 1:  # Ensure exactly one of each value in column
+                result = False
+                break
+    return result
+
     pass
 
 
