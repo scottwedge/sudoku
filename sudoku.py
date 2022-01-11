@@ -81,7 +81,8 @@ def get_hardest_puzzle(): # return data file as list
 
 
 def select_puzzle():
-    num = int(input("Which puzzle do you want to solve: 1 or 2 or 3 or 4?")) # Convert returned string to integer
+    print()   # blank line
+    num = int(input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ")) # Convert returned string to integer
     if num == 1: 
         puzzle = get_initial_puzzle()
     if num == 2: 
