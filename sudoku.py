@@ -434,8 +434,8 @@ def find_pairs(possibles_list):
 
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
-        reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing pairs \nEnter value:  ")
-        if reply == "1" or reply == "2" or reply == "3":
+        reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing pairs or \n5. Time estimate \nEnter value:  ")
+        if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5":
             reply = int(reply)   # Convert string to integer
             break # exit loop otherwise prompt again
         else:
