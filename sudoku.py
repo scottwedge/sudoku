@@ -743,6 +743,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         bruteforce(possibles_list, start_num, trial_num)
         end_time = get_time()
         duration = end_time - start_time
-        print("Trial of {} solutions took {} seconds.".format(trial_num, duration))
+        print()
+        print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, duration))
 else:
     print("All grids resolved.")
