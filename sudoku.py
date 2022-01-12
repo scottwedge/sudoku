@@ -595,12 +595,12 @@ def get_starting_value():
 
 
 def bruteforce(list, num):   # Try all possible combinations and see which works
-    unknown_spots =  get_stalled_spots_list(list)   # Create list of grid spots that are still unknown
-    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
-    print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))   
-    known_spots = get_known_spots_list(list)  # List of known spots
-    number_solutions = get_number_possible_solutions(unknown_spots)
-    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+#    unknown_spots =  get_stalled_spots_list(list)   # Create list of grid spots that are still unknown
+#    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+#    print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))   
+#    known_spots = get_known_spots_list(list)  # List of known spots
+#    number_solutions = get_number_possible_solutions(unknown_spots)
+#    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
     for j in range(num, number_solutions):  # Cycle through all possible values in grids until one works
         trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j)
@@ -706,6 +706,13 @@ print("Total values count in the puzzle is {}.".format(count_total_possible_valu
 if count > len(possibles_list):  # Decide how to proceed if there are still unresolved grids
     print()
     print("There are still unresolved grids.")
+    unknown_spots =  get_stalled_spots_list(possibles_list)   # Create list of grid spots that are still unknown
+    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+    known_spots = get_known_spots_list(possibles_list)  # List of known spots
+    number_solutions = get_number_possible_solutions(unknown_spots)
+    print()
+    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+
 
     reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
 
