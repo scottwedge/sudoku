@@ -594,7 +594,7 @@ def get_starting_value():
     return  num 
 
 
-def bruteforce(list, num):   # Try all possible combinations and see which works
+def bruteforce(list, start_num, end_num):   # Try all possible combinations and see which works
 #    unknown_spots =  get_stalled_spots_list(list)   # Create list of grid spots that are still unknown
 #    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
 #    print("Number of 'num_unknown_spots' is {}".format(num_unknown_spots))   
@@ -602,7 +602,7 @@ def bruteforce(list, num):   # Try all possible combinations and see which works
 #    number_solutions = get_number_possible_solutions(unknown_spots)
 #    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-    for j in range(num, number_solutions):  # Cycle through all possible values in grids until one works
+    for j in range(start_num, end_num):  # Cycle through all possible values in grids until one works
         trial_solution = create_trial_grid(possibles_list, unknown_spots, known_spots, j)
         result = test_trial_solution(trial_solution)
         if result == True:
@@ -611,6 +611,11 @@ def bruteforce(list, num):   # Try all possible combinations and see which works
         else:
             print("Iteration {} did not work.".format(j))
     return trial_solution
+
+
+def get_time():
+    t = time.time()
+    return t
 
 
 # Main code
@@ -720,21 +725,24 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         pass
 
     if reply == 2: # Brute force solution starting from zero
-        successful_solution = bruteforce(possibles_list, 0)
+        successful_solution = bruteforce(possibles_list, 0, number_solutions)
 
     if reply == 3: # Brute force solution starting from entered value (allows continuation)
         begin_num  = get_starting_value()
-        successful_solution = bruteforce(possibles_list, begin_num)
+        successful_solution = bruteforce(possibles_list, begin_num, number_solutions)
 
-    if reply == 4:
+    if reply == 4: 
         while True:
             guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
             (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
     
-    if reply == 5:   # Time trial
+    if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
-        ending_num = 1000
+        trial_num = 1000
         start_time = get_time()
+        bruteforce(possibles_list, start_num, trial_num)
         end_time = get_time()
+        duration = end_time - start_time
+        print("Trial of {} solutions took {} seconds.".format(trial_num, duration))
 else:
     print("All grids resolved.")
