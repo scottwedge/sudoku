@@ -742,8 +742,11 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         start_time = get_time()
         bruteforce(possibles_list, start_num, trial_num)
         end_time = get_time()
-        duration = end_time - start_time
+        trial_duration = end_time - start_time
         print()
-        print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, duration))
+        print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, trial_duration))
+        full_duration_seconds = number_solutions / trial_num * trial_duration
+        full_duration_hours = full_duration_seconds / 3600
+        print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
 else:
     print("All grids resolved.")
