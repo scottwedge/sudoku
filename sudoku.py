@@ -434,7 +434,7 @@ def find_pairs(possibles_list):
 
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
-        reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing pairs or \n5. Time estimate \nEnter value:  ")
+        reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing pairs or \n5. Time estimate from zero or \n6. Time estimate spread over 10% increments \nEnter value:  ")
         if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5":
             reply = int(reply)   # Convert string to integer
             break # exit loop otherwise prompt again
@@ -748,5 +748,25 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         full_duration_seconds = number_solutions / trial_num * trial_duration
         full_duration_hours = full_duration_seconds / 3600
         print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+
+    if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
+                     # since single evaluation at 10,000,000 takes multiple minutes
+                     # whereas starting from zero does several evaluations per second
+                     # and gives an unrealistic "quick" solution
+        start_values = []   # Initialize 
+        for j in range(10):
+        # Below is a copy of the code from reply == 5; need to alter it
+        start_num = 0
+        trial_num = 1000
+        start_time = get_time()
+        bruteforce(possibles_list, start_num, trial_num)
+        end_time = get_time()
+        trial_duration = end_time - start_time
+        print()
+        print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, trial_duration))
+        full_duration_seconds = number_solutions / trial_num * trial_duration
+        full_duration_hours = full_duration_seconds / 3600
+        print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+else:
 else:
     print("All grids resolved.")
