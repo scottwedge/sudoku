@@ -617,6 +617,9 @@ def get_time():
     t = time.time()
     return t
 
+def run_time_trial():
+    t = 1    # DEBUG   temp value
+    return t
 
 # Main code
 
@@ -753,8 +756,14 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                      # since single evaluation at 10,000,000 takes multiple minutes
                      # whereas starting from zero does several evaluations per second
                      # and gives an unrealistic "quick" solution
+        number_of_intervals = 10
         start_values = []   # Initialize 
-        for j in range(10):
+        interval = number_solutions / number_of_intervals
+        interval = int(interval)   # convert to integer from float
+        time_sum = 0
+        for j in range(number_of_intervals):
+            time_sum = time_sum + run_time_trial()
+            pass
         # Below is a copy of the code from reply == 5; need to alter it
         start_num = 0
         trial_num = 1000
