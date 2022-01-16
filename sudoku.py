@@ -769,6 +769,9 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
             time_sum = time_sum + trial_duration
             print()
             print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
-        #print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+            total_time_in_seconds = time_sum * interval
+            total_time_in_hours = total_time_in_seconds / 3600
+            total_time_in_days = total_time_in_hours / 24
+            print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours or {:.2f} hours to solve.".format(number_solutions, total_time_in_seconds, total_time_in_hours, total_time_in_days))
 else:
     print("All grids resolved.")
