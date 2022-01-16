@@ -761,14 +761,14 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         interval = number_solutions / number_of_intervals
         interval = int(interval)   # convert to integer from float
         time_sum = 0
-        for j in range(number_of_intervals):
+        for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
             start_time = get_time()
-            bruteforce(possibles_list, interval * j, interval * j + 1)
+            bruteforce(possibles_list, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
             end_time = get_time()
             trial_duration = end_time - start_time
             time_sum = time_sum + trial_duration
             print()
-            print("Iteration {} of {} solutions took {:.2f} seconds.".format(j+1, number_of_intervals, trial_duration))
+            print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
         #print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
 else:
     print("All grids resolved.")
