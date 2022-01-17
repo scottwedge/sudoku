@@ -185,8 +185,6 @@ def resolve_column(possibles_list, j, FULL_SIDE):
     
     # Delete value from all spots in column except self
     for k in range(len(possibles_list)):
-#DEBUG        print("J = {}, K = {}".format(j,k))    #DEBUG
-
         if j % FULL_SIDE != k % FULL_SIDE:
             continue    # skip this value since in different column
         if j == k:
@@ -204,9 +202,7 @@ def resolve_row(possibles_list, j, FULL_SIDE):
     for k in range(len(possibles_list)):
         if j // FULL_SIDE != k // FULL_SIDE:
             continue   # skip since different row
-#DEBUG        print("Row {} matches row {}".format(j//FULL_SIDE, k//FULL_SIDE))    #DEBUG
         if j == k:
-#DEBUG            print("  Skip since cannot match to self")
             continue    # skip since cannot compare self to self 
         if possibles_list[j] in possibles_list[k]:
             possibles_list[k].remove(possibles_list[j])
@@ -226,7 +222,6 @@ def resolve_inner_grid(possibles_list, j, PART_SIDE):
     # then if single value inside outer list, remove it
         for k in range(len(possibles_list)):
             if j in list and k in list:
-#DEBUG                print("Both {} and {} in same internal grid {}".format(j, k, list))  #DEBUG
                 if j == k:
                     continue  # Cannot delete self from self
                 if possibles_list[j] in possibles_list[k]:
@@ -275,7 +270,6 @@ def column_width(possibles_list): # Determine largest possible list in each colu
 
 def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
     for j in range(FULL_SIDE):
-#DEBUG        print("+", sep="", end="")  # Print first character in line
         print("+", sep="", end="")  # Print first character in line
 
         # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
@@ -297,7 +291,6 @@ def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, colu
             if column_max[column] == 1: width = 3
             if column_max[column] == 2: width = 10
             if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
-  #DEBUG          print(COL_SEP, SPACE, possibles_list[row * FULL_SIDE + column], SPACE,  sep="", end="")
             print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
     create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
@@ -485,7 +478,6 @@ def get_number_possible_solutions(unknowns_dict):
     num = 1
     for j in unknowns_dict.values():
         num = num * len(j)
-#DEBUG        print(num)
     return num
 
 
@@ -495,17 +487,11 @@ def size_of_puzzle(puzzle):
 
 
 def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
-#    print(puzzle)   #DEBUG
-#    print(unknown_spots)   #DEBUG
     list_of_keys = list(unknown_spots.keys())    # convert dictionary keys to list
-#    print(list_of_keys)   #DEBUG
     list_of_keys.sort()    # Sort list into ascending order since dictionary is unordered
     list_of_keys.reverse()   # Sort list of keys into descending order
-#    print(list_of_keys)   #DEBUG
     for j in range(len(list_of_keys)):
-#        print("{}  key value is {} and values are {}.".format(j, list_of_keys[j], unknown_spots[list_of_keys[j]]))
         grid_spot_index = iteration % len(unknown_spots[list_of_keys[j]])   # Calculate index into list of possible values
-#        print("Replace possibles list of {} with value of {}.".format(unknown_spots[list_of_keys[j]], unknown_spots[list_of_keys[j]][grid_spot_index]))
         puzzle[list_of_keys[j]] = unknown_spots[list_of_keys[j]][grid_spot_index]    # Replace list of possible values with single trial value
         iteration = iteration // len(unknown_spots[list_of_keys[j]])
     return puzzle
@@ -528,7 +514,6 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     count = dict()
     for j in range(num):
         count[j] = 0  # set all grid spot counts to zero
-#    print(count)    #DEBUG
     return count
 
 
@@ -571,8 +556,6 @@ def count_columns(puzzle):  # Count how many of each value are in each column
                 break
     return result
 
-    pass
-
 
 def count_internal_grids(puzzle):  # Count how many of each value are in each internal grid
     pass
@@ -585,7 +568,6 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
         result = result and count_rows(puzzle)   
         result = result and count_columns(puzzle)
         result = result and count_internal_grids(puzzle)
-#    print("Result is {}".format(result))     #DEBUG
     return result
 
 def get_starting_value():
@@ -679,11 +661,9 @@ while not done:
         outer_list = possibles_list.copy()    # update outer list for next while loop iteration
     
     loop = loop + 1  #Increment iteration loop counter                            
-#DEBUG    show_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    # Add separator characters between rows and columns
 
     column_max = column_width(possibles_list)    #DEBUG
 
-#DEBUG    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # DEBUG
     show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     current_count = list_count(possibles_list)
@@ -695,7 +675,6 @@ while not done:
 
     (done, reason) = are_we_done(possibles_list, loop, last_count)
 
-#all_grids_resolved(possibles_list) or loop >= MAX_LOOP or no_progress(last_count)
     last_count = current_count
 else:
     print("Game over because {} so try guessing.".format(reason))
@@ -703,9 +682,7 @@ else:
 
 print()
 print()
-#DEBUG  print(possibles_list)
 print("***************** Final puzzle result is: ********************")
-#show_extended_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP)    
 show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
@@ -750,7 +727,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, trial_duration))
         full_duration_seconds = number_solutions / trial_num * trial_duration
         full_duration_hours = full_duration_seconds / 3600
-        print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+        print("This means that at this rate all {} solutions would need {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
 
     if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
                      # since single evaluation at 10,000,000 takes multiple minutes
