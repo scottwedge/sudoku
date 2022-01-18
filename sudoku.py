@@ -571,8 +571,14 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
     return result
 
 def get_starting_value():
-    num = input("Enter starting number: ")
-    num = int(num)    # Convert from string to integer
+    while True:  # repeat until valid entry
+        num = input("Enter starting number: ")
+        try:
+            num = int(num)    # Convert from string to integer
+        except ValueError:
+            print("{} is not a valid starting number.".format(num))
+        else:
+            break
     return  num 
 
 
