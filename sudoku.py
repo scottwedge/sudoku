@@ -81,16 +81,27 @@ def get_hardest_puzzle(): # return data file as list
 
 
 def select_puzzle():
-    print()   # blank line
-    num = int(input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ")) # Convert returned string to integer
-    if num == 1: 
-        puzzle = get_initial_puzzle()
-    if num == 2: 
-        puzzle = get_medium_puzzle()
-    if num == 3: 
-        puzzle = get_hard_puzzle()
-    if num == 4: 
-        puzzle = get_hardest_puzzle()
+    while True:
+        print()   # blank line
+        val = input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ") # Convert returned string to integer
+        try:
+            num = int(val)
+        except ValueError:
+            print("'{}' is not valid. Enter a value between 1 and 4.".format(val))
+#            continue
+        else:
+            if num == 1:
+                puzzle = get_initial_puzzle()
+                break
+            if num == 2:
+                puzzle = get_medium_puzzle()
+                break
+            if num == 3:
+                puzzle = get_hard_puzzle()
+                break
+            if num == 4:
+                puzzle = get_hardest_puzzle()
+                break
     return puzzle
 
 
@@ -624,7 +635,7 @@ last_count = HUGE_VALUE
 
 greet_user() 
         
-puzzle = select_puzzle()   # Choose between the two puzzles
+puzzle = select_puzzle()   # Choose between the four puzzles
 side = size_of_puzzle_side(puzzle)
 
 values = all_values(FULL_SIDE)
