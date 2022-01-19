@@ -20,8 +20,8 @@ HUGE_VALUE = 100000   # Initial count for number of values still possible
 
 # Functions
 def greet_user():    # Greet user
-    print("Welcome to my Sudoku solving application")
-    print("for {} by {} puzzle".format(FULL_SIDE, FULL_SIDE))
+    print("Welcome to my Sudoku solving application ", end="")
+    print("for {} by {} puzzle.".format(FULL_SIDE, FULL_SIDE))
 
 
 def get_initial_puzzle(): # return data file as list
