@@ -570,13 +570,21 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
         result = result and count_internal_grids(puzzle)
     return result
 
-def get_starting_value():
+def get_starting_value(number_solutions):
     while True:  # repeat until valid entry
         num = input("Enter starting number: ")
         try:
             num = int(num)    # Convert from string to integer
+            if num < 0:
+                print("Entered value must be between 0 and {}.".format(number_solutions))
+                continue
+            if num > number_solutions:
+                print("Entered value must be between 0 and {}.".format(number_solutions))
+                continue
         except ValueError:
             print("{} is not a valid starting number.".format(num))
+        except UnboundLocalError:
+            print("Entered value must be between 0 and {}.".format(number_solutions))
         else:
             break
     return  num 
@@ -714,7 +722,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         successful_solution = bruteforce(possibles_list, 0, number_solutions)
 
     if reply == 3: # Brute force solution starting from entered value (allows continuation)
-        begin_num  = get_starting_value()
+        begin_num  = get_starting_value(number_solutions)
         successful_solution = bruteforce(possibles_list, begin_num, number_solutions)
 
     if reply == 4: 
