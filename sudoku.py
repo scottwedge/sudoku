@@ -457,6 +457,7 @@ def count_pairs(list):  # Find unique pairs in puzzle
             else:
                 dict_of_pairs[str(list[j])] = 1  # Initialize count
                 dict_of_pair_locations[str(list[j])] = [j]  # First spot in grid
+
     print(dict_of_pairs)   #DEBUG
     print(dict_of_pair_locations)   #DEBUG
     return (dict_of_pairs, dict_of_pair_locations)
@@ -628,6 +629,17 @@ def run_time_trial():
     t = 1    # DEBUG   temp value
     return t
 
+def basic_time_trial(possibles_list, start_num, end_num):
+        start_time = get_time()
+        bruteforce(possibles_list, start_num, end_num)
+        end_time = get_time()
+        trial_duration = end_time - start_time
+        print()
+        print("Trial of {} solutions took {:.2f} seconds.".format(end_num - start_num, trial_duration))
+        full_duration_seconds = number_solutions / (end_num - start_num) * trial_duration
+        full_duration_hours = full_duration_seconds / 3600
+        print("This means that at this rate all {} solutions would need {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+
 # Main code
 
 # Initialize variables
@@ -743,16 +755,8 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
-        trial_num = 1000
-        start_time = get_time()
-        bruteforce(possibles_list, start_num, trial_num)
-        end_time = get_time()
-        trial_duration = end_time - start_time
-        print()
-        print("Trial of {} solutions took {:.2f} seconds.".format(trial_num, trial_duration))
-        full_duration_seconds = number_solutions / trial_num * trial_duration
-        full_duration_hours = full_duration_seconds / 3600
-        print("This means that at this rate all {} solutions would need {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
+        end_num = 1000
+        basic_time_trial(possibles_list, start_num, end_num)
 
     if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
                      # since single evaluation at 10,000,000 takes multiple minutes
