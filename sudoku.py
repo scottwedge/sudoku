@@ -640,6 +640,29 @@ def basic_time_trial(possibles_list, start_num, end_num):
         full_duration_hours = full_duration_seconds / 3600
         print("This means that at this rate all {} solutions would need {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
 
+
+def advanced_time_trial(possibles_list, number_solutions):
+        number_of_intervals = 10
+        test_values = []   # Initialize 
+        interval = number_solutions / number_of_intervals
+        interval = int(interval)   # convert to integer from float
+        time_sum = 0
+        for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
+            start_time = get_time()
+    #        bruteforce(possibles_list, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
+            time.sleep(2)    #DEBUG
+            end_time = get_time()
+            trial_duration = end_time - start_time
+            time_sum = time_sum + trial_duration
+            print()
+            print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
+            average_time_in_seconds = time_sum / j   # Calculate average time in seconds
+            total_time_in_seconds = average_time_in_seconds * interval * number_of_intervals
+            total_time_in_hours = total_time_in_seconds / 3600
+            total_time_in_days = total_time_in_hours / 24
+            print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours or {:.2f} days to solve.".format(number_solutions, total_time_in_seconds, total_time_in_hours, total_time_in_days))
+
+
 # Main code
 
 # Initialize variables
@@ -763,21 +786,6 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                      # whereas starting from zero does several evaluations per second
                      # and gives an unrealistic "quick" solution
         number_of_intervals = 10
-        test_values = []   # Initialize 
-        interval = number_solutions / number_of_intervals
-        interval = int(interval)   # convert to integer from float
-        time_sum = 0
-        for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
-            start_time = get_time()
-            bruteforce(possibles_list, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
-            end_time = get_time()
-            trial_duration = end_time - start_time
-            time_sum = time_sum + trial_duration
-            print()
-            print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
-            total_time_in_seconds = time_sum * interval
-            total_time_in_hours = total_time_in_seconds / 3600
-            total_time_in_days = total_time_in_hours / 24
-            print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours or {:.2f} hours to solve.".format(number_solutions, total_time_in_seconds, total_time_in_hours, total_time_in_days))
+        advanced_time_trial(possibles_list, number_solutions)
 else:
     print("All grids resolved.")
