@@ -657,6 +657,7 @@ def advanced_time_trial(possibles_list, number_solutions):
             print()
             print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
             average_time_in_seconds = time_sum / j   # Calculate average time in seconds
+            print("Average of {} iterations took {:.2f} seconds.".format(j, time_sum / j))
             total_time_in_seconds = average_time_in_seconds * interval * number_of_intervals
             total_time_in_hours = total_time_in_seconds / 3600
             total_time_in_days = total_time_in_hours / 24
