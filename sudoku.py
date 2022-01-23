@@ -459,8 +459,8 @@ def count_pairs(list):  # Find unique pairs in puzzle
                 dict_of_pairs[str(list[j])] = 1  # Initialize count
                 dict_of_pair_locations[str(list[j])] = [j]  # First spot in grid
 
-    print(dict_of_pairs)   #DEBUG
-    print(dict_of_pair_locations)   #DEBUG
+#    print(dict_of_pairs)   #DEBUG
+#    print(dict_of_pair_locations)   #DEBUG
     return (dict_of_pairs, dict_of_pair_locations)
 
 
@@ -668,6 +668,7 @@ def advanced_time_trial(possibles_list, number_solutions):
 
 
 def list_pair_choices(dict_of_pairs):
+    print(dict_of_pairs)
     pass
 
 # Main code
@@ -780,10 +781,14 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
 
     if reply == 4: 
         while True:
-            (dict_of_pairs, dict_of_pair_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
-            guess_list = try_guess_list(possibles_list)    # Create list based on user guesses
-            list_pair_choices(dict_of_pairs)
-            choice = input("Which pair do you want to select: ?")
+            (dict_of_spots, dict_of_spot_locationss) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
+            list_pair_choices(dict_of_spots)
+            for j in unknown_spots:
+                print("Spot: {:2d}    Values: {}.".format(j,unknown_spots[j]))
+            spot_choice = input("Which spot do you want to select?: ")
+            print("Choices of values are: {}.".format(unknown_spots[int(spot_choice)]))
+            val_choice = input("Select which value to try?: ")
+            guess_list = try_guess_list(possibles_list)    # Create new trial list based on user input
             pass  # Try to solve the existing puzzle
                   # If cannot solve then remove these options from original puzzle
                   # then offer to continue or quit
