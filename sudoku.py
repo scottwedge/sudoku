@@ -5,6 +5,7 @@
 
 # Imports
 import time    # in case want to time how long brute force solution takes
+import random  # for random quick time instead of very long delays
 
 
 # Constants
@@ -650,14 +651,16 @@ def advanced_time_trial(possibles_list, number_solutions):
         for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
             start_time = get_time()
     #        bruteforce(possibles_list, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
-            time.sleep(2)    #DEBUG
+#            time.sleep(2)    #DEBUG
+            t = random.randint(0,10)   # DEBUG to generate random time to test calculation of average time
+            time.sleep(t)
             end_time = get_time()
             trial_duration = end_time - start_time
             time_sum = time_sum + trial_duration
             print()
             print("Iteration {} of {} solutions took {:.2f} seconds.".format(j, number_of_intervals, trial_duration))
             average_time_in_seconds = time_sum / j   # Calculate average time in seconds
-            print("Average of {} iterations took {:.2f} seconds.".format(j, time_sum / j))
+            print("Average of {} iterations is {:.2f} seconds.".format(j, time_sum / j))
             total_time_in_seconds = average_time_in_seconds * interval * number_of_intervals
             total_time_in_hours = total_time_in_seconds / 3600
             total_time_in_days = total_time_in_hours / 24
