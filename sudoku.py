@@ -667,6 +667,9 @@ def advanced_time_trial(possibles_list, number_solutions):
             print("This means that if all {} solutions are needed it will take {:.2f} seconds or {:.2f} hours or {:.2f} days to solve.".format(number_solutions, total_time_in_seconds, total_time_in_hours, total_time_in_days))
 
 
+def list_pair_choices(dict_of_pairs):
+    pass
+
 # Main code
 
 # Initialize variables
@@ -777,8 +780,13 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
 
     if reply == 4: 
         while True:
-            guess_list = try_guess_list(possibles_list)    # Copy stalled list and start guessing
-            (dict_of_pairs, dict_of_pair_locations) = count_pairs(guess_list)  # Find unique pairs in puzzle
+            (dict_of_pairs, dict_of_pair_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
+            guess_list = try_guess_list(possibles_list)    # Create list based on user guesses
+            list_pair_choices(dict_of_pairs)
+            choice = input("Which pair do you want to select: ?")
+            pass  # Try to solve the existing puzzle
+                  # If cannot solve then remove these options from original puzzle
+                  # then offer to continue or quit
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
