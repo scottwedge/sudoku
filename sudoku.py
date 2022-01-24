@@ -781,17 +781,26 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
 
     if reply == 4: 
         while True:
-            (dict_of_spots, dict_of_spot_locationss) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
+            (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
             list_pair_choices(dict_of_spots)
-            valid_choice = False
-            while not valid_choice:
+            valid_spot = False
+            print(unknown_spots)    #DEBUG
+            while not valid_spot:
                 for j in unknown_spots:
                     print("Spot: {:2d}    Values: {}.".format(j,unknown_spots[j]))
                 spot_choice = input("Which spot do you want to select?: ")
                 if int(spot_choice) in unknown_spots:
-                    valid_choice = True
-            print("Choices of values are: {}.".format(unknown_spots[int(spot_choice)]))
-            val_choice = input("Select which value to try?: ")
+                    valid_spot = True    # Exit while loop
+            valid_value = False
+            while not valid_value:
+                print("Choices of values are: {}.".format(unknown_spots[int(spot_choice)]))
+                value_choice = input("Select which value to try?: ")
+                value_choice = int(value_choice)  # Convert to integer
+                l = []  # Init list
+                l.append(value_choice)   # Convert to list
+                if l in unknown_spots[int(spot_choice)]:
+                    valid_value = True    # Exit while loop
+            print("Made it here")   # DEBUG
             guess_list = try_guess_list(possibles_list)    # Create new trial list based on user input
             pass  # Try to solve the existing puzzle
                   # If cannot solve then remove these options from original puzzle
