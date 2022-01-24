@@ -784,10 +784,10 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
             (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
             list_pair_choices(dict_of_spots)
             valid_spot = False
-            print(unknown_spots)    #DEBUG
             while not valid_spot:
                 for j in unknown_spots:
                     print("Spot: {:2d}    Values: {}.".format(j,unknown_spots[j]))
+                print()  # blank spacer line
                 spot_choice = input("Which spot do you want to select?: ")
                 if int(spot_choice) in unknown_spots:
                     valid_spot = True    # Exit while loop
