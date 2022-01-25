@@ -815,7 +815,13 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
             valid_value = False
             while not valid_value:
                 print()  # blank line
-                print("Spot {} possible values are: {}.".format(spot_choice, integer_list[spot_choice]))
+                print("Spot {} possible values are: ".format(spot_choice), end="")
+                l = len(integer_list[spot_choice])
+                for j in range(l):
+                    if j == l - 1:
+                        print("{}.".format(integer_list[spot_choice][j]))  # print last value then newline
+                    else:
+                        print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
                 value_choice = int(input("Enter which value to try: ")) # Convert to integer
                 l = []  # Init list
                 l.append(value_choice)   # Convert to list
