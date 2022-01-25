@@ -798,13 +798,15 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         successful_solution = bruteforce(possibles_list, begin_num, number_solutions)
 
     if reply == 4: 
-        while True:
+        valid_value = False  # setup conditions for while loop
+        valid_spot = False
+        while not valid_value and not valid_spot:
             (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
             list_pair_choices(dict_of_spots)
             integer_list = list_to_integer(unknown_spots)   #DEBUG
             print(integer_list)   # DEBUG
             print("here")  #DEBUG
-            valid_spot = False
+
             while not valid_spot:
                 for j in integer_list:
                     print("Spot: {:2d}    Values: {}.".format(j,integer_list[j]))
@@ -812,7 +814,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                 spot_choice = int(input("Which spot do you want to select?: "))  #Convert to integer
                 if spot_choice in integer_list:
                     valid_spot = True    # Exit while loop
-            valid_value = False
+
             while not valid_value:
                 print()  # blank line
                 print("Spot {} possible values are: ".format(spot_choice), end="")
@@ -823,9 +825,9 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                     else:
                         print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
                 value_choice = int(input("Enter which value to try: ")) # Convert to integer
-                l = []  # Init list
-                l.append(value_choice)   # Convert to list
-                if l in integer_list[spot_choice]:
+                new_l = []  # Init list
+                new_l.append(value_choice)   # Convert to list
+                if value_choice in integer_list[spot_choice]:
                     valid_value = True    # Exit while loop
             print("Made it here")   # DEBUG
             guess_list = try_guess_list(possibles_list)    # Create new trial list based on user input
