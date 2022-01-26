@@ -676,14 +676,9 @@ def list_to_integer(d):  # Convert dictionary value of list of single list to li
     new_dict = d.copy()   # Copy dictionary
 
     for j in new_dict:
-        print(type(j))   #DEBUG
-        int_list = []    # Empty list
-        print("Dict index value is: {}".format(j))  #DEBUG
+        int_list = []    # Initialize empty list
         for k in new_dict[j]: #Cycle through list of single value list for this dictionary index
-            print(type(k)) #DEBUG
-            print("Dict value is: {}".format(k))     #DEBUG 
             for m in k:
-                print(type(m))  #DEBUG
                 int_list.append(m)
         new_dict[j] = int_list   # Replace values ie [[1],[2],[3]] with [1,2,3]
     return new_dict
@@ -807,7 +802,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
 
             while not valid_spot:
                 for j in integer_list:
-                    print("Spot: {:2d}    Values: {}.".format(j,integer_list[j]))
+                    print("Spot: {:2d}    List of values: {}.".format(j,integer_list[j]))
                 print()  # blank spacer line
                 spot_choice = input("Which spot do you want to select?: ")
                 try:
