@@ -804,14 +804,16 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
             (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
             list_pair_choices(dict_of_spots)
             integer_list = list_to_integer(unknown_spots)   #DEBUG
-            print(integer_list)   # DEBUG
-            print("here")  #DEBUG
 
             while not valid_spot:
                 for j in integer_list:
                     print("Spot: {:2d}    Values: {}.".format(j,integer_list[j]))
                 print()  # blank spacer line
-                spot_choice = int(input("Which spot do you want to select?: "))  #Convert to integer
+                spot_choice = input("Which spot do you want to select?: ")
+                try:
+                    spot_choice = int(spot_choice) # Only valid values convert to integer
+                except:
+                    pass # Will prompt for another value
                 if spot_choice in integer_list:
                     valid_spot = True    # Exit while loop
 
@@ -824,12 +826,14 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                         print("{}.".format(integer_list[spot_choice][j]))  # print last value then newline
                     else:
                         print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
-                value_choice = int(input("Enter which value to try: ")) # Convert to integer
-                new_l = []  # Init list
-                new_l.append(value_choice)   # Convert to list
+                value_choice = input("Enter which value to try: ") 
+                try:
+                    value_choice = int(value_choice)  # Only valid inputs convert to integer
+                except:
+                    pass   #Will prompt for another input
                 if value_choice in integer_list[spot_choice]:
                     valid_value = True    # Exit while loop
-            print("Made it here")   # DEBUG
+
             guess_list = try_guess_list(possibles_list)    # Create new trial list based on user input
             pass  # Try to solve the existing puzzle
                   # If cannot solve then remove these options from original puzzle
