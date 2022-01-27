@@ -464,9 +464,10 @@ def count_pairs(list):  # Find unique pairs in puzzle
     return (dict_of_pairs, dict_of_pair_locations)
 
 
-def try_guess_list(possibles_list):
-    # Find two spots with two different possible values and cycle through all possible four configurations until one works
+def create_puzzle_with_guess(possibles_list, spot_choice, value_choice):
+    # Update stalled puzzle with user-selected value 
     guess_list = possibles_list.copy()
+    guess_list[spot_choice] = value_choice  # Update stalled puzzle with user-selected value 
     return guess_list
 
 
@@ -668,7 +669,7 @@ def advanced_time_trial(possibles_list, number_solutions):
 
 
 def list_pair_choices(dict_of_pairs):
-    print(dict_of_pairs)
+    # print(dict_of_pairs)
     pass
 
 
@@ -829,7 +830,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                 if value_choice in integer_list[spot_choice]:
                     valid_value = True    # Exit while loop
 
-            guess_list = try_guess_list(possibles_list)    # Create new trial list based on user input
+            guess_list = create_puzzle_with_guess(possibles_list, spot_choice, value_choice)    # Create new trial list based on user input
             pass  # Try to solve the existing puzzle
                   # If cannot solve then remove these options from original puzzle
                   # then offer to continue or quit
