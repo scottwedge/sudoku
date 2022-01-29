@@ -130,22 +130,22 @@ def create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_
 
 def show_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
-    side = size_of_puzzle_side(puzzle)
-    for row in range(side):
-        create_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)
-        for column in range(side):
-            print(COL_SEP, SPACE, puzzle[row * side + column], SPACE,  sep="", end="")
+    full_side = size_of_puzzle_side(puzzle)
+    for row in range(full_side):
+        create_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)
+        for column in range(full_side):
+            print(COL_SEP, SPACE, puzzle[row * full_side + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
-    create_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # Create bottom separator line
+    create_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)  # Create bottom separator line
 
 
 def show_extended_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters between rows and columns
     print()  # blank line
-    side = size_of_puzzle_side(puzzle)
-    for row in range(side):
-        create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # "+---+---...+" format
-        for column in range(side):
-            print(COL_SEP, SPACE, puzzle[row * side + column], SPACE,  sep="", end="")
+    full_side = size_of_puzzle_side(puzzle)
+    for row in range(full_side):
+        create_extended_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)  # "+---+---...+" format
+        for column in range(full_side):
+            print(COL_SEP, SPACE, puzzle[row * full_side + column], SPACE,  sep="", end="")
         print(COL_SEP) # Add final column separator and default line break at end of line
     create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # final line
 
