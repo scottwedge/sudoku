@@ -692,6 +692,27 @@ def list_to_integer(d):  # Convert dictionary value of list of single list to li
     return new_dict
 
 
+def remove_single_conflicts(puzzle):
+# Remove conflicting known single values from same column, same row and same internal grid of inner loop
+# Start from top left spot and work to bottom right spot in puzzle
+    for j in range(len(puzzle)):
+    
+    # If value of spot is known single value then remove it from matching column, row and inner grid
+        if len(puzzle[j]) != 1:
+            continue      # skip spot since contains more than one possible value
+    
+        # Check all other spots in that column and remove conflicts
+        puzzle = resolve_column(puzzle, j, full_side)
+    
+        # Find all single value spots in each row and remove conflicts 
+        puzzle = resolve_row(puzzle, j, full_side)
+    
+        # Now check each inner grid for single value conflicts 
+        puzzle = resolve_inner_grid(puzzle, j, part_side)
+    
+    updated_puzzle = puzzle.copy()    # update puzzle for next while loop iteration
+    return updated_puzzle
+
 # Main code
 
 # Initialize variables
@@ -719,7 +740,7 @@ loop = 0
 done = False
 
 possibles_list = setup_possibles_list(puzzle, values)
-outer_list = possibles_list.copy()
+puzzle = possibles_list.copy()
 full_side = size_of_puzzle_side(puzzle)  #Determine if puzzle is 9x9 or 16x16
 part_side = size_of_grid_side(puzzle)  #Determine if puzzle grid is 3x3 or 4x4
 
@@ -728,64 +749,48 @@ while not done:
     print ("Loop count= {}".format(loop))
     
     count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
-    print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
+    print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
 
-    c = column_width(possibles_list) # Determine largest possible list in each column so can print column that width
+    c = column_width(puzzle) # Determine largest possible list in each column so can print column that width
     print("Column widths are: {}".format(c))    #DEBUG
 
-    # Remove conflicting known single values from same column, same row and same internal grid of inner loop
-    # Start from top left spot and work to bottom right spot in puzzle
-    for j in range(len(outer_list)):
-#DEBUG        print("J=", j)   #DEBUG
-    # If value of spot is known single value then remove it from matching column, row and inner grid
-        if len(outer_list[j]) != 1:
-            continue      # skip spot since contains more than one possible value
-    
-        # Check all other spots in that column and remove conflicts
-        possibles_list = resolve_column(possibles_list, j, full_side)
-    
-        # Find all single value spots in each row and remove conflicts 
-        possibles_list = resolve_row(possibles_list, j, full_side)
-   
-        # Now check each inner grid for single value conflicts 
-        possibles_list = resolve_inner_grid(possibles_list, j, part_side)
-
-        outer_list = possibles_list.copy()    # update outer list for next while loop iteration
+    puzzle = remove_single_conflicts(puzzle) # Remove conflicting known single values from same column, 
+                                             # row and internal grid 
     
     loop = loop + 1  #Increment iteration loop counter                            
 
-    column_max = column_width(possibles_list)    #DEBUG
+    column_max = column_width(puzzle)    #DEBUG
 
-    show_adjustable_grid_lines(possibles_list, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+    show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
-    current_count = list_count(possibles_list)
+    current_count = list_count(puzzle)
     
-    progress = find_pairs(possibles_list)  
+    progress = find_pairs(puzzle)  
     if progress:  # reset loop and count values so looping continues
         loop = 0
         last_count = 100000
 
-    (done, reason) = are_we_done(possibles_list, loop, last_count)
+    (done, reason) = are_we_done(puzzle, loop, last_count)
 
     last_count = current_count
 else:
     print("Game over because {} so try guessing.".format(reason))
-    progress = find_pairs(possibles_list)  
+    progress = find_pairs(puzzle)  
 
 print()
 print()
 print("***************** Final puzzle result is: ********************")
-show_adjustable_grid_lines(possibles_list, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
-count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
-print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
+count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
+print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
 
-if count > len(possibles_list):  # Decide how to proceed if there are still unresolved grids
+if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
     print()
     print("There are still unresolved grids.")
-    unknown_spots =  get_stalled_spots_list(possibles_list)   # Create list of grid spots that are still unknown
+    unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
     num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
-    known_spots = get_known_spots_list(possibles_list)  # List of known spots
+    known_spots = get_known_spots_list(puzzle)  # List of known spots
     number_solutions = get_number_possible_solutions(unknown_spots)
     print()
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
@@ -797,11 +802,11 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
         pass
 
     if reply == 2: # Brute force solution starting from zero
-        successful_solution = bruteforce(possibles_list, 0, number_solutions)
+        successful_solution = bruteforce(puzzle, 0, number_solutions)
 
     if reply == 3: # Brute force solution starting from entered value (allows continuation)
         begin_num  = get_starting_value(number_solutions)
-        successful_solution = bruteforce(possibles_list, begin_num, number_solutions)
+        successful_solution = bruteforce(puzzle, begin_num, number_solutions)
 
     if reply == 4: 
         valid_value = False  # setup conditions for while loop
@@ -840,7 +845,7 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
                 if value_choice in integer_list[spot_choice]:
                     valid_value = True    # Exit while loop
 
-            guess_list = create_puzzle_with_guess(possibles_list, spot_choice, value_choice)    # Create new trial list based on user input
+            guess_list = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Create new trial list based on user input
             pass  # Try to solve the existing puzzle
                   # If cannot solve then remove these options from original puzzle
                   # then offer to continue or quit
@@ -848,13 +853,13 @@ if count > len(possibles_list):  # Decide how to proceed if there are still unre
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
         end_num = 1000
-        basic_time_trial(possibles_list, start_num, end_num)
+        basic_time_trial(puzzle, start_num, end_num)
 
     if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
                      # since single evaluation at 10,000,000 takes multiple minutes
                      # whereas starting from zero does several evaluations per second
                      # and gives an unrealistic "quick" solution
         number_of_intervals = 10
-        advanced_time_trial(possibles_list, number_solutions)
+        advanced_time_trial(puzzle, number_solutions)
 else:
     print("All grids resolved.")
