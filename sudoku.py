@@ -10,7 +10,7 @@ import random  # for random quick time instead of very long delays
 
 # Constants
 PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
-FULL_SIDE = PART_SIDE ** 2
+# FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
 SPACE = " "     # have space on either side of value to make reading grid easier
@@ -22,7 +22,7 @@ HUGE_VALUE = 100000   # Initial count for number of values still possible
 # Functions
 def greet_user():    # Greet user
     print("Welcome to my Sudoku solving application ", end="")
-    print("for {} by {} puzzle.".format(FULL_SIDE, FULL_SIDE))
+    print("for either 9x9 or 16x16 puzzle.")
 
 
 def get_initial_puzzle(): # return data file as list
@@ -108,16 +108,16 @@ def select_puzzle():
 
 def show_grid(puzzle):    # format known puzzle values into grid to be displayed to user
     print()  # blank line
-    side = size_of_puzzle_side(puzzle)
-    for row in range(side):
-        for column in range(side):
-            print(puzzle[row * side + column], " ",  sep="", end="")
+    full_side = size_of_puzzle_side(puzzle)
+    for row in range(full_side):
+        for column in range(full_side):
+            print(puzzle[row * full_side + column], " ",  sep="", end="")
         print() # line break at end of line
 
 
-def create_row_separating_line_with_intersecting_plus_symbol(side , ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
-    side = size_of_puzzle_side(puzzle)
-    for j in range(side):
+def create_row_separating_line_with_intersecting_plus_symbol(full_side , ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
+#    side = size_of_puzzle_side(puzzle)
+    for j in range(full_side):
         print("+", ROW_SEP, ROW_SEP, ROW_SEP, sep="", end="") 
     print("+")   # Need new line at end of string of symbols
 
@@ -159,10 +159,11 @@ def all_values(side):
 
 def setup_possibles_list(puzzle, values):
     possibles_list = []   # initialize empty list
+    full_side = size_of_puzzle_side(puzzle)
 
     for j in range(len(puzzle)):
         if puzzle[j] == 0:
-            possibles_list.append(all_values(FULL_SIDE))          # all values possible for blank field
+            possibles_list.append(all_values(full_side))          # all values possible for blank field
         else:
             possibles_list.append([puzzle[j]])       # value is already known so use it as a list of one value
     return possibles_list
@@ -266,8 +267,8 @@ def init_column_width(possibles_list, number_of_columns):   # Initialize all dic
 
 
 def size_of_puzzle_side(list):
-    num = int((len(list) + 1) ** 0.5)  # Integer number of columns or rows is square root of number of spots
-    return num
+    full_side = int((len(list) + 1) ** 0.5)  # Integer number of columns or rows is square root of number of spots
+    return full_side
 
 
 def column_width(possibles_list): # Determine largest possible list in each column so can print column that width
@@ -695,7 +696,7 @@ greet_user()
 puzzle = select_puzzle()   # Choose between the puzzles with different difficulty levels
 side = size_of_puzzle_side(puzzle)  #Determine is puzzle is 9x9 or 16x16
 
-values = all_values(FULL_SIDE)  # Determine all possible values for each spot (1..9 or 1..16)
+values = all_values(side)  # Determine all possible values for each spot (1..9 or 1..16)
 
 print()
 print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
@@ -712,6 +713,7 @@ done = False
 
 possibles_list = setup_possibles_list(puzzle, values)
 outer_list = possibles_list.copy()
+full_side = size_of_puzzle_side(puzzle)  #Determine is puzzle is 9x9 or 16x16
 
 while not done:
     print()
@@ -732,10 +734,10 @@ while not done:
             continue      # skip spot since contains more than one possible value
     
         # Check all other spots in that column and remove conflicts
-        possibles_list = resolve_column(possibles_list, j, FULL_SIDE)
+        possibles_list = resolve_column(possibles_list, j, full_side)
     
         # Find all single value spots in each row and remove conflicts 
-        possibles_list = resolve_row(possibles_list, j, FULL_SIDE)
+        possibles_list = resolve_row(possibles_list, j, full_side)
    
         # Now check each inner grid for single value conflicts 
         possibles_list = resolve_inner_grid(possibles_list, j, PART_SIDE)
@@ -746,7 +748,7 @@ while not done:
 
     column_max = column_width(possibles_list)    #DEBUG
 
-    show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+    show_adjustable_grid_lines(possibles_list, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
     current_count = list_count(possibles_list)
     
@@ -765,7 +767,7 @@ else:
 print()
 print()
 print("***************** Final puzzle result is: ********************")
-show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+show_adjustable_grid_lines(possibles_list, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
 count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(possibles_list)))
