@@ -700,9 +700,10 @@ last_count = HUGE_VALUE
 greet_user() 
         
 puzzle = select_puzzle()   # Choose between the puzzles with different difficulty levels
-side = size_of_puzzle_side(puzzle)  #Determine is puzzle is 9x9 or 16x16
+full_side = size_of_puzzle_side(puzzle)  #Determine if puzzle is 9x9 or 16x16
+part_side = size_of_grid_side(puzzle)  #Determine if puzzle grid is 3x3 or 4x4
 
-values = all_values(side)  # Determine all possible values for each spot (1..9 or 1..16)
+values = all_values(full_side)  # Determine all possible values for each spot (1..9 or 1..16)
 
 print()
 print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
