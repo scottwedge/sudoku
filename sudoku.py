@@ -9,7 +9,7 @@ import random  # for random quick time instead of very long delays
 
 
 # Constants
-PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
+#PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 # FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
@@ -169,17 +169,17 @@ def setup_possibles_list(puzzle, values):
     return possibles_list
 
 
-def create_list_of_internal_grids(PART_SIDE):  # Create list of internal grid lists for any N x N grid
+def create_list_of_internal_grids(part_side):  # Create list of internal grid lists for any N x N grid
     list_of_internal_grids = []
-    for s in range(PART_SIDE): # Move down vertically between top left spot in column of left-most internal grids
+    for s in range(part_side): # Move down vertically between top left spot in column of left-most internal grids
                                # So in a 9x9 grid (spots 0-80) move between spots 0, 27 and 54
-        for n in range(PART_SIDE):   # move to next grid to the right 
+        for n in range(part_side):   # move to next grid to the right 
             internal_grid = []    # Initialize new list
-            for v in range(PART_SIDE):  # Move vertically within internal grid 
-                for h in range(PART_SIDE): # Move horizontally within internal grid
-                    spot = v * PART_SIDE ** 2 + h
-                    spot = spot + n * PART_SIDE
-                    spot = spot + s * PART_SIDE ** 3
+            for v in range(part_side):  # Move vertically within internal grid 
+                for h in range(part_side): # Move horizontally within internal grid
+                    spot = v * part_side ** 2 + h
+                    spot = spot + n * part_side
+                    spot = spot + s * part_side ** 3
                     internal_grid.append(spot)
             list_of_internal_grids.append(internal_grid)        
     return list_of_internal_grids
@@ -193,12 +193,12 @@ def convert_list(list_of_list):    # Convert list of single list to list of sing
     return list_of_list
 
 
-def resolve_column(possibles_list, j, FULL_SIDE):
-    col = j % FULL_SIDE  # determine which column spot is in
+def resolve_column(possibles_list, j, full_side):
+    col = j % full_side  # determine which column spot is in
     
     # Delete value from all spots in column except self
     for k in range(len(possibles_list)):
-        if j % FULL_SIDE != k % FULL_SIDE:
+        if j % full_side != k % full_side:
             continue    # skip this value since in different column
         if j == k:
             continue    # skip since cannot compare self to self 
@@ -208,12 +208,12 @@ def resolve_column(possibles_list, j, FULL_SIDE):
     return possibles_list
     
 
-def resolve_row(possibles_list, j, FULL_SIDE):
+def resolve_row(possibles_list, j, full_side):
     # Delete value from all spots in row except self
     # Find all non-single value spots in each row and remove them from other possible spots in same row
     # Determine row number using integer division (//)
     for k in range(len(possibles_list)):
-        if j // FULL_SIDE != k // FULL_SIDE:
+        if j // full_side != k // full_side:
             continue   # skip since different row
         if j == k:
             continue    # skip since cannot compare self to self 
@@ -223,10 +223,10 @@ def resolve_row(possibles_list, j, FULL_SIDE):
     return possibles_list
     
 
-def resolve_inner_grid(possibles_list, j, PART_SIDE):
+def resolve_inner_grid(possibles_list, j, part_side):
     # Delete value from all spots in own inner grid except self
-    # Create list of sets of inner grids based on PART_SIDE
-    list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
+    # Create list of sets of inner grids based on part_side
+    list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
 
     for list in list_of_internal_grids:
     # first verify that both spots are located in the same inner grid 
@@ -271,6 +271,11 @@ def size_of_puzzle_side(list):
     return full_side
 
 
+def size_of_grid_side(list):
+    part_side = int((len(list) + 1) ** 0.25)  # Integer number of columns or rows is fourth root of number of spots
+    return part_side
+
+
 def column_width(possibles_list): # Determine largest possible list in each column so can print column that width
     number_of_columns = size_of_puzzle_side(possibles_list)  # Integer number of columns is square root of number of spots
     column_max = init_column_width(possibles_list, number_of_columns)   # Init all values to one
@@ -281,8 +286,8 @@ def column_width(possibles_list): # Determine largest possible list in each colu
     return column_max
 
 
-def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
-    for j in range(FULL_SIDE):
+def create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
+    for j in range(full_side):
         print("+", sep="", end="")  # Print first character in line
 
         # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
@@ -294,19 +299,19 @@ def create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_ma
     print("+")   # Complete end of line with intersecting symbol
 
 
-def show_adjustable_grid_lines(possibles_list, FULL_SIDE, ROW_SEP, COL_SEP, column_max):    # Adjust column spacing based on max column width
+def show_adjustable_grid_lines(possibles_list, full_side, ROW_SEP, COL_SEP, column_max):    # Adjust column spacing based on max column width
     print()  # blank line
-    for row in range(FULL_SIDE):
-        create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+    for row in range(full_side):
+        create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
 
-        for column in range(FULL_SIDE):
+        for column in range(full_side):
             # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
             if column_max[column] == 1: width = 3
             if column_max[column] == 2: width = 10
             if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
-            print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * FULL_SIDE + column]), SPACE, w=width),  sep="", end="")
+            print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(possibles_list[row * full_side + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
-    create_adjustable_row_separating_line(FULL_SIDE, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
+    create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
     #        print("{}".format(column, end=""))
 
 
@@ -403,7 +408,8 @@ def delete_pair_from_minigrid(possibles_list, a, b, list):
 def find_pairs(possibles_list):  
 # If there are two pairs in a column, row or minigrid. 
 # One can remove those two numbers from all other spots in that column, row or minigrid.
-    side = size_of_puzzle_side(possibles_list)   # calculate length of row or column
+    full_side = size_of_puzzle_side(possibles_list)   # calculate length of row or column
+    part_side = size_of_grid_side(possibles_list)   # calculate length of grid side
     row_progress = False
     column_progress = False
     minigrid_progress = False
@@ -412,22 +418,22 @@ def find_pairs(possibles_list):
             print("Grid {} has two values of {}.".format(j, possibles_list[j])) 
             # Match rows
             for k in range(len(possibles_list)):
-                row = j // side
-                if j // side == k // side:  # In same row
+                row = j // full_side
+                if j // full_side == k // full_side:  # In same row
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  possibles_list[j]))
                             row_progress = row_progress or delete_pair_from_row(possibles_list, j, k)    # Then delete these two values from all other spots in row
             # Match column
             for k in range(len(possibles_list)):
-                column = j % side
-                if j % side == k % side:  # In same column
+                column = j % full_side
+                if j % full_side == k % full_side:  # In same column
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
                             column_progress = column_progress or delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
             # Match minigrid
-            list_of_internal_grids = create_list_of_internal_grids(PART_SIDE)  # Create list of internal grid lists for any size grid
+            list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
             for list in list_of_internal_grids:
                 for k in range(len(possibles_list)):
                     if j in list and k in list:
@@ -713,7 +719,8 @@ done = False
 
 possibles_list = setup_possibles_list(puzzle, values)
 outer_list = possibles_list.copy()
-full_side = size_of_puzzle_side(puzzle)  #Determine is puzzle is 9x9 or 16x16
+full_side = size_of_puzzle_side(puzzle)  #Determine if puzzle is 9x9 or 16x16
+part_side = size_of_grid_side(puzzle)  #Determine if puzzle grid is 3x3 or 4x4
 
 while not done:
     print()
@@ -740,7 +747,7 @@ while not done:
         possibles_list = resolve_row(possibles_list, j, full_side)
    
         # Now check each inner grid for single value conflicts 
-        possibles_list = resolve_inner_grid(possibles_list, j, PART_SIDE)
+        possibles_list = resolve_inner_grid(possibles_list, j, part_side)
 
         outer_list = possibles_list.copy()    # update outer list for next while loop iteration
     
