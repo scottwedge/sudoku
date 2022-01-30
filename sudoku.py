@@ -9,7 +9,7 @@ import random  # for random quick time instead of very long delays
 
 
 # Constants
-#PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
+# PART_SIDE = 3  # start with 9 by 9 grid (16 by 16 also possible in the future)
 # FULL_SIDE = PART_SIDE ** 2
 ROW_SEP = "-"   # separator symbol between rows in grid
 COL_SEP = "|"   # separator symbol between columns in grid
@@ -84,7 +84,7 @@ def get_hardest_puzzle(): # return data file as list
 def select_puzzle():
     while True:
         print()   # blank line
-        val = input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ") # Convert returned string to integer
+        val = input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ")  # Convert returned string to integer
         try:
             num = int(val)
         except ValueError:
@@ -112,7 +112,7 @@ def show_grid(puzzle):    # format known puzzle values into grid to be displayed
     for row in range(full_side):
         for column in range(full_side):
             print(puzzle[row * full_side + column], " ",  sep="", end="")
-        print() # line break at end of line
+        print()  # line break at end of line
 
 
 def create_row_separating_line_with_intersecting_plus_symbol(full_side , ROW_SEP, COL_SEP):  # "+-+-+-...-+" format
@@ -135,7 +135,7 @@ def show_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator characters bet
         create_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)
         for column in range(full_side):
             print(COL_SEP, SPACE, puzzle[row * full_side + column], SPACE,  sep="", end="")
-        print(COL_SEP) # Add final column separator and default line break at end of line
+        print(COL_SEP)  # Add final column separator and default line break at end of line
     create_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)  # Create bottom separator line
 
 
@@ -146,7 +146,7 @@ def show_extended_grid_lines(puzzle, ROW_SEP, COL_SEP):    # Add separator chara
         create_extended_row_separating_line_with_intersecting_plus_symbol(full_side, ROW_SEP, COL_SEP)  # "+---+---...+" format
         for column in range(full_side):
             print(COL_SEP, SPACE, puzzle[row * full_side + column], SPACE,  sep="", end="")
-        print(COL_SEP) # Add final column separator and default line break at end of line
+        print(COL_SEP)  # Add final column separator and default line break at end of line
     create_extended_row_separating_line_with_intersecting_plus_symbol(side, ROW_SEP, COL_SEP)  # final line
 
 
@@ -171,12 +171,12 @@ def setup_possibles_list(puzzle, values):
 
 def create_list_of_internal_grids(part_side):  # Create list of internal grid lists for any N x N grid
     list_of_internal_grids = []
-    for s in range(part_side): # Move down vertically between top left spot in column of left-most internal grids
+    for s in range(part_side):  # Move down vertically between top left spot in column of left-most internal grids
                                # So in a 9x9 grid (spots 0-80) move between spots 0, 27 and 54
         for n in range(part_side):   # move to next grid to the right 
             internal_grid = []    # Initialize new list
             for v in range(part_side):  # Move vertically within internal grid 
-                for h in range(part_side): # Move horizontally within internal grid
+                for h in range(part_side):  # Move horizontally within internal grid
                     spot = v * part_side ** 2 + h
                     spot = spot + n * part_side
                     spot = spot + s * part_side ** 3
@@ -276,7 +276,7 @@ def size_of_grid_side(list):
     return part_side
 
 
-def column_width(possibles_list): # Determine largest possible list in each column so can print column that width
+def column_width(possibles_list):  # Determine largest possible list in each column so can print column that width
     number_of_columns = size_of_puzzle_side(possibles_list)  # Integer number of columns is square root of number of spots
     column_max = init_column_width(possibles_list, number_of_columns)   # Init all values to one
     for j in range(len(possibles_list)):  # Iterate through entire list    
@@ -340,7 +340,7 @@ def are_we_done(possibles_list, loop, last_count):
 
 def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values from all other spots in row
 # Delete both values from all the other spots in the row except the two matching spots
-    progress = False # Track whether any values are removed  (default = False = nothing removed)
+    progress = False  # Track whether any values are removed  (default = False = nothing removed)
     side = size_of_puzzle_side(possibles_list)  # calculate length of row or column
     correct_row = a // side    # Determine which row to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
@@ -365,7 +365,7 @@ def delete_pair_from_row(possibles_list, a, b):   # Then delete these two values
 
 def delete_pair_from_column(possibles_list, a, b):   # Then delete these two values from all other spots in column
 # Delete both values from all the other spots in the column except the two matching spots
-    progress = False # Track whether any values are removed  (default = False = nothing removed)
+    progress = False  # Track whether any values are removed  (default = False = nothing removed)
     side = size_of_puzzle_side(possibles_list)   # calculate length of row or column
     correct_column = a % side    # Determine which column to delete values from
     for j in range(len(possibles_list)):   # Iterate through all spots
@@ -391,9 +391,9 @@ def delete_pair_from_column(possibles_list, a, b):   # Then delete these two val
 def delete_pair_from_minigrid(possibles_list, a, b, list):
     # Delete value from all spots in own inner grid except self
     progress = False
-    for j in list: # Cycle through all spots in minigrid
+    for j in list:  # Cycle through all spots in minigrid
         if j == a or j == b:
-            continue # Skip since cannot delete self
+            continue  # Skip since cannot delete self
         if possibles_list[a][0] in possibles_list[j]:
             progress = True
             possibles_list[j].remove(possibles_list[a][0])
@@ -431,16 +431,16 @@ def find_pairs(possibles_list):
                     if j != k:  # Cannot compare self to self
                         if possibles_list[j] == possibles_list[k]:  # If contents match
                             print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  possibles_list[j]))
-                            column_progress = column_progress or delete_pair_from_column(possibles_list, j, k) # Delete these two values from all other spots in column
+                            column_progress = column_progress or delete_pair_from_column(possibles_list, j, k)  # Delete these two values from all other spots in column
             # Match minigrid
             list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
             for list in list_of_internal_grids:
                 for k in range(len(possibles_list)):
                     if j in list and k in list:
                         if j != k:
-                            if possibles_list[j] == possibles_list[k]: # If contents match
+                            if possibles_list[j] == possibles_list[k]:  # If contents match
                                 print("Spots {} and {} in same minigrid both have value of {}.".format(j, k, possibles_list[j]))
-                                minigrid_progress = minigrid_progress or delete_pair_from_minigrid(possibles_list, j, k, list) # Delete these two values from all other spots in minigrid
+                                minigrid_progress = minigrid_progress or delete_pair_from_minigrid(possibles_list, j, k, list)  # Delete these two values from all other spots in minigrid
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
 
@@ -449,7 +449,7 @@ def how_to_continue_when_stalled():  # Prompt user if and how to continue when s
         reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing a value for a spot or \n5. Time estimate from zero or \n6. Time estimate spread over 10% increments \nEnter value:  ")
         if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6":
             reply = int(reply)   # Convert string to integer
-            break # exit loop otherwise prompt again
+            break  # exit loop otherwise prompt again
         else:
             print("Try again.")   # prompt for another input
     return reply
@@ -530,7 +530,7 @@ def create_trial_grid(list, unknown_spots, known_spots, index):
 
 
 
-def init_trial_count(puzzle): # Initialize all row, column and internal grid counts to zero
+def init_trial_count(puzzle):  # Initialize all row, column and internal grid counts to zero
     num = size_of_puzzle(puzzle)
     count = dict()
     for j in range(num):
@@ -538,7 +538,7 @@ def init_trial_count(puzzle): # Initialize all row, column and internal grid cou
     return count
 
 
-def quick_check(puzzle): # Ensure count of each number is correct (not too high or too low)
+def quick_check(puzzle):  # Ensure count of each number is correct (not too high or too low)
     result = True
     num = size_of_puzzle_side(puzzle)    # Get length of side or column
     for j in range(1, num + 1):  # For every possible value
@@ -554,7 +554,7 @@ def count_rows(puzzle):   # count how many of each value are in each row
     result = True
     test_row = []
     for j in num:
-        test_row = puzzle[j * num:(j + 1) * num]  # quickly create using slices
+        test_row = puzzle[j * num:(j + 1) * num]   # quickly create using slices
         for k in num: 
             if test_row.count(k) != 1:  # Ensure exactly one of each value in row
                 result = False
@@ -685,7 +685,7 @@ def list_to_integer(d):  # Convert dictionary value of list of single list to li
 
     for j in new_dict:
         int_list = []    # Initialize empty list
-        for k in new_dict[j]: #Cycle through list of single value list for this dictionary index
+        for k in new_dict[j]:  #Cycle through list of single value list for this dictionary index
             for m in k:
                 int_list.append(m)
         new_dict[j] = int_list   # Replace values ie [[1],[2],[3]] with [1,2,3]
@@ -693,7 +693,7 @@ def list_to_integer(d):  # Convert dictionary value of list of single list to li
 
 
 def remove_single_conflicts(puzzle):
-# Remove conflicting known single values from same column, same row and same internal grid of inner loop
+# Remove conflicting known single values from same column, same row and same internal grid 
 # Start from top left spot and work to bottom right spot in puzzle
     for j in range(len(puzzle)):
     
@@ -721,8 +721,8 @@ last_count = HUGE_VALUE
 greet_user() 
         
 puzzle = select_puzzle()   # Choose between the puzzles with different difficulty levels
-full_side = size_of_puzzle_side(puzzle)  #Determine if puzzle is 9x9 or 16x16
-part_side = size_of_grid_side(puzzle)  #Determine if puzzle grid is 3x3 or 4x4
+full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
+part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
 
 values = all_values(full_side)  # Determine all possible values for each spot (1..9 or 1..16)
 
@@ -741,8 +741,8 @@ done = False
 
 possibles_list = setup_possibles_list(puzzle, values)
 puzzle = possibles_list.copy()
-full_side = size_of_puzzle_side(puzzle)  #Determine if puzzle is 9x9 or 16x16
-part_side = size_of_grid_side(puzzle)  #Determine if puzzle grid is 3x3 or 4x4
+full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
+part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
 
 while not done:
     print()
@@ -751,13 +751,13 @@ while not done:
     count = count_total_possible_values(possibles_list)   # Count all the known and unknown values in the puzzle
     print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
 
-    c = column_width(puzzle) # Determine largest possible list in each column so can print column that width
+    c = column_width(puzzle)  # Determine largest possible list in each column so can print column that width
     print("Column widths are: {}".format(c))    #DEBUG
 
-    puzzle = remove_single_conflicts(puzzle) # Remove conflicting known single values from same column, 
+    puzzle = remove_single_conflicts(puzzle)  # Remove conflicting known single values from same column, 
                                              # row and internal grid 
     
-    loop = loop + 1  #Increment iteration loop counter                            
+    loop = loop + 1  # Increment iteration loop counter                            
 
     column_max = column_width(puzzle)    #DEBUG
 
@@ -801,14 +801,14 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
     if reply == 1:  # Quit game
         pass
 
-    if reply == 2: # Brute force solution starting from zero
+    if reply == 2:  # Brute force solution starting from zero
         successful_solution = bruteforce(puzzle, 0, number_solutions)
 
-    if reply == 3: # Brute force solution starting from entered value (allows continuation)
+    if reply == 3:  # Brute force solution starting from entered value (allows continuation)
         begin_num  = get_starting_value(number_solutions)
         successful_solution = bruteforce(puzzle, begin_num, number_solutions)
 
-    if reply == 4: 
+    if reply == 4:  # Try guessing a spot 
         valid_value = False  # setup conditions for while loop
         valid_spot = False
         while not valid_value and not valid_spot:
@@ -822,9 +822,9 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
                 print()  # blank spacer line
                 spot_choice = input("Which spot do you want to select?: ")
                 try:
-                    spot_choice = int(spot_choice) # Only valid values convert to integer
+                    spot_choice = int(spot_choice)  # Only valid values convert to integer
                 except:
-                    pass # Will prompt for another value
+                    pass  # Will prompt for another value
                 if spot_choice in integer_list:
                     valid_spot = True    # Exit while loop
 
@@ -841,7 +841,7 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
                 try:
                     value_choice = int(value_choice)  # Only valid inputs convert to integer
                 except:
-                    pass   #Will prompt for another input
+                    pass   # Will prompt for another input
                 if value_choice in integer_list[spot_choice]:
                     valid_value = True    # Exit while loop
 
