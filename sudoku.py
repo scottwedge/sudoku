@@ -713,6 +713,48 @@ def remove_single_conflicts(puzzle):
     updated_puzzle = puzzle.copy()    # update puzzle for next while loop iteration
     return updated_puzzle
 
+
+def get_user_guess(puzzle):  # Check validity of spot and value for user entered guess; update puzzle with it
+    valid_value = False  # setup conditions for while loop
+    valid_spot = False
+    while not valid_value and not valid_spot:
+        (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
+        list_pair_choices(dict_of_spots)
+        integer_list = list_to_integer(unknown_spots)   #DEBUG
+
+        while not valid_spot:
+            for j in integer_list:
+                print("Spot: {:2d}    List of values: {}.".format(j,integer_list[j]))
+            print()  # blank spacer line
+            spot_choice = input("Which spot do you want to select?: ")
+            try:
+                spot_choice = int(spot_choice)  # Only valid values convert to integer
+            except:
+                pass  # Will prompt for another value
+            if spot_choice in integer_list:
+                valid_spot = True    # Exit while loop
+
+        while not valid_value:
+            print()  # blank line
+            print("Spot {} possible values are: ".format(spot_choice), end="")
+            l = len(integer_list[spot_choice])
+            for j in range(l):
+                if j == l - 1:
+                    print("{}.".format(integer_list[spot_choice][j]))  # print last value then newline
+                else:
+                    print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
+            value_choice = input("Enter which value to try: ") 
+            try:
+                value_choice = int(value_choice)  # Only valid inputs convert to integer
+            except:
+                pass   # Will prompt for another input
+            if value_choice in integer_list[spot_choice]:
+                valid_value = True    # Exit while loop
+
+    new_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess
+    return new_puzzle
+
+
 # Main code
 
 # Initialize variables
@@ -809,46 +851,7 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
         successful_solution = bruteforce(puzzle, begin_num, number_solutions)
 
     if reply == 4:  # Try guessing a spot 
-        valid_value = False  # setup conditions for while loop
-        valid_spot = False
-        while not valid_value and not valid_spot:
-            (dict_of_spots, dict_of_spot_locations) = count_pairs(possibles_list)  # Find unique pairs in stalled puzzle
-            list_pair_choices(dict_of_spots)
-            integer_list = list_to_integer(unknown_spots)   #DEBUG
-
-            while not valid_spot:
-                for j in integer_list:
-                    print("Spot: {:2d}    List of values: {}.".format(j,integer_list[j]))
-                print()  # blank spacer line
-                spot_choice = input("Which spot do you want to select?: ")
-                try:
-                    spot_choice = int(spot_choice)  # Only valid values convert to integer
-                except:
-                    pass  # Will prompt for another value
-                if spot_choice in integer_list:
-                    valid_spot = True    # Exit while loop
-
-            while not valid_value:
-                print()  # blank line
-                print("Spot {} possible values are: ".format(spot_choice), end="")
-                l = len(integer_list[spot_choice])
-                for j in range(l):
-                    if j == l - 1:
-                        print("{}.".format(integer_list[spot_choice][j]))  # print last value then newline
-                    else:
-                        print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
-                value_choice = input("Enter which value to try: ") 
-                try:
-                    value_choice = int(value_choice)  # Only valid inputs convert to integer
-                except:
-                    pass   # Will prompt for another input
-                if value_choice in integer_list[spot_choice]:
-                    valid_value = True    # Exit while loop
-
-            guess_list = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Create new trial list based on user input
-            pass  # Try to solve the existing puzzle
-                  # If cannot solve then remove these options from original puzzle
-                  # then offer to continue or quit
+        puzzle = get_user_guess(puzzle) 
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
