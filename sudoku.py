@@ -755,6 +755,50 @@ def get_user_guess(puzzle):  # Check validity of spot and value for user entered
     return updated_puzzle
 
 
+def solve_puzzle(puzzle):
+    loop = 0
+    done = False
+    full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
+    part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
+    last_count = 1000
+    
+    while not done:
+        print()
+        print ("Loop count= {}".format(loop))
+        
+        count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
+        print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
+    
+        cw = column_width(puzzle)  # Determine largest possible list in each column so can print column that width
+        print("Column widths are: {}".format(cw))    #DEBUG
+    
+        puzzle = remove_single_conflicts(puzzle)  # Remove conflicting known single values from same column, 
+                                                 # row and internal grid 
+        
+        loop = loop + 1  # Increment iteration loop counter                            
+    
+        column_max = column_width(puzzle)    #DEBUG
+    
+        show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+    
+        current_count = list_count(puzzle)
+        
+        progress = find_pairs(puzzle)  
+        if progress:  # reset loop and count values so looping continues
+            loop = 0
+            last_count = 100000
+    
+        (done, reason) = are_we_done(puzzle, loop, last_count)
+    
+        last_count = current_count
+    else:
+        print("Game over because {} so try guessing.".format(reason))
+        progress = find_pairs(puzzle)  
+
+    return (reason, puzzle)
+
+
+
 # Main code
 
 # Initialize variables
@@ -778,50 +822,15 @@ show_grid_lines(puzzle, ROW_SEP, COL_SEP)
 print()
 print("Start solving puzzle now.")
 
-loop = 0
-done = False
-
 puzzle = setup_possibles_list(puzzle, values)
 # puzzle = possibles_list.copy()  # Is this needed?   #DEBUG
-full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
-part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
 
-while not done:
-    print()
-    print ("Loop count= {}".format(loop))
-    
-    count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
-    print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
-
-    c = column_width(puzzle)  # Determine largest possible list in each column so can print column that width
-    print("Column widths are: {}".format(c))    #DEBUG
-
-    puzzle = remove_single_conflicts(puzzle)  # Remove conflicting known single values from same column, 
-                                             # row and internal grid 
-    
-    loop = loop + 1  # Increment iteration loop counter                            
-
-    column_max = column_width(puzzle)    #DEBUG
-
-    show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
-
-    current_count = list_count(puzzle)
-    
-    progress = find_pairs(puzzle)  
-    if progress:  # reset loop and count values so looping continues
-        loop = 0
-        last_count = 100000
-
-    (done, reason) = are_we_done(puzzle, loop, last_count)
-
-    last_count = current_count
-else:
-    print("Game over because {} so try guessing.".format(reason))
-    progress = find_pairs(puzzle)  
+(reason, puzzle) = solve_puzzle(puzzle)
 
 print()
 print()
 print("***************** Final puzzle result is: ********************")
+column_max = column_width(puzzle)    #DEBUG
 show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
 count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
