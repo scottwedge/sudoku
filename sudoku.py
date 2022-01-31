@@ -334,8 +334,89 @@ def are_we_done(puzzle, loop, last_count):
         reason = "Looped maximum of {} times".format(MAX_LOOP)
     if all_grids_resolved(puzzle):
         done = True
-        reason = "All {} grids resolved".format(len(puzzle))
+        sane = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid
+        if sane:
+            reason = "All {} grids resolved".format(len(puzzle))
+        else:
+            reason = "All {} grids resolved but INSANE".format(len(puzzle))
     return (done, reason)
+
+def all_columns_sane(puzzle):
+    sane = True
+    col = j % full_side  # determine which column spot is in
+    
+    # Delete value from all spots in column except self
+    for k in range(len(puzzle)):
+        if j % full_side != k % full_side:
+            continue    # skip this value since in different column
+        if j == k:
+            continue    # skip since cannot compare self to self 
+        if puzzle[j] in puzzle[k]:
+            puzzle[k].remove(puzzle[j])
+            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
+    return puzzle
+    
+
+def reset_count(num): 
+    for j in range(num):
+        count[j] = 0  # Reset all counts to zero
+    return count
+
+
+def all_rows_sane(puzzle):
+    # Check every row for duplicate single value 
+    # If found, the puzzle is invalid
+    # Determine row number using integer division (//)
+    sane = True
+    full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
+    for j in range(full_side):  # for each row
+        count = reset_count()  # reset all counters to zero
+        for k in range(full_side):
+            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
+             # Convert spot value from list to integer
+
+
+
+        for k in range(full_side): # for every spot in row
+        if j // full_side != k // full_side:
+            continue   # skip since different row
+        if j == k:
+            continue    # skip since cannot compare self to self 
+        if puzzle[j] in puzzle[k]:
+            puzzle[k].remove(puzzle[j])
+            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
+    return puzzle
+    
+
+def all_grids_sane(puzzle):
+    # Delete value from all spots in own inner grid except self
+    # Create list of sets of inner grids based on part_side
+    list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
+
+    for list in list_of_internal_grids:
+    # first verify that both spots are located in the same inner grid 
+    # then verify that this is not the exact same spot as the outer loop
+    # then verify that spot only has a single value
+    # then if single value inside outer list, remove it
+        for k in range(len(puzzle)):
+            if j in list and k in list:
+                if j == k:
+                    continue  # Cannot delete self from self
+                if puzzle[j] in puzzle[k]:
+                    puzzle[k].remove(puzzle[j])
+                    puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
+    return puzzle
+
+
+def all_grids_resolved(puzzle):
+    resolved = True
+    for j in range(len(puzzle)):
+        if len(puzzle[j]) > 1:
+            resolved = False
+
+def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
+    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
+    return sanity
 
 
 def delete_pair_from_row(puzzle, a, b):   # Then delete these two values from all other spots in row
