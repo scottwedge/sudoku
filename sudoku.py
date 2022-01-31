@@ -474,7 +474,9 @@ def count_pairs(list):  # Find unique pairs in puzzle
 def create_puzzle_with_guess(puzzle, spot_choice, value_choice):
     # Update stalled puzzle with user-selected value 
     guess_list = puzzle.copy()
-    guess_list[spot_choice] = value_choice  # Update stalled puzzle with user-selected value 
+    guess_as_list = []  # Initialize empty list
+    guess_as_list.append(value_choice)  # Convert to list
+    guess_list[spot_choice] = guess_as_list  # Update stalled puzzle with user-selected value 
     return guess_list
 
 
@@ -861,6 +863,7 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
 
     if reply == 4:  # Try guessing a spot 
         puzzle = get_user_guess(puzzle) 
+        (reason, puzzle) = solve_puzzle(puzzle)
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
