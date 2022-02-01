@@ -193,6 +193,13 @@ def convert_list(list_of_list):    # Convert list of single list to list of sing
     return list_of_list
 
 
+def convert_list_to_integer(list):  # From list of single list to single integer; from '[[1]]' to '1'
+    if len(list) == 1:              # for example "[[1]]" becomes "1"
+        for index in list:
+            pass
+    return index
+
+
 def resolve_column(puzzle, j, full_side):
     col = j % full_side  # determine which column spot is in
     
@@ -336,12 +343,25 @@ def are_we_done(puzzle, loop, last_count):
         done = True
         sane = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid
         if sane:
-            reason = "All {} grids resolved".format(len(puzzle))
+            reason = "Puzzle sane. All {} grids resolved".format(len(puzzle))
         else:
-            reason = "All {} grids resolved but INSANE".format(len(puzzle))
+            reason = "Puzzle INSANE. All {} grids resolved".format(len(puzzle))
     return (done, reason)
 
+
+def reset_count(num): 
+    count = dict()  # Init dictionary to track count values in row, column and internal grid
+    for j in range(1, num + 1):  # Create dict with index 1 through N for N=9 or 16
+        count[j] = 0  # Reset all counts to zero
+    return count
+
+
 def all_columns_sane(puzzle):
+    sanity = True
+    reason = "sane"
+    return (sanity, reason)
+
+"""
     sane = True
     col = j % full_side  # determine which column spot is in
     
@@ -355,28 +375,32 @@ def all_columns_sane(puzzle):
             puzzle[k].remove(puzzle[j])
             puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
     return puzzle
+"""
     
-
-def reset_count(num): 
-    for j in range(num):
-        count[j] = 0  # Reset all counts to zero
-    return count
-
 
 def all_rows_sane(puzzle):
     # Check every row for duplicate single value 
     # If found, the puzzle is invalid
     # Determine row number using integer division (//)
-    sane = True
-    full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
-    for j in range(full_side):  # for each row
-        count = reset_count()  # reset all counters to zero
-        for k in range(full_side):
-            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
-             # Convert spot value from list to integer
+    sanity = True
+    reason = "sane"
+    
+    while sanity == True:
+        full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
+        for j in range(full_side):  # for each row
+            count = reset_count(full_side)  # reset all counters to zero
+            for k in range(full_side):  # for every spot in row
+                index = convert_list_to_integer(puzzle[j * full_side + k])  # Convert list to single integer index for dictionary 'count'
+                count[index] = count[index] + 1
+                if count[index] > 1:
+                    sanity = False
+                    reason = "Row " + str(j+1) + " is insane"
+                    break  # exit 
+    
+    return (sanity, reason)   #DEBUG
 
 
-
+"""
         for k in range(full_side): # for every spot in row
         if j // full_side != k // full_side:
             continue   # skip since different row
@@ -386,9 +410,15 @@ def all_rows_sane(puzzle):
             puzzle[k].remove(puzzle[j])
             puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
     return puzzle
-    
+"""
+  
 
 def all_grids_sane(puzzle):
+    sanity = True
+    reason = "sane"
+    return (sanity, reason)
+
+"""
     # Delete value from all spots in own inner grid except self
     # Create list of sets of inner grids based on part_side
     list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
@@ -406,6 +436,12 @@ def all_grids_sane(puzzle):
                     puzzle[k].remove(puzzle[j])
                     puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
     return puzzle
+"""
+
+
+def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
+    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
+    return sanity
 
 
 def all_grids_resolved(puzzle):
@@ -413,10 +449,7 @@ def all_grids_resolved(puzzle):
     for j in range(len(puzzle)):
         if len(puzzle[j]) > 1:
             resolved = False
-
-def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
-    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
-    return sanity
+    return resolved
 
 
 def delete_pair_from_row(puzzle, a, b):   # Then delete these two values from all other spots in row
@@ -945,6 +978,8 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
     if reply == 4:  # Try guessing a spot 
         puzzle = get_user_guess(puzzle) 
         (reason, puzzle) = solve_puzzle(puzzle)
+        (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
+        print("puzzle sanity is {}".format(sane))
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
