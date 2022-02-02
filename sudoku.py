@@ -381,23 +381,6 @@ def all_columns_sane(puzzle):
     return (sanity, reason)   #DEBUG
 
 
-"""
-    sane = True
-    col = j % full_side  # determine which column spot is in
-    
-    # Delete value from all spots in column except self
-    for k in range(len(puzzle)):
-        if j % full_side != k % full_side:
-            continue    # skip this value since in different column
-        if j == k:
-            continue    # skip since cannot compare self to self 
-        if puzzle[j] in puzzle[k]:
-            puzzle[k].remove(puzzle[j])
-            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
-    return puzzle
-"""
-    
-
 def all_rows_sane(puzzle):
     # Check every row for duplicate single value 
     # If found, the puzzle is invalid
@@ -424,23 +407,38 @@ def all_rows_sane(puzzle):
     return (sanity, reason)   #DEBUG
 
 
-"""
-        for k in range(full_side): # for every spot in row
-        if j // full_side != k // full_side:
-            continue   # skip since different row
-        if j == k:
-            continue    # skip since cannot compare self to self 
-        if puzzle[j] in puzzle[k]:
-            puzzle[k].remove(puzzle[j])
-            puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
-    return puzzle
-"""
-  
-
 def all_grids_sane(puzzle):
     sanity = True
     reason = "sane"
-    return (sanity, reason)
+    full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
+    part_side = int(full_side ** 0.5)  # Convert to integer for list index
+
+    list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
+
+    for list in list_of_internal_grids:
+    # first verify that spot is located in the same inner grid 
+    # then verify that spot only has a single value
+    # then increment the count for that spot value 
+
+        count = reset_count(full_side)  # reset all counters to zero
+        for j in range(len(puzzle)):  # for each spot
+            if j not in list:
+                continue
+            else:  # spot is in list
+                index = convert_list_to_integer(puzzle[j])  # Convert list to single integer index for dictionary 'count'
+                try:
+                    count[index] = count[index] + 1
+                    if count[index] > 1:
+                        sanity = False
+                        reason = "Grid with spot " + str(j+1) + " is INSANE."
+                        break  # exit 
+                except:
+                    pass  # Ignore index = 0 (case where >1 value possible for spot)
+        else:
+            continue
+        break  # if break out of internal loop then also break out of outer loop
+    return (sanity, reason)   #DEBUG
+
 
 """
     # Delete value from all spots in own inner grid except self
@@ -467,8 +465,9 @@ def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
 #    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
     (row_sanity, row_reason) = all_rows_sane(puzzle) 
     (column_sanity, column_reason) = all_columns_sane(puzzle) 
-    sanity = row_sanity and column_sanity  
-    reason = row_reason + " " + column_reason
+    (grid_sanity, grid_reason) = all_grids_sane(puzzle) 
+    sanity = row_sanity and column_sanity and grid_sanity
+    reason = row_reason + " " + column_reason + " " + grid_reason
     return (sanity, reason)
 
 
