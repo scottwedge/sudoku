@@ -331,9 +331,6 @@ def list_count(puzzle):
 
 # Determine if game over or continues 
 def are_we_done(puzzle, loop, last_count):
-    print("Entered fn 'are_we_done'. loop= {}. Last_count = {}".format(loop, last_count))  #DEBUG
-    lc = list_count(puzzle)  #DEBUG
-    print("list_count= {}".format(lc))  #DEBUG
     done = False
     reason = "Continue"
     if last_count == list_count(puzzle):
@@ -343,10 +340,8 @@ def are_we_done(puzzle, loop, last_count):
         done = True
         reason = "Looped maximum of {} times".format(MAX_LOOP)
     if all_grids_resolved(puzzle):
-        print("puzzle done 44")  #DEBUG
         done = True
         (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid
-        print("Sanity = {}. Reason = {}".format(sane, reason))   #DEBUG
         if sane:
             reason = "Puzzle sane. All {} grids resolved".format(len(puzzle))
         else:
@@ -390,18 +385,19 @@ def all_rows_sane(puzzle):
     sanity = True
     reason = "sane"
     
-    while sanity == True:
-        full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
-        for j in range(full_side):  # for each row
-            count = reset_count(full_side)  # reset all counters to zero
-            for k in range(full_side):  # for every spot in row
-                index = convert_list_to_integer(puzzle[j * full_side + k])  # Convert list to single integer index for dictionary 'count'
-                count[index] = count[index] + 1
-                if count[index] > 1:
-                    sanity = False
-                    reason = "Row " + str(j+1) + " is insane"
-                    break  # exit 
-    
+    full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
+    for j in range(full_side):  # for each row
+        count = reset_count(full_side)  # reset all counters to zero
+        for k in range(full_side):  # for every spot in row
+            index = convert_list_to_integer(puzzle[j * full_side + k])  # Convert list to single integer index for dictionary 'count'
+            count[index] = count[index] + 1
+            if count[index] > 1:
+                sanity = False
+                reason = "Row " + str(j+1) + " is insane"
+                break  # exit 
+        else:
+            continue
+        break  # if break out of internal loop then also break out of outer loop
     return (sanity, reason)   #DEBUG
 
 
@@ -911,12 +907,8 @@ def solve_puzzle(puzzle):
             loop = 0
             last_count = 100000
     
-        print("HHHHere3")  #DEBUG 
-
         (done, reason) = are_we_done(puzzle, loop, last_count)
     
-        print("HHHHere4")  #DEBUG 
-
         last_count = current_count
     else:
         print("Game over. {}".format(reason))
@@ -962,7 +954,6 @@ show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #
 
 count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
 print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
-print("HHere")   #DEBUG
 
 if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
     print()
