@@ -197,6 +197,8 @@ def convert_list_to_integer(list):  # From list of single list to single integer
     if len(list) == 1:              # for example "[[1]]" becomes "1"
         for index in list:
             pass
+    else:
+        index = 0   # Return an invalid value for case where list length > 1
     return index
 
 
@@ -390,11 +392,14 @@ def all_rows_sane(puzzle):
         count = reset_count(full_side)  # reset all counters to zero
         for k in range(full_side):  # for every spot in row
             index = convert_list_to_integer(puzzle[j * full_side + k])  # Convert list to single integer index for dictionary 'count'
-            count[index] = count[index] + 1
-            if count[index] > 1:
-                sanity = False
-                reason = "Row " + str(j+1) + " is insane"
-                break  # exit 
+            try:
+                count[index] = count[index] + 1
+                if count[index] > 1:
+                    sanity = False
+                    reason = "Row " + str(j+1) + " is insane"
+                    break  # exit 
+            except:
+                pass  # Ignore index = 0 (case where >1 value possible for spot)
         else:
             continue
         break  # if break out of internal loop then also break out of outer loop
@@ -582,8 +587,6 @@ def count_pairs(list):  # Find unique pairs in puzzle
                 dict_of_pairs[str(list[j])] = 1  # Initialize count
                 dict_of_pair_locations[str(list[j])] = [j]  # First spot in grid
 
-#    print(dict_of_pairs)   #DEBUG
-#    print(dict_of_pair_locations)   #DEBUG
     return (dict_of_pairs, dict_of_pair_locations)
 
 
@@ -942,7 +945,6 @@ print()
 print("Start solving puzzle now.")
 
 puzzle = setup_possibles_list(puzzle, values)
-# puzzle = possibles_list.copy()  # Is this needed?   #DEBUG
 
 (reason, puzzle) = solve_puzzle(puzzle)
 
