@@ -361,7 +361,25 @@ def reset_count(num):
 def all_columns_sane(puzzle):
     sanity = True
     reason = "sane"
-    return (sanity, reason)
+    
+    full_side = size_of_puzzle_side(puzzle)  # calculate number and length of column
+    for j in range(full_side):  # for each column
+        count = reset_count(full_side)  # reset all counters to zero
+        for k in range(full_side):  # for every spot in column
+            index = convert_list_to_integer(puzzle[j + k * full_side])  # Convert list to single integer index for dictionary 'count'
+            try:
+                count[index] = count[index] + 1
+                if count[index] > 1:
+                    sanity = False
+                    reason = "Column " + str(j+1) + " is INSANE."
+                    break  # exit 
+            except:
+                pass  # Ignore index = 0 (case where >1 value possible for spot)
+        else:
+            continue
+        break  # if break out of internal loop then also break out of outer loop
+    return (sanity, reason)   #DEBUG
+
 
 """
     sane = True
@@ -396,7 +414,7 @@ def all_rows_sane(puzzle):
                 count[index] = count[index] + 1
                 if count[index] > 1:
                     sanity = False
-                    reason = "Row " + str(j+1) + " is insane"
+                    reason = "Row " + str(j+1) + " is INSANE."
                     break  # exit 
             except:
                 pass  # Ignore index = 0 (case where >1 value possible for spot)
@@ -447,7 +465,10 @@ def all_grids_sane(puzzle):
 
 def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
 #    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
-    (sanity, reason) = all_rows_sane(puzzle)
+    (row_sanity, row_reason) = all_rows_sane(puzzle) 
+    (column_sanity, column_reason) = all_columns_sane(puzzle) 
+    sanity = row_sanity and column_sanity  
+    reason = row_reason + " " + column_reason
     return (sanity, reason)
 
 
@@ -984,7 +1005,7 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
         puzzle = get_user_guess(puzzle) 
         (reason, puzzle) = solve_puzzle(puzzle)
         (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
-        print("puzzle sanity is {} because {}".format(sane, reason))
+        print("puzzle sanity is {} because: {}".format(sane, reason))
     
     if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
         start_num = 0
