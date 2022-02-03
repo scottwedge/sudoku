@@ -360,7 +360,7 @@ def reset_count(num):
 
 def all_columns_sane(puzzle):
     sanity = True
-    reason = "sane"
+    reason = "All columns are sane."
     
     full_side = size_of_puzzle_side(puzzle)  # calculate number and length of column
     for j in range(full_side):  # for each column
@@ -386,7 +386,7 @@ def all_rows_sane(puzzle):
     # If found, the puzzle is invalid
     # Determine row number using integer division (//)
     sanity = True
-    reason = "sane"
+    reason = "All rows are sane."
     
     full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
     for j in range(full_side):  # for each row
@@ -409,7 +409,7 @@ def all_rows_sane(puzzle):
 
 def all_grids_sane(puzzle):
     sanity = True
-    reason = "sane"
+    reason = "All grids are sane."
     full_side = size_of_puzzle_side(puzzle)  # calculate number and length of rows
     part_side = int(full_side ** 0.5)  # Convert to integer for list index
 
@@ -936,9 +936,59 @@ def solve_puzzle(puzzle):
     else:
         print("Game over. {}".format(reason))
         progress = find_pairs(puzzle)  
-
     return (reason, puzzle)
 
+
+def select_spot_and_values(puzzle):  # Check validity of spot and value to update puzzle 
+    valid_value = False  # setup conditions for while loop
+    valid_spot = False
+    while not valid_value and not valid_spot:
+        (dict_of_spots, dict_of_spot_locations) = count_pairs(puzzle)  # Find unique pairs in stalled puzzle
+        list_pair_choices(dict_of_spots)
+        integer_list = list_to_integer(unknown_spots)   #DEBUG
+
+        while not valid_spot:
+            for j in integer_list:
+                print("Spot: {:2d}    List of values: {}.".format(j,integer_list[j]))
+            print()  # blank spacer line
+            spot_choice = input("Which spot do you want to edit?: ")
+            try:
+                spot_choice = int(spot_choice)  # Only valid values convert to integer
+            except:
+                pass  # Will prompt for another value
+            if spot_choice in integer_list:
+                valid_spot = True    # Exit while loop
+
+        while not valid_value:
+            print()  # blank line
+            print("Spot {} possible values are: ".format(spot_choice), end="")
+            l = len(integer_list[spot_choice])
+            for j in range(l):
+                if j == l - 1:
+                    print("{}.".format(integer_list[spot_choice][j]))  # print last value then newline
+                else:
+                    print("{}, ".format(integer_list[spot_choice][j]), end="")  # print all but last value without newline
+            value_choice = input("Enter which value to try: ") 
+            try:
+                value_choice = int(value_choice)  # Only valid inputs convert to integer
+            except:
+                pass   # Will prompt for another input
+            if value_choice in integer_list[spot_choice]:
+                valid_value = True    # Exit while loop
+
+    updated_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess
+    return updated_puzzle
+
+
+def edit_puzzle_permanently(puzzle):
+    # Update puzzle permanently 
+    # for example: after guess at a value but if that solved puzzle is insane then 
+    # that value can be deleted from that spot
+    # Only offer ability to edit unresolved spot (with >1 values)
+    
+    get_stalled_spots_list(puzzle)
+    puzzle = select_spot_and_values_and_update_puzzle(puzzle)
+    return puzzle
 
 
 # Main code
@@ -987,38 +1037,38 @@ if count > len(puzzle):  # Decide how to proceed if there are still unresolved g
     print()
     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
 
-
-    reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
-
-    if reply == 1:  # Quit game
-        pass
-
-    if reply == 2:  # Brute force solution starting from zero
-        successful_solution = bruteforce(puzzle, 0, number_solutions)
-
-    if reply == 3:  # Brute force solution starting from entered value (allows continuation)
-        begin_num  = get_starting_value(number_solutions)
-        successful_solution = bruteforce(puzzle, begin_num, number_solutions)
-
-    if reply == 4:  # Try guessing a spot 
-        puzzle = get_user_guess(puzzle) 
-        (reason, puzzle) = solve_puzzle(puzzle)
-        (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
-        print("puzzle sanity is {} because: {}".format(sane, reason))
+    while True:  # Loop until break
+        reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
+            
+        if reply == 1:  # Quit game
+            break
     
-    if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
-        start_num = 0
-        end_num = 1000
-        basic_time_trial(puzzle, start_num, end_num)
-
-    if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
-                     # since single evaluation at 10,000,000 takes multiple minutes
-                     # whereas starting from zero does several evaluations per second
-                     # and gives an unrealistic "quick" solution
-        number_of_intervals = 10
-        advanced_time_trial(puzzle, number_solutions)
-
-    if reply == 7:  # Edit puzzle
-        puzzle = edit_puzzle_permanently(puzzle)
+        if reply == 2:  # Brute force solution starting from zero
+            successful_solution = bruteforce(puzzle, 0, number_solutions)
+    
+        if reply == 3:  # Brute force solution starting from entered value (allows continuation)
+            begin_num  = get_starting_value(number_solutions)
+            successful_solution = bruteforce(puzzle, begin_num, number_solutions)
+    
+        if reply == 4:  # Try guessing a spot 
+            puzzle = get_user_guess(puzzle) 
+            (reason, puzzle) = solve_puzzle(puzzle)
+            (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
+            print("puzzle sanity is {} because: {}".format(sane, reason))
+        
+        if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
+            start_num = 0
+            end_num = 1000
+            basic_time_trial(puzzle, start_num, end_num)
+    
+        if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
+                         # since single evaluation at 10,000,000 takes multiple minutes
+                         # whereas starting from zero does several evaluations per second
+                         # and gives an unrealistic "quick" solution
+            number_of_intervals = 10
+            advanced_time_trial(puzzle, number_solutions)
+    
+        if reply == 7:  # Edit puzzle
+            puzzle = edit_puzzle_permanently(puzzle)
 else:
     print("All grids resolved.")
