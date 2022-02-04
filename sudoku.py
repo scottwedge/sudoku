@@ -531,14 +531,14 @@ def find_pairs(puzzle):
     minigrid_progress = False
     for j in range(len(puzzle)):
         if len(puzzle[j]) == 2:
-            print("Grid {} has two values of {}.".format(j, puzzle[j])) 
+#            print("Grid {} has two values of {}.".format(j, puzzle[j]))  #DEBUG
             # Match rows
             for k in range(len(puzzle)):
                 row = j // full_side
                 if j // full_side == k // full_side:  # In same row
                     if j != k:  # Cannot compare self to self
                         if puzzle[j] == puzzle[k]:  # If contents match
-                            print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  puzzle[j]))
+#                            print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  puzzle[j]))
                             row_progress = row_progress or delete_pair_from_row(puzzle, j, k)    # Then delete these two values from all other spots in row
             # Match column
             for k in range(len(puzzle)):
@@ -546,7 +546,7 @@ def find_pairs(puzzle):
                 if j % full_side == k % full_side:  # In same column
                     if j != k:  # Cannot compare self to self
                         if puzzle[j] == puzzle[k]:  # If contents match
-                            print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  puzzle[j]))
+#                            print("Spots {} and {} in column {} both have value of {}.".format(j, k, column,  puzzle[j]))
                             column_progress = column_progress or delete_pair_from_column(puzzle, j, k)  # Delete these two values from all other spots in column
             # Match minigrid
             list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
@@ -555,7 +555,7 @@ def find_pairs(puzzle):
                     if j in list and k in list:
                         if j != k:
                             if puzzle[j] == puzzle[k]:  # If contents match
-                                print("Spots {} and {} in same minigrid both have value of {}.".format(j, k, puzzle[j]))
+#                                print("Spots {} and {} in same minigrid both have value of {}.".format(j, k, puzzle[j]))
                                 minigrid_progress = minigrid_progress or delete_pair_from_minigrid(puzzle, j, k, list)  # Delete these two values from all other spots in minigrid
     return (row_progress or column_progress or minigrid_progress)  # True if have deleted any values in rows or columns or minigrid
 
@@ -907,7 +907,9 @@ def solve_puzzle(puzzle):
     
         last_count = current_count
     else:
+        print()  # Blank line
         print("Game over. {}".format(reason))
+        print()  # Blank line
         progress = find_pairs(puzzle)  
     return (reason, puzzle)
 
@@ -988,11 +990,10 @@ def main():
             puzzle = setup_possibles_list(puzzle, values)
             
             print()
-#            print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
             
-            show_grid(puzzle) # Show puzzle values in more readable grid format
+#            show_grid(puzzle) # Show puzzle values in more readable grid format
             
-            show_grid_lines(puzzle, ROW_SEP, COL_SEP)
+#            show_grid_lines(puzzle, ROW_SEP, COL_SEP)
 
                 
         if reply == 2:  # Solve puzzle
