@@ -866,7 +866,7 @@ def get_user_guess(puzzle):  # Check validity of spot and value for user entered
                 valid_value = True    # Exit while loop
 
     updated_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess
-    return updated_puzzle
+    return (updated_puzzle, spot_choice, value_choice)
 
 
 def solve_puzzle(puzzle):
@@ -1023,7 +1023,9 @@ def main():
                 else:
                     print("All grids resolved.")
                     (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
-                    print("puzzle sanity is {} because: {}".format(sane, reason))
+                    print("Puzzle sanity is {} because: {}".format(sane, reason))
+                    if not sane:
+                        print("So selecting value {} for spot {} was not correct.".format(spot_choice, value_choice))
 
         if reply == 3:  # Brute force solution starting from zero
             successful_solution = bruteforce(puzzle, 0, number_solutions)
@@ -1033,10 +1035,12 @@ def main():
             successful_solution = bruteforce(puzzle, begin_num, number_solutions)
     
         if reply == 5:  # Try guessing a spot 
-            puzzle = get_user_guess(puzzle) 
+            (puzzle, spot_choice, value_choice) = get_user_guess(puzzle) 
             (reason, puzzle) = solve_puzzle(puzzle)
             (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
-            print("puzzle sanity is {} because: {}".format(sane, reason))
+            print("Puzzle sanity is {} because: {}".format(sane, reason))
+            if not sane:
+                print("So selecting value {} for spot {} was not correct.".format(spot_choice, value_choice))
         
         if reply == 6:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
             start_num = 0
