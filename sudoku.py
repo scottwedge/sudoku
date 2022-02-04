@@ -1022,6 +1022,8 @@ def main():
                     print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
                 else:
                     print("All grids resolved.")
+                    (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
+                    print("puzzle sanity is {} because: {}".format(sane, reason))
 
         if reply == 3:  # Brute force solution starting from zero
             successful_solution = bruteforce(puzzle, 0, number_solutions)
