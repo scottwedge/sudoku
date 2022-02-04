@@ -436,27 +436,6 @@ def all_grids_sane(puzzle):
     return (sanity, reason)   #DEBUG
 
 
-"""
-    # Delete value from all spots in own inner grid except self
-    # Create list of sets of inner grids based on part_side
-    list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
-
-    for list in list_of_internal_grids:
-    # first verify that both spots are located in the same inner grid 
-    # then verify that this is not the exact same spot as the outer loop
-    # then verify that spot only has a single value
-    # then if single value inside outer list, remove it
-        for k in range(len(puzzle)):
-            if j in list and k in list:
-                if j == k:
-                    continue  # Cannot delete self from self
-                if puzzle[j] in puzzle[k]:
-                    puzzle[k].remove(puzzle[j])
-                    puzzle[k] = convert_list(puzzle[k])    # Convert list of single list to list of single integer
-    return puzzle
-"""
-
-
 def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
 #    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
     (row_sanity, row_reason) = all_rows_sane(puzzle) 
@@ -1017,27 +996,31 @@ def main():
 
                 
         if reply == 2:  # Solve puzzle
-            (reason, puzzle) = solve_puzzle(puzzle)
-                
-            print()
-            print()
-            print("***************** Final puzzle result is: ********************")
-            column_max = column_width(puzzle)    #DEBUG
-            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
-                
-            count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
-            print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
-            if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
-                print()
-                print("There are still unresolved grids.")
-                unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
-                num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
-                known_spots = get_known_spots_list(puzzle)  # List of known spots
-                number_solutions = get_number_possible_solutions(unknown_spots)
-                print()
-                print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+            try:
+                (reason, puzzle) = solve_puzzle(puzzle)
+            except UnboundLocalError:
+                print()  # Blank space line
+                print("You must select a puzzle before trying to solve it!") 
             else:
-                print("All grids resolved.")
+                print()
+                print()
+                print("***************** Final puzzle result is: ********************")
+                column_max = column_width(puzzle)    #DEBUG
+                show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+                    
+                count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
+                print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
+                if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
+                    print()
+                    print("There are still unresolved grids.")
+                    unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
+                    num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+                    known_spots = get_known_spots_list(puzzle)  # List of known spots
+                    number_solutions = get_number_possible_solutions(unknown_spots)
+                    print()
+                    print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+                else:
+                    print("All grids resolved.")
 
         if reply == 3:  # Brute force solution starting from zero
             successful_solution = bruteforce(puzzle, 0, number_solutions)
