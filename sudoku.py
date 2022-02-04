@@ -583,8 +583,9 @@ def find_pairs(puzzle):
 
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
-        reply = input("How continue? \n1. Quit or \n2. Brute force from zero or \n3. Brute force from an input number or \n4. Try guessing a value for a spot or \n5. Time estimate from zero or \n6. Time estimate spread over 10% increments \n7. Update puzzle permanently\nEnter value:  ")
-        if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7":
+        print()  # Blank space line
+        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Update puzzle permanently or\n9. Solve puzzle or\n10. Quit game\nEnter value:  ")
+        if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9":
             reply = int(reply)   # Convert string to integer
             break  # exit loop otherwise prompt again
         else:
@@ -986,7 +987,7 @@ def update_puzzle_permanently(puzzle):
     get_stalled_spots_list(puzzle)
     (spot, values) = select_spot_and_values(puzzle)
     updated_puzzle = create_puzzle_with_guess(puzzle, spot, values)    # Update puzzle with guess
-    return puzzle
+    return updated_puzzle
 
 
 def main():
@@ -995,81 +996,82 @@ def main():
     
     greet_user() 
             
-    puzzle = select_puzzle()   # Choose between the puzzles with different difficulty levels
-    full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
-    part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
-    
-    values = all_values(full_side)  # Determine all possible values for each spot (1..9 or 1..16)
-    
-    print()
-    print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
-    
-    show_grid(puzzle) # Show puzzle values in more readable grid format
-    
-    show_grid_lines(puzzle, ROW_SEP, COL_SEP)
-    
-    print()
-    print("Start solving puzzle now.")
-    
-    puzzle = setup_possibles_list(puzzle, values)
-    
-    (reason, puzzle) = solve_puzzle(puzzle)
-    
-    print()
-    print()
-    print("***************** Final puzzle result is: ********************")
-    column_max = column_width(puzzle)    #DEBUG
-    show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
-    
-    count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
-    print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
-    
-    if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
-        print()
-        print("There are still unresolved grids.")
-        unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
-        num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
-        known_spots = get_known_spots_list(puzzle)  # List of known spots
-        number_solutions = get_number_possible_solutions(unknown_spots)
-        print()
-        print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
-    
-        while True:  # Loop until break
-            reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
-                
-            if reply == 1:  # Quit game
-                break
-        
-            if reply == 2:  # Brute force solution starting from zero
-                successful_solution = bruteforce(puzzle, 0, number_solutions)
-        
-            if reply == 3:  # Brute force solution starting from entered value (allows continuation)
-                begin_num  = get_starting_value(number_solutions)
-                successful_solution = bruteforce(puzzle, begin_num, number_solutions)
-        
-            if reply == 4:  # Try guessing a spot 
-                puzzle = get_user_guess(puzzle) 
-                (reason, puzzle) = solve_puzzle(puzzle)
-                (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
-                print("puzzle sanity is {} because: {}".format(sane, reason))
+    while True:  # Loop until break
+        reply = how_to_continue_when_stalled()  # Prompt user if and how to continue when stalled
             
-            if reply == 5:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
-                start_num = 0
-                end_num = 1000
-                basic_time_trial(puzzle, start_num, end_num)
-        
-            if reply == 6:   # Time trial spread over ten 10% ranges assuming a huge number
-                             # since single evaluation at 10,000,000 takes multiple minutes
-                             # whereas starting from zero does several evaluations per second
-                             # and gives an unrealistic "quick" solution
-                number_of_intervals = 10
-                advanced_time_trial(puzzle, number_solutions)
-        
-            if reply == 7:  # Edit puzzle
-                puzzle = update_puzzle_permanently(puzzle)
-    else:
-        print("All grids resolved.")
+        if reply == 1:  # Choose puzzle
+            puzzle = select_puzzle()
+            full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
+            part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
+            
+            values = all_values(full_side)  # Determine all possible values for each spot (1..9 or 1..16)
+            
+            print()
+            print("These are the initial puzzle values:", puzzle)  # Show initial puzzle data in long list format
+            
+            show_grid(puzzle) # Show puzzle values in more readable grid format
+            
+            show_grid_lines(puzzle, ROW_SEP, COL_SEP)
 
+
+
+                
+        if reply == 2:  # Solve puzzle
+            (reason, puzzle) = solve_puzzle(puzzle)
+                
+            print()
+            print()
+            print("***************** Final puzzle result is: ********************")
+            column_max = column_width(puzzle)    #DEBUG
+            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+                
+            count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
+            print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
+            if count > len(puzzle):  # Decide how to proceed if there are still unresolved grids
+                print()
+                print("There are still unresolved grids.")
+                unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
+                num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+                known_spots = get_known_spots_list(puzzle)  # List of known spots
+                number_solutions = get_number_possible_solutions(unknown_spots)
+                print()
+                print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
+            else:
+                print("All grids resolved.")
+
+        if reply == 3:  # Brute force solution starting from zero
+            successful_solution = bruteforce(puzzle, 0, number_solutions)
+    
+        if reply == 4:  # Brute force solution starting from entered value (allows continuation)
+            begin_num  = get_starting_value(number_solutions)
+            successful_solution = bruteforce(puzzle, begin_num, number_solutions)
+    
+        if reply == 5:  # Try guessing a spot 
+            puzzle = get_user_guess(puzzle) 
+            (reason, puzzle) = solve_puzzle(puzzle)
+            (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
+            print("puzzle sanity is {} because: {}".format(sane, reason))
+        
+        if reply == 6:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
+            start_num = 0
+            end_num = 1000
+            basic_time_trial(puzzle, start_num, end_num)
+    
+        if reply == 7:   # Time trial spread over ten 10% ranges assuming a huge number
+                         # since single evaluation at 10,000,000 takes multiple minutes
+                         # whereas starting from zero does several evaluations per second
+                         # and gives an unrealistic "quick" solution
+            number_of_intervals = 10
+            advanced_time_trial(puzzle, number_solutions)
+    
+        if reply == 8:  # Edit puzzle
+            puzzle = update_puzzle_permanently(puzzle)
+
+        if reply == 9:  # Solve puzzle
+            puzzle = update_puzzle_permanently(puzzle)
+
+        if reply == 10:  # Quit game
+            break
 
 # Main code
 if __name__ == "__main__":
