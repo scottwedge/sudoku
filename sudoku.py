@@ -563,7 +563,7 @@ def find_pairs(puzzle):
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
         print()  # Blank space line
-        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Update puzzle permanently or\n9. Quit game\nEnter value:  ")
+        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8.  or\n9. Quit game\nEnter value:  ")
         if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9":
             reply = int(reply)   # Convert string to integer
             break  # exit loop otherwise prompt again
@@ -875,6 +875,7 @@ def solve_puzzle(puzzle):
     full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
     part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
     last_count = 1000
+    original_puzzle = puzzle.copy()
     
     while not done:
         print()
@@ -908,10 +909,10 @@ def solve_puzzle(puzzle):
         last_count = current_count
     else:
         print()  # Blank line
-        print("Game over. {}".format(reason))
+        print("Game status: {}".format(reason))
         print()  # Blank line
         progress = find_pairs(puzzle)  
-    return (reason, puzzle)
+    return (reason, puzzle, original_puzzle)
 
 
 def select_spot_and_values(puzzle):  # Check validity of spot and value to update puzzle 
@@ -988,17 +989,11 @@ def main():
             values = all_values(full_side)  # Determine all possible values for each spot (1..9 or 1..16)
 
             puzzle = setup_possibles_list(puzzle, values)
-            
             print()
             
-#            show_grid(puzzle) # Show puzzle values in more readable grid format
-            
-#            show_grid_lines(puzzle, ROW_SEP, COL_SEP)
-
-                
         if reply == 2:  # Solve puzzle
             try:
-                (reason, puzzle) = solve_puzzle(puzzle)
+                (reason, puzzle, original_puzzle) = solve_puzzle(puzzle)
             except UnboundLocalError:
                 print()  # Blank space line
                 print("You must select a puzzle before trying to solve it!") 
@@ -1034,13 +1029,22 @@ def main():
             begin_num  = get_starting_value(number_solutions)
             successful_solution = bruteforce(puzzle, begin_num, number_solutions)
     
-        if reply == 5:  # Try guessing a spot 
+        if reply == 5:  # Try guessing a spot and solving and revert if insane
             (puzzle, spot_choice, value_choice) = get_user_guess(puzzle) 
-            (reason, puzzle) = solve_puzzle(puzzle)
+            (reason, puzzle, original_puzzle) = solve_puzzle(puzzle)
             (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
             print("Puzzle sanity is {} because: {}".format(sane, reason))
             if not sane:
                 print("So selecting value {} for spot {} was not correct.".format(spot_choice, value_choice))
+                while True:
+                    revert = input("Do you want to revert to puzzle before guess? Enter Y/N.")
+                    if revert == "Y":
+                        puzzle = original_puzzle  # Replace insane puzzle with original (pre-guess) puzzle
+                        break
+                    if revert == "N":
+                        break  # Keep insane puzzle with guess
+                    else:
+                        continue  # Prompt again to revert puzzle or not
         
         if reply == 6:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
             start_num = 0
@@ -1055,7 +1059,8 @@ def main():
             advanced_time_trial(puzzle, number_solutions)
     
         if reply == 8:  # Edit puzzle
-            puzzle = update_puzzle_permanently(puzzle)
+#            puzzle = update_puzzle_permanently(puzzle)
+             pass
 
         if reply == 9:  # Quit game
             break
