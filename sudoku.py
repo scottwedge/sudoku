@@ -565,7 +565,7 @@ def find_pairs(puzzle):
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
         print()  # Blank space line
-        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8.  or\n9. Quit game\nEnter value:  ")
+        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Show puzzle or\n9. Quit game\nEnter value:  ")
         if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9":
             reply = int(reply)   # Convert string to integer
             break  # exit loop otherwise prompt again
@@ -1060,9 +1060,9 @@ def main():
             number_of_intervals = 10
             advanced_time_trial(puzzle, number_solutions)
     
-        if reply == 8:  # Edit puzzle
-#            puzzle = update_puzzle_permanently(puzzle)
-             pass
+        if reply == 8:  # Show puzzle
+            column_max = column_width(puzzle)    #DEBUG
+            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
         if reply == 9:  # Quit game
             break
