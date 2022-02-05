@@ -6,6 +6,7 @@
 # Imports
 import time    # in case want to time how long brute force solution takes
 import random  # for random quick time instead of very long delays
+import copy    # Need to perform deep copy so can restore previous version of puzzle
 
 
 # Constants
@@ -877,7 +878,7 @@ def solve_puzzle(puzzle):
     full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
     part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
     last_count = 1000
-    original_puzzle = puzzle.copy()
+    original_puzzle = copy.deepcopy(puzzle)
     
     while not done:
         print()
