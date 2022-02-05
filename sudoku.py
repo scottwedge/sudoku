@@ -911,8 +911,12 @@ def solve_puzzle(puzzle):
     
         last_count = current_count
     else:
+        unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are still unknown
+        num_unknown_spots = len(unknown_spots)   # Count number of unknown spots in grid
+        number_solutions = get_number_possible_solutions(unknown_spots)
         print()  # Blank line
         print("Game status: {}".format(reason))
+        print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
         print()  # Blank line
         progress = find_pairs(puzzle)  
     return (reason, puzzle, original_puzzle)
