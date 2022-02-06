@@ -591,12 +591,12 @@ def count_pairs(list):  # Find unique pairs in puzzle
 
 def create_puzzle_with_guess(puzzle, spot_choice, value_choice):
     # Update stalled puzzle with user-selected value 
-    guess_list = puzzle.copy()
+    original_puzzle = copy.deepcopy(puzzle)
     guess_as_list = []  # Initialize empty list
     guess_as_list.append(value_choice)  # Convert to list
     print("Update puzzle spot {} from {} to {} as {}".format(spot_choice, puzzle[spot_choice], value_choice, guess_as_list))   #DEBUG
-    guess_list[spot_choice] = guess_as_list  # Update stalled puzzle with user-selected value 
-    return guess_list
+    puzzle[spot_choice] = guess_as_list  # Update stalled puzzle with user-selected value 
+    return (puzzle, original_puzzle)
 
 
 def get_stalled_spots_list(list):   # Determine which spots are still unknown after resolving stalls
@@ -640,7 +640,7 @@ def select_set_of_unknown_values(puzzle, unknown_spots, known_spots, iteration):
 
 
 def create_trial_grid(list, unknown_spots, known_spots, index):
-    trial_solution = list.copy()    # start by copying the current list, 
+    trial_solution = copy.deepcopy(list)    # start by copying the current list, 
                                     # then cycle through and overwrite the spots with multiple values
                                     # Using 'modulo' and 'remainder' of index value to determine which
                                     # of multiple values to set in each spot of grid
@@ -795,7 +795,7 @@ def list_pair_choices(dict_of_pairs):
 
 
 def list_to_integer(d):  # Convert dictionary value of list of single list to list of integers: ie [[1],[2],[3]] to [1,2,3] 
-    new_dict = d.copy()   # Copy dictionary
+    new_dict = copy.deepcopy(d)   # Copy dictionary
 
     for j in new_dict:
         int_list = []    # Initialize empty list
@@ -826,11 +826,11 @@ def remove_single_conflicts(puzzle):
         # Now check each inner grid for single value conflicts 
         puzzle = resolve_inner_grid(puzzle, j, part_side)
     
-    updated_puzzle = puzzle.copy()    # update puzzle for next while loop iteration
+    updated_puzzle = copy.deepcopy(puzzle)    # update puzzle for next while loop iteration
     return updated_puzzle
 
 
-def get_user_guess(puzzle):  # Check validity of spot and value for user entered guess; update puzzle with it
+def get_user_guess(puzzle):  # Check validity of spot and value for user entered guess
     unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are unknown
     valid_value = False  # setup conditions for while loop
     valid_spot = False
@@ -868,8 +868,8 @@ def get_user_guess(puzzle):  # Check validity of spot and value for user entered
             if value_choice in integer_list[spot_choice]:
                 valid_value = True    # Exit while loop
 
-    updated_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess
-    return (updated_puzzle, spot_choice, value_choice)
+    # updated_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess   ##DEBUG
+    return (spot_choice, value_choice)
 
 
 def solve_puzzle(puzzle):
@@ -878,7 +878,7 @@ def solve_puzzle(puzzle):
     full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
     part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
     last_count = 1000
-    original_puzzle = copy.deepcopy(puzzle)
+    # original_puzzle = copy.deepcopy(puzzle)
     
     while not done:
         print()
@@ -919,7 +919,7 @@ def solve_puzzle(puzzle):
         print("Number of possible brute force solutions is: {} over {} unknown spots".format(number_solutions, num_unknown_spots))
         print()  # Blank line
         progress = find_pairs(puzzle)  
-    return (reason, puzzle, original_puzzle)
+    return (reason, puzzle)
 
 
 def select_spot_and_values(puzzle):  # Check validity of spot and value to update puzzle 
@@ -975,8 +975,8 @@ def update_puzzle_permanently(puzzle):
     
     get_stalled_spots_list(puzzle)
     (spot, values) = select_spot_and_values(puzzle)
-    updated_puzzle = create_puzzle_with_guess(puzzle, spot, values)    # Update puzzle with guess
-    return updated_puzzle
+    (puzzle, original_puzzle) = create_puzzle_with_guess(puzzle, spot, values)    # Update puzzle with guess
+    return puzzle
 
 
 def main():
@@ -1000,7 +1000,7 @@ def main():
             
         if reply == 2:  # Solve puzzle
             try:
-                (reason, puzzle, original_puzzle) = solve_puzzle(puzzle)
+                (reason, puzzle) = solve_puzzle(puzzle)
             except UnboundLocalError:
                 print()  # Blank space line
                 print("You must select a puzzle before trying to solve it!") 
@@ -1037,8 +1037,9 @@ def main():
             successful_solution = bruteforce(puzzle, begin_num, number_solutions)
     
         if reply == 5:  # Try guessing a spot and solving and revert if insane
-            (puzzle, spot_choice, value_choice) = get_user_guess(puzzle) 
-            (reason, puzzle, original_puzzle) = solve_puzzle(puzzle)
+            (spot_choice, value_choice) = get_user_guess(puzzle) 
+            (puzzle, original_puzzle) = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess   ##DEBUG
+            (reason, puzzle) = solve_puzzle(puzzle)
             (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
             print("Puzzle sanity is {} because: {}".format(sane, reason))
             if not sane:
