@@ -952,6 +952,15 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
     return (spot_choice, values_choice)
 
 
+def flat_print_unknown_spots(puzzle):   # List spots is a few lines instead of one per line
+    print()  # Blank line as spacer
+    print("Unknown Spots:", end = "")  
+    for j in range(len(puzzle)):  # For every spot
+        if len(puzzle[j]) > 1:  # If spot is not yet resolved
+            print(" {} has {},".format(j, puzzle[j]), end = "")  # then display its possible values
+    print()  # Blank line as spacer
+        
+
 def main():
     # Initialize variables
     last_count = HUGE_VALUE
@@ -1044,7 +1053,7 @@ def main():
             show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
         if reply == 9:  # Show unknown spots
-            get_stalled_spots_list(puzzle)
+            flat_print_unknown_spots(puzzle)  # List spots is a few lines instead of one per line
 
         if reply == 10:  # Quit game
             break
