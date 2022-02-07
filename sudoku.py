@@ -87,7 +87,6 @@ def select_puzzle():
             num = int(val)  # Convert returned string to integer
         except ValueError:
             print("'{}' is not valid. Enter a value between 1 and 4.".format(val))
-#            continue
         else:
             if num == 1:
                 puzzle = get_initial_puzzle()
@@ -201,10 +200,9 @@ def convert_list_to_integer(list):  # From list of single list to single integer
     return index
 
 
-def resolve_column(puzzle, j, full_side):
+def resolve_column(puzzle, j, full_side):  # Delete value from all spots in column except self
     col = j % full_side  # determine which column spot is in
     
-    # Delete value from all spots in column except self
     for k in range(len(puzzle)):
         if j % full_side != k % full_side:
             continue    # skip this value since in different column
@@ -216,8 +214,7 @@ def resolve_column(puzzle, j, full_side):
     return puzzle
     
 
-def resolve_row(puzzle, j, full_side):
-    # Delete value from all spots in row except self
+def resolve_row(puzzle, j, full_side):  # Delete value from all spots in row except self
     # Find all non-single value spots in each row and remove them from other possible spots in same row
     # Determine row number using integer division (//)
     for k in range(len(puzzle)):
@@ -231,9 +228,7 @@ def resolve_row(puzzle, j, full_side):
     return puzzle
     
 
-def resolve_inner_grid(puzzle, j, part_side):
-    # Delete value from all spots in own inner grid except self
-    # Create list of sets of inner grids based on part_side
+def resolve_inner_grid(puzzle, j, part_side):  # Delete value from all spots in own inner grid except self
     list_of_internal_grids = create_list_of_internal_grids(part_side)  # Create list of internal grid lists for any size grid
 
     for list in list_of_internal_grids:
@@ -320,7 +315,6 @@ def show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max):
             print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(puzzle[row * full_side + column]), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP))    # End of line
     create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
-    #        print("{}".format(column, end=""))
 
 
 def list_count(puzzle):
@@ -330,8 +324,7 @@ def list_count(puzzle):
     return current_count
 
 
-# Determine if game over or continues 
-def are_we_done(puzzle, loop, last_count):
+def are_we_done(puzzle, loop, last_count):  # Determine if game over or continues 
     done = False
     reason = "Continue"
     if last_count == list_count(puzzle):
@@ -380,9 +373,7 @@ def all_columns_sane(puzzle):
     return (sanity, reason)   #DEBUG
 
 
-def all_rows_sane(puzzle):
-    # Check every row for duplicate single value 
-    # If found, the puzzle is invalid
+def all_rows_sane(puzzle):  # Check every row for duplicate single value; If found, the puzzle is invalid
     # Determine row number using integer division (//)
     sanity = True
     reason = "All rows are sane."
@@ -440,7 +431,6 @@ def all_grids_sane(puzzle):
 
 
 def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
-#    sanity = all_rows_sane(puzzle) and all_columns_sane(puzzle) and all_grids_sane(puzzle)
     (row_sanity, row_reason) = all_rows_sane(puzzle) 
     (column_sanity, column_reason) = all_columns_sane(puzzle) 
     (grid_sanity, grid_reason) = all_grids_sane(puzzle) 
@@ -534,7 +524,6 @@ def find_pairs(puzzle):
     minigrid_progress = False
     for j in range(len(puzzle)):
         if len(puzzle[j]) == 2:
-#            print("Grid {} has two values of {}.".format(j, puzzle[j]))  #DEBUG
             # Match rows
             for k in range(len(puzzle)):
                 row = j // full_side
@@ -542,8 +531,7 @@ def find_pairs(puzzle):
                     if j != k:  # Cannot compare self to self
                         if puzzle[j] == puzzle[k]:  # If contents match
 #                            print("Spots {} and {} in row {} both have value of {}.".format(j, k, row,  puzzle[j]))
-                            row_progress = row_progress or delete_pair_from_row(puzzle, j, k)    # Then delete these two values from all other spots in row
-            # Match column
+                            row_progress = row_progress or delete_pair_from_row(puzzle, j, k)    # Then delete these two values from all other spots in row # Match column
             for k in range(len(puzzle)):
                 column = j % full_side
                 if j % full_side == k % full_side:  # In same column
@@ -649,8 +637,6 @@ def create_trial_grid(list, unknown_spots, known_spots, index):
     return trial_solution 
 
 
-
-
 def init_trial_count(puzzle):  # Initialize all row, column and internal grid counts to zero
     num = size_of_puzzle(puzzle)
     count = dict()
@@ -668,6 +654,7 @@ def quick_check(puzzle):  # Ensure count of each number is correct (not too high
             result = False
             break
     return result
+
 
 def count_rows(puzzle):   # count how many of each value are in each row
     # Use list built-in 'count' method to ensure exactly one of each value in every row
@@ -712,6 +699,7 @@ def test_trial_solution(puzzle):  # Build first possible grid solutions
         result = result and count_internal_grids(puzzle)
     return result
 
+
 def get_starting_value(number_solutions):
     while True:  # repeat until valid entry
         num = input("Enter starting number: ")
@@ -748,9 +736,11 @@ def get_time():
     t = time.time()
     return t
 
+
 def run_time_trial():
     t = 1    # DEBUG   temp value
     return t
+
 
 def basic_time_trial(puzzle, start_num, end_num):
         start_time = get_time()
@@ -772,8 +762,6 @@ def advanced_time_trial(puzzle, number_solutions):
         time_sum = 0
         for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
             start_time = get_time()
-    #        bruteforce(puzzle, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
-#            time.sleep(2)    #DEBUG
             t = random.randint(0,10)   # DEBUG to generate random time to test calculation of average time
             time.sleep(t)
             end_time = get_time()
