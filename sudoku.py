@@ -566,8 +566,8 @@ def find_pairs(puzzle):
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
         print()  # Blank space line
-        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Show puzzle or\n9. Quit game\nEnter value:  ")
-        if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9":
+        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Show puzzle or\n9. Show unknown spots or \n10. Quit game\nEnter value:  ")
+        if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9" or reply == "10":
             reply = int(reply)   # Convert string to integer
             break  # exit loop otherwise prompt again
         else:
@@ -867,8 +867,6 @@ def get_user_guess(puzzle):  # Check validity of spot and value for user entered
                 pass   # Will prompt for another input
             if value_choice in integer_list[spot_choice]:
                 valid_value = True    # Exit while loop
-
-    # updated_puzzle = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess   ##DEBUG
     return (spot_choice, value_choice)
 
 
@@ -878,7 +876,6 @@ def solve_puzzle(puzzle):
     full_side = size_of_puzzle_side(puzzle)  # Determine if puzzle is 9x9 or 16x16
     part_side = size_of_grid_side(puzzle)  # Determine if puzzle grid is 3x3 or 4x4
     last_count = 1000
-    # original_puzzle = copy.deepcopy(puzzle)
     
     while not done:
         print()
@@ -965,18 +962,6 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
                 print("Value {} not in {}".format(values_choice, integer_list[spot_choice]))  #DEBUG
 
     return (spot_choice, values_choice)
-
-
-def update_puzzle_permanently(puzzle):
-    # Update puzzle permanently 
-    # for example: after guess at a value but if that solved puzzle is insane then 
-    # that value can be deleted from that spot
-    # Only offer ability to edit unresolved spot (with >1 values)
-    
-    get_stalled_spots_list(puzzle)
-    (spot, values) = select_spot_and_values(puzzle)
-    (puzzle, original_puzzle) = create_puzzle_with_guess(puzzle, spot, values)    # Update puzzle with guess
-    return puzzle
 
 
 def main():
@@ -1070,7 +1055,10 @@ def main():
             column_max = column_width(puzzle)    #DEBUG
             show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
 
-        if reply == 9:  # Quit game
+        if reply == 9:  # Show unknown spots
+            get_stalled_spots_list(puzzle)
+
+        if reply == 10:  # Quit game
             break
 
 # Main code
