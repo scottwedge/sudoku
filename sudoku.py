@@ -819,7 +819,7 @@ def remove_single_conflicts(puzzle):
 
 
 def get_user_guess(puzzle):  # Check validity of spot and value for user entered guess
-    unknown_spots =  get_stalled_spots_list(puzzle)   # Create list of grid spots that are unknown
+    unknown_spots =  get_stalled_spots_list(puzzle)   # Create dict of grid spots that are unknown
     valid_value = False  # setup conditions for while loop
     valid_spot = False
     while not valid_value and not valid_spot:
@@ -953,12 +953,14 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
 
 
 def flat_print_unknown_spots(puzzle):   # List spots is a few lines instead of one per line
+    unknown_spots =  get_stalled_spots_list(puzzle)   # Create dict of grid spots that are still unknown
+    unknown_spots_keys = list(unknown_spots.keys())  # Convert dict to list for both keys and values
+    unknown_spots_values = list(unknown_spots.values())  # Convert dict to list for both keys and values
     print()  # Blank line as spacer
-    print("Unknown Spots:", end = "")  
-    for j in range(len(puzzle)):  # For every spot
-        if len(puzzle[j]) > 1:  # If spot is not yet resolved
-            print(" {} has {},".format(j, puzzle[j]), end = "")  # then display its possible values
-    print()  # Blank line as spacer
+    print("Unknown Spots are ", end = "")  
+    for j in range(len(unknown_spots) - 1):  
+        print("{}:{},  ".format(unknown_spots_keys[j], unknown_spots_values[j]), end = "")
+    print("{}:{}.".format(unknown_spots_keys[j+1], unknown_spots_values[j+1]))  # Print last value followed by "."
         
 
 def main():
