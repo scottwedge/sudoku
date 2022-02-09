@@ -963,7 +963,7 @@ def flat_print_unknown_spots(puzzle):   # List spots is a few lines instead of o
     print("{}:{}.".format(unknown_spots_keys[j+1], unknown_spots_values[j+1]))  # Print last value followed by "."
         
 
-def show_only_known_spots(puzzle):  # Only show known spots; show unknown spots as "[]"
+def show_only_known_spots(puzzle):  # Only show known spots; show unknown spots as " "
     number_of_columns = size_of_puzzle_side(puzzle)
     column_max = init_column_width(puzzle, number_of_columns)   # Initialize all dictionary values to one
     max_index = len(puzzle)
@@ -971,7 +971,7 @@ def show_only_known_spots(puzzle):  # Only show known spots; show unknown spots 
     only_known_spots_puzzle = copy.deepcopy(puzzle)
     for j in range(max_index):
         if len(only_known_spots_puzzle[j]) > 1:  # If spot has > 1 possible value
-            only_known_spots_puzzle[j] = []      # replace with "[]"
+            only_known_spots_puzzle[j] = " "      # replace with " "
     show_adjustable_grid_lines(only_known_spots_puzzle, number_of_columns, ROW_SEP, COL_SEP, column_max)   
 
 
