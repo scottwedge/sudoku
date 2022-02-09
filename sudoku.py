@@ -370,7 +370,7 @@ def all_columns_sane(puzzle):
         else:
             continue
         break  # if break out of internal loop then also break out of outer loop
-    return (sanity, reason)   #DEBUG
+    return (sanity, reason)   
 
 
 def all_rows_sane(puzzle):  # Check every row for duplicate single value; If found, the puzzle is invalid
@@ -394,7 +394,7 @@ def all_rows_sane(puzzle):  # Check every row for duplicate single value; If fou
         else:
             continue
         break  # if break out of internal loop then also break out of outer loop
-    return (sanity, reason)   #DEBUG
+    return (sanity, reason)   
 
 
 def all_grids_sane(puzzle):
@@ -427,7 +427,7 @@ def all_grids_sane(puzzle):
         else:
             continue
         break  # if break out of internal loop then also break out of outer loop
-    return (sanity, reason)   #DEBUG
+    return (sanity, reason)   
 
 
 def check_puzzle_sanity(puzzle):  # Check if solved puzzle is valid/sane
@@ -461,18 +461,18 @@ def delete_pair_from_row(puzzle, a, b):   # Then delete these two values from al
             continue    # skip since cannot delete from self
         if puzzle[a][0] in puzzle[j]:
             progress = True
-            print("Removing {} from {} in spot {}.".format(puzzle[a][0], puzzle[j], j))   #DEBUG
+            #print("Removing {} from {} in spot {}.".format(puzzle[a][0], puzzle[j], j))   #DEBUG
             puzzle[j].remove(puzzle[a][0])  # Remove first value 
             puzzle[j] = convert_list(puzzle[j])    # Convert list of single list to list of single integer
         if puzzle[a][1] in puzzle[j]:
             progress = True
-            print("Removing {} from {} in spot {}.".format(puzzle[a][1], puzzle[j], j))   #DEBUG
+            #print("Removing {} from {} in spot {}.".format(puzzle[a][1], puzzle[j], j))   #DEBUG
             puzzle[j].remove(puzzle[a][1])  # Remove second value 
             puzzle[j] = convert_list(puzzle[j])    # Convert list of single list to list of single integer
     return progress
 
 
-def delete_pair_from_column(puzzle, a, b):   # Then delete these two values from all other spots in column
+def delete_pair_from_column(puzzle, a, b):   # Delete these two values from all other spots in column
 # Delete both values from all the other spots in the column except the two matching spots
     progress = False  # Track whether any values are removed  (default = False = nothing removed)
     side = size_of_puzzle_side(puzzle)   # calculate length of row or column
@@ -486,12 +486,12 @@ def delete_pair_from_column(puzzle, a, b):   # Then delete these two values from
             continue    # skip since cannot delete from self
         if puzzle[a][0] in puzzle[j]:
             progress = True
-            print("Removing {} from {} in spot {}.".format(puzzle[a][0], puzzle[j], j))   #DEBUG
+            #print("Removing {} from {} in spot {}.".format(puzzle[a][0], puzzle[j], j))   #DEBUG
             puzzle[j].remove(puzzle[a][0])  # Remove first value 
             puzzle[j] = convert_list(puzzle[j])    # Convert list of single list to list of single integer
         if puzzle[a][1] in puzzle[j]:
             progress = True
-            print("Removing {} from {} in spot {}.".format(puzzle[a][1], puzzle[j], j))   #DEBUG
+            #print("Removing {} from {} in spot {}.".format(puzzle[a][1], puzzle[j], j))   #DEBUG
             puzzle[j].remove(puzzle[a][1])  # Remove second value 
             puzzle[j] = convert_list(puzzle[j])    # Convert list of single list to list of single integer
     return progress
@@ -573,7 +573,6 @@ def count_pairs(list):  # Find unique pairs in puzzle
             else:
                 dict_of_pairs[str(list[j])] = 1  # Initialize count
                 dict_of_pair_locations[str(list[j])] = [j]  # First spot in grid
-
     return (dict_of_pairs, dict_of_pair_locations)
 
 
@@ -582,7 +581,7 @@ def create_puzzle_with_guess(puzzle, spot_choice, value_choice):
     original_puzzle = copy.deepcopy(puzzle)
     guess_as_list = []  # Initialize empty list
     guess_as_list.append(value_choice)  # Convert to list
-    print("Update puzzle spot {} from {} to {} as {}".format(spot_choice, puzzle[spot_choice], value_choice, guess_as_list))   #DEBUG
+    #print("Update puzzle spot {} from {} to {} as {}".format(spot_choice, puzzle[spot_choice], value_choice, guess_as_list))   #DEBUG
     puzzle[spot_choice] = guess_as_list  # Update stalled puzzle with user-selected value 
     return (puzzle, original_puzzle)
 
@@ -592,7 +591,7 @@ def get_stalled_spots_list(list):   # Determine which spots are still unknown af
     for j in range(len(list)):
         if len(list[j]) > 1:  # Spot is not yet resolved
             unknown_spots[j] = list[j]   # Add this to dictionary
-            print("Unknown Spot {} is {}.".format(j, list[j]))   #DEBUG
+            print("Unknown Spot {} is {}.".format(j, list[j]))   
     return unknown_spots
         
 
@@ -725,7 +724,7 @@ def bruteforce(puzzle, start_num, end_num):   # Try all possible combinations an
         trial_solution = create_trial_grid(puzzle, unknown_spots, known_spots, j)
         result = test_trial_solution(trial_solution)
         if result == True:
-            print(trial_solution)     #DEBUG
+            #print(trial_solution)     #DEBUG
             break   # This is a successful solution 
         else:
             print("Iteration {} did not work.".format(j))
@@ -873,7 +872,7 @@ def solve_puzzle(puzzle):
         print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
     
         cw = column_width(puzzle)  # Determine largest possible list in each column so can print column that width
-        print("Column widths are: {}".format(cw))    #DEBUG
+        #print("Column widths are: {}".format(cw))    #DEBUG
     
         puzzle = remove_single_conflicts(puzzle)  # Remove conflicting known single values from same column, 
                                                  # row and internal grid 
@@ -914,7 +913,7 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
     while not valid_value and not valid_spot:
         (dict_of_spots, dict_of_spot_locations) = count_pairs(puzzle)  # Find unique pairs in stalled puzzle
         list_pair_choices(dict_of_spots)
-        integer_list = list_to_integer(unknown_spots)   #DEBUG
+        integer_list = list_to_integer(unknown_spots)   
 
         while not valid_spot:
             for j in integer_list:
@@ -940,7 +939,7 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
             values_choice = input("Enter which value to try: ") 
             try:
                 values_choice = int(values_choice)  # Only valid inputs convert to integer
-                print("Values choice entered is: {}".format(values_choice))   #DEBUG
+                print("Values choice entered is: {}".format(values_choice))   
             except:
                 pass   # Will prompt for another input
             if values_choice in integer_list[spot_choice]:
@@ -948,7 +947,6 @@ def select_spot_and_values(puzzle):  # Check validity of spot and value to updat
                 print("Value {} in {}".format(values_choice, integer_list[spot_choice]))  #DEBUG
             else:  #DEBUG
                 print("Value {} not in {}".format(values_choice, integer_list[spot_choice]))  #DEBUG
-
     return (spot_choice, values_choice)
 
 
@@ -1004,8 +1002,8 @@ def main():
                 print()
                 print()
                 print("***************** Final puzzle result is: ********************")
-                column_max = column_width(puzzle)    #DEBUG
-                show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+                column_max = column_width(puzzle)   
+                show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    
                     
                 count = count_total_possible_values(puzzle)   # Count all the known and unknown values in the puzzle
                 print("Total values count in the puzzle is {}.".format(count_total_possible_values(puzzle)))
@@ -1034,7 +1032,7 @@ def main():
     
         if reply == 5:  # Try guessing a spot and solving and revert if insane
             (spot_choice, value_choice) = get_user_guess(puzzle) 
-            (puzzle, original_puzzle) = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess   ##DEBUG
+            (puzzle, original_puzzle) = create_puzzle_with_guess(puzzle, spot_choice, value_choice)    # Update puzzle with guess  
             (reason, puzzle) = solve_puzzle(puzzle)
             (sane, reason) = check_puzzle_sanity(puzzle)  # Check if solved puzzle is valid/sane
             print("Puzzle sanity is {} because: {}".format(sane, reason))
@@ -1063,8 +1061,8 @@ def main():
             advanced_time_trial(puzzle, number_solutions)
     
         if reply == 8:  # Show puzzle
-            column_max = column_width(puzzle)    #DEBUG
-            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
+            column_max = column_width(puzzle)   
+            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    
 
         if reply == 9:  # Show unknown spots
             flat_print_unknown_spots(puzzle)  # List spots is a few lines instead of one per line
