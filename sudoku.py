@@ -554,7 +554,7 @@ def find_pairs(puzzle):
 def how_to_continue_when_stalled():  # Prompt user if and how to continue when stalled
     while True:
         print()  # Blank space line
-        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Show puzzle or\n9. Show unknown spots or \n10. Show known spots or \n11. Quit game\nEnter value:  ")
+        reply = input("How continue? \n1. Choose puzzle or \n2. Solve puzzle or \n3. Brute force from zero or \n4. Brute force from an input number or \n5. Try guessing a value for a spot and resolve and maybe revert or \n6. Time estimate from zero or \n7. Time estimate spread over 10% increments or\n8. Show puzzle or\n9. Show unknown spots or \n10. Show only known spots or \n11. Quit game\nEnter value:  ")
         if reply == "1" or reply == "2" or reply == "3" or reply == "4" or reply == "5" or reply == "6" or reply == "7" or reply == "8" or reply == "9" or reply == "10" or reply == "11":
             reply = int(reply)   # Convert string to integer
             break  # exit loop otherwise prompt again
@@ -963,11 +963,16 @@ def flat_print_unknown_spots(puzzle):   # List spots is a few lines instead of o
     print("{}:{}.".format(unknown_spots_keys[j+1], unknown_spots_values[j+1]))  # Print last value followed by "."
         
 
-def show_known_spots(puzzle):  # Only show known spots; leave unknown spots blank
-    column_max = 3  # Since only show known values, this value should be set to 3
-    # Need to keep only the known/single values and ignore the others
-    print(puzzle)
-#    show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)   
+def show_only_known_spots(puzzle):  # Only show known spots; show unknown spots as "[]"
+    number_of_columns = size_of_puzzle_side(puzzle)
+    column_max = init_column_width(puzzle, number_of_columns)   # Initialize all dictionary values to one
+    max_index = len(puzzle)
+    # Need to replace all >1 spots in puzzle
+    only_known_spots_puzzle = copy.deepcopy(puzzle)
+    for j in range(max_index):
+        if len(only_known_spots_puzzle[j]) > 1:  # If spot has > 1 possible value
+            only_known_spots_puzzle[j] = []      # replace with "[]"
+    show_adjustable_grid_lines(only_known_spots_puzzle, number_of_columns, ROW_SEP, COL_SEP, column_max)   
 
 
 def main():
@@ -1064,10 +1069,8 @@ def main():
         if reply == 9:  # Show unknown spots
             flat_print_unknown_spots(puzzle)  # List spots is a few lines instead of one per line
 
-        if reply == 10:  # Show known spots
-            column_max = column_width(puzzle)    #DEBUG
-            show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max)    #DEBUG 
-            show_known_spots(puzzle)  # List spots is a few lines instead of one per line
+        if reply == 10:  # Only show known spots
+            show_only_known_spots(puzzle)  
 
         if reply == 11:  # Quit game
             break
