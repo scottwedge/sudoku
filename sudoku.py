@@ -720,6 +720,8 @@ def get_starting_value(number_solutions):
 
 
 def bruteforce(puzzle, start_num, end_num):   # Try all possible combinations and see which works
+    unknown_spots =  get_stalled_spots_list(puzzle)   # Create dict of grid spots that are unknown
+    known_spots = get_known_spots_list(puzzle)  # List of known spots
     for j in range(start_num, end_num):  # Cycle through all possible values in grids until one works
         trial_solution = create_trial_grid(puzzle, unknown_spots, known_spots, j)
         result = test_trial_solution(trial_solution)
