@@ -755,6 +755,11 @@ def basic_time_trial(puzzle, start_num, end_num):
         print("This means that at this rate all {} solutions would need {:.2f} seconds or {:.2f} hours.".format(number_solutions, full_duration_seconds, full_duration_hours))
 
 
+def advanced_time_sim():
+    t = random.randint(0,10)   # DEBUG to generate random time to test calculation of average time
+    time.sleep(t)
+    
+
 def advanced_time_trial(puzzle, number_solutions):
         number_of_intervals = 10
         test_values = []   # Initialize 
@@ -763,8 +768,7 @@ def advanced_time_trial(puzzle, number_solutions):
         time_sum = 0
         for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
             start_time = get_time()
-            t = random.randint(0,10)   # DEBUG to generate random time to test calculation of average time
-            time.sleep(t)
+            advanced_time_sim()  # Random delay in seconds to avoid hours-long actual delay
             end_time = get_time()
             trial_duration = end_time - start_time
             time_sum = time_sum + trial_duration
