@@ -79,7 +79,7 @@ def get_hardest_puzzle(): # return data file as list
     return hardest_puzzle
 
 
-def select_puzzle():
+def select_internal_puzzle():
     while True:
         print()   # blank line
         val = input("Which puzzle do you want to solve? \n1 (easiest) or \n2 (medium) or \n3 (hard) or \n4 (hardest). \nEnter value: ")  
@@ -102,6 +102,26 @@ def select_puzzle():
                 break
     print()  # Blank line
     print("Puzzle #{} selected.".format(num))  # Confirm selected choice
+    return puzzle
+
+
+def select_external_puzzle():
+    pass
+
+
+def select_puzzle():
+    while True:
+        print()   # blank line
+        val = input("Do you want to solve an internal puzzle or import an external puzzle? Enter 'I/i' or 'E/e': ")
+        if val == "I" or val == "i":
+            puzzle = select_internal_puzzle()
+            break
+        elif val == "E" or val == "e":
+            puzzle = select_external_puzzle()
+            print("External puzzle selected.")
+            break
+        else:
+            pass
     return puzzle
 
 
