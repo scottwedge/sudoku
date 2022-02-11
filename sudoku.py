@@ -743,7 +743,7 @@ def run_time_trial():
     return t
 
 
-def basic_time_trial(puzzle, start_num, end_num):
+def basic_time_trial(puzzle, start_num, end_num, number_solutions):
         start_time = get_time()
         bruteforce(puzzle, start_num, end_num)
         end_time = get_time()
@@ -768,7 +768,9 @@ def advanced_time_trial(puzzle, number_solutions):
         time_sum = 0
         for j in range(1, number_of_intervals + 1):  # Want to test at top of 10% range, not at bottom
             start_time = get_time()
-            advanced_time_sim()  # Random delay in seconds to avoid hours-long actual delay
+#            advanced_time_sim()  # Workaround to test this function by creating a random
+                                  # delay in seconds to avoid hours-long actual delay
+            bruteforce(puzzle, interval * j - 1, interval * j)   # Want to test at top of each 10% range, not at the bottom end 
             end_time = get_time()
             trial_duration = end_time - start_time
             time_sum = time_sum + trial_duration
@@ -1057,7 +1059,7 @@ def main():
         if reply == 6:   # Time trial for 1000 attempts, then calculate worst case if all possibilities needed
             start_num = 0
             end_num = 1000
-            basic_time_trial(puzzle, start_num, end_num)
+            basic_time_trial(puzzle, start_num, end_num, number_solutions)
     
         if reply == 7:   # Time trial spread over ten 10% ranges assuming a huge number
                          # since single evaluation at 10,000,000 takes multiple minutes
