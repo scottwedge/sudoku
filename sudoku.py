@@ -317,10 +317,8 @@ def create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_ma
         else:
             print("++", sep="", end="")  # Print first character in line as double
 
-        # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
-        if column_max[j] == 1: width = 5
-        if column_max[j] == 2: width = 12
-        if column_max[j] > 2: width = 12 + (column_max[j] - 2) * 5
+        # Column width between COL_SEP is 3 for one element, plus 2 for every additional element
+        width = 3 + (column_max[j] - 1) * 2
      
         print("{}".format(ROW_SEP * width), sep="", end="")   # column width of 5 for single element
     print("++")   # Complete end of line with double intersecting symbol
@@ -335,15 +333,15 @@ def show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max):
             create_adjustable_row_separating_line(full_side, MAJ_ROW_SEP, COL_SEP, column_max)  # "+===+===...+" format
 
         for column in range(full_side):
-            # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
-            if column_max[column] == 1: width = 3
-            if column_max[column] == 2: width = 10
-            if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
+            # Column width between COL_SEP is 3 for one element, plus 2 for every additional element
+            width = 1 + (column_max[column] - 1) * 2
             if not(column % (full_side ** 0.5)):
                 print("{}".format(COL_SEP), sep="", end="")    # Double the line
-            print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(puzzle[row * full_side + column]), SPACE, w=width),  sep="", end="")
+            cell_val = [str(a)[1:-1] for a in (puzzle[row * full_side + column])]
+            if len(cell_val) == 1: cell_val = [str(puzzle[row * full_side + column])[1:-1]]
+            print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, "," . join(cell_val), SPACE, w=width),  sep="", end="")
         print("{}".format(COL_SEP * 2))    # End of line as double
-    create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
+    create_adjustable_row_separating_line(full_side, MAJ_ROW_SEP, COL_SEP, column_max)  # Bottom-most line for grid as double
 
 
 def list_count(puzzle):
