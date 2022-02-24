@@ -337,6 +337,7 @@ def show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max):
             width = 1 + (column_max[column] - 1) * 2
             if not(column % (full_side ** 0.5)):
                 print("{}".format(COL_SEP), sep="", end="")    # Double the line
+            # Strip the square brackets off the list of number(s), then join them in the print
             cell_val = [str(a)[1:-1] for a in (puzzle[row * full_side + column])]
             if len(cell_val) == 1: cell_val = [str(puzzle[row * full_side + column])[1:-1]]
             print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, "," . join(cell_val), SPACE, w=width),  sep="", end="")
