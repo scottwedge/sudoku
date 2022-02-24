@@ -10,10 +10,11 @@ import copy    # Need to perform deep copy so can restore previous version of pu
 
 
 # Constants
-ROW_SEP = "-"   # separator symbol between rows in grid
-COL_SEP = "|"   # separator symbol between columns in grid
-SPACE = " "     # have space on either side of value to make reading grid easier
-MAX_LOOP = 100  # Maximum number of loop before program ends
+ROW_SEP = "-"         # separator symbol between rows in grid
+MAJ_ROW_SEP = "="     # separator symbol between major rows in grid
+COL_SEP = "|"         # separator symbol between columns in grid
+SPACE = " "           # have space on either side of value to make reading grid easier
+MAX_LOOP = 100        # Maximum number of loop before program ends
 HUGE_VALUE = 100000   # Initial count for number of values still possible
 
 
@@ -311,7 +312,10 @@ def column_width(puzzle):  # Determine largest possible list in each column so c
 
 def create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max):  # "+------------+-+...-+" format
     for j in range(full_side):
-        print("+", sep="", end="")  # Print first character in line
+        if (j % (full_side ** 0.5)):
+            print("+", sep="", end="")  # Print first character in line
+        else:
+            print("++", sep="", end="")  # Print first character in line as double
 
         # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
         if column_max[j] == 1: width = 5
@@ -319,21 +323,26 @@ def create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_ma
         if column_max[j] > 2: width = 12 + (column_max[j] - 2) * 5
      
         print("{}".format(ROW_SEP * width), sep="", end="")   # column width of 5 for single element
-    print("+")   # Complete end of line with intersecting symbol
+    print("++")   # Complete end of line with double intersecting symbol
 
 
 def show_adjustable_grid_lines(puzzle, full_side, ROW_SEP, COL_SEP, column_max):    # Adjust column spacing based on max column width
     print()  # blank line
     for row in range(full_side):
-        create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+        if (row % (full_side ** 0.5)):
+            create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # "+---+---...+" format
+        else:
+            create_adjustable_row_separating_line(full_side, MAJ_ROW_SEP, COL_SEP, column_max)  # "+===+===...+" format
 
         for column in range(full_side):
             # Column width between COL_SEP is 5 for one element, 12 for two elements, plus 5 for every additional element
             if column_max[column] == 1: width = 3
             if column_max[column] == 2: width = 10
             if column_max[column] > 2: width = 10 + (column_max[column] - 2) * 5
+            if not(column % (full_side ** 0.5)):
+                print("{}".format(COL_SEP), sep="", end="")    # Double the line
             print("{}{}{:^{w}}{}".format(COL_SEP, SPACE, str(puzzle[row * full_side + column]), SPACE, w=width),  sep="", end="")
-        print("{}".format(COL_SEP))    # End of line
+        print("{}".format(COL_SEP * 2))    # End of line as double
     create_adjustable_row_separating_line(full_side, ROW_SEP, COL_SEP, column_max)  # bottom-most line for grid
 
 
